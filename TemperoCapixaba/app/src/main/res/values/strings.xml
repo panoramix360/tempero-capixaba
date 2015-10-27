@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Tempero Capixaba</string>
+
+    <string name="action_contato">Contato</string>
+    <string name="cardapio_diario_title">Cardápio do Dia</string>
+    <string name="cardapio_diario_format">Dia %s</string>
+    <string name="cardapio_button">Fazer Pedido</string>
+    <string name="quantidade">Quant.</string>
+    <string name="resumo_pedido">Resumo do Pedido</string>
+    <string name="confirmar_pedido_button">Confirmar Pedido</string>
+</resources>
