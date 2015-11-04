@@ -1,47 +1,27 @@
 package com.creativityloop.android.temperocapixaba.model;
 
+import com.orm.SugarRecord;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by LucasReis on 29/09/2015.
  */
-public class Pedido {
+public class Pedido extends SugarRecord {
 
-    private Usuario mUsuario;
-    private String mEndereco;
-    private GregorianCalendar mData;
-    private List<ItemPedido> mRefeicoes;
+    public Usuario mUsuario;
+    public String mEndereco;
+    public GregorianCalendar mData;
 
-    public Usuario getUsuario() {
-        return mUsuario;
-    }
+    public Pedido() {}
 
-    public void setUsuario(Usuario usuario) {
-        mUsuario = usuario;
-    }
-
-    public String getEndereco() {
-        return mEndereco;
-    }
-
-    public void setEndereco(String endereco) {
-        mEndereco = endereco;
-    }
-
-    public GregorianCalendar getData() {
-        return mData;
-    }
-
-    public void setData(GregorianCalendar data) {
-        mData = data;
-    }
-
-    public List<ItemPedido> getRefeicoes() {
-        return mRefeicoes;
-    }
-
-    public void setRefeicoes(List<ItemPedido> refeicoes) {
-        this.mRefeicoes = refeicoes;
+    public Pedido(Usuario usuario, String endereco, GregorianCalendar data) {
+        this.mUsuario = usuario;
+        this.mEndereco = endereco;
+        this.mData = data;
     }
 }

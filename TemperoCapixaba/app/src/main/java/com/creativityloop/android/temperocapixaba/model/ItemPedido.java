@@ -1,39 +1,40 @@
 package com.creativityloop.android.temperocapixaba.model;
 
-/**
- * Created by LucasReis on 29/09/2015.
- */
-public class ItemPedido {
+import com.orm.SugarRecord;
 
-    public enum Tamanho {
-        GRANDE, PEQUENO
+public class ItemPedido extends SugarRecord {
+
+    public static enum Tamanho {
+        GRANDE, PEQUENO;
+
+        @Override
+        public String toString() {
+            return super.toString().toLowerCase();
+        }
     }
 
-    private Prato mPrato;
-    private Tamanho mTamanho;
-    private int mQuantidade;
+    public Pedido mPedido;
+    public Prato mPrato;
+    public Tamanho mTamanho;
+    public int mQuantidade;
 
-    public Prato getPrato() {
-        return mPrato;
+    public ItemPedido() {}
+
+    public ItemPedido(Pedido pedido, Prato prato, Tamanho tamanho, int quantidade) {
+        this.mPedido = pedido;
+        this.mPrato = prato;
+        this.mTamanho = tamanho;
+        this.mQuantidade = quantidade;
     }
 
-    public void setPrato(Prato prato) {
-        mPrato = prato;
-    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    public Tamanho getTamanho() {
-        return mTamanho;
-    }
+        ItemPedido itemPedido = (ItemPedido) o;
 
-    public void setTamanho(Tamanho tamanho) {
-        mTamanho = tamanho;
-    }
+        return !(mPrato.mNome != null ? !mPrato.mNome.equals(itemPedido.mPrato.mNome) : itemPedido.mPrato.mNome != null);
 
-    public int getQuantidade() {
-        return mQuantidade;
-    }
-
-    public void setQuantidade(int quantidade) {
-        mQuantidade = quantidade;
     }
 }

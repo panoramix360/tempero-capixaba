@@ -32,7 +32,7 @@ public class Mock {
     private void initPratos() {
         for(int i = 0; i < 5; i++) {
             Prato prato = new Prato();
-            prato.setNome("Prato #" + i);
+            prato.mNome = "Prato #" + i;
             mPratos.add(prato);
         }
     }

@@ -2,12 +2,14 @@ package com.creativityloop.android.temperocapixaba.model;
 
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by LucasReis on 29/09/2015.
  */
 public class Cardapio {
 
+    private UUID mId;
     private List<Prato> mPratos;
     private GregorianCalendar mData;
 
