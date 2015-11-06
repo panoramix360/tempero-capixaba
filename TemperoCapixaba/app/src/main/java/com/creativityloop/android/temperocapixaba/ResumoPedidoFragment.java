@@ -9,17 +9,17 @@ import android.view.ViewGroup;
 import com.creativityloop.android.temperocapixaba.database.PedidoLab;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
 
-public class PedidoFragment extends Fragment {
+public class ResumoPedidoFragment extends Fragment {
 
     private static final String ARG_PEDIDO_ID = "pedido_id";
 
     private Pedido mPedido;
 
-    public static PedidoFragment newInstance(long pedidoId) {
+    public static ResumoPedidoFragment newInstance(long pedidoId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_PEDIDO_ID, pedidoId);
 
-        PedidoFragment fragment = new PedidoFragment();
+        ResumoPedidoFragment fragment = new ResumoPedidoFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -34,7 +34,7 @@ public class PedidoFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_pedido, container, false);
+        View v = inflater.inflate(R.layout.fragment_resumo_pedido, container, false);
 
         return v;
     }
