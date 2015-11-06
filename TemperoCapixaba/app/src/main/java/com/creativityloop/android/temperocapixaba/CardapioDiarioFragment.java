@@ -61,7 +61,7 @@ public class CardapioDiarioFragment extends Fragment {
                     itemPedido.mPedido = mPedido;
                     itemPedido.save();
                 }
-                Intent intent = PedidoActivity.newIntent(getActivity(), mPedido.getId());
+                Intent intent = ResumoPedidoActivity.newIntent(getActivity(), mPedido.getId());
                 startActivity(intent);
             }
         });

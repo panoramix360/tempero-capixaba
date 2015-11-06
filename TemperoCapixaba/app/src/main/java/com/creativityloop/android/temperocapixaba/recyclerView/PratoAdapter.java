@@ -29,7 +29,7 @@ public class PratoAdapter extends RecyclerView.Adapter<PratoHolder> {
     @Override
     public PratoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mCurrentActivity);
-        View view = layoutInflater.inflate(R.layout.list_item_cardapio, parent, false);
+        View view = layoutInflater.inflate(R.layout.list_item_cardapio_recycler_view, parent, false);
         return new PratoHolder(view, mItensPedido);
     }
 
