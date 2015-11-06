@@ -33,4 +33,14 @@
         android:layout_toLeftOf="@id/prato_quantidade_edit_text"
         android:text="@string/quantidade"/>
 
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Switch"
+        android:id="@+id/switch1"
+        android:layout_below="@+id/prato_quantidade_edit_text"
+        android:layout_alignRight="@+id/prato_quantidade_text_view"
+        android:layout_alignEnd="@+id/prato_quantidade_text_view"
+        android:layout_marginTop="36dp" />
+
 </RelativeLayout>

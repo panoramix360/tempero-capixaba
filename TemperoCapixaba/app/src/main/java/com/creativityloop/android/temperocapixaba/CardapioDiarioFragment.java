@@ -25,7 +25,6 @@ import com.creativityloop.android.temperocapixaba.model.Pedido;
 import com.creativityloop.android.temperocapixaba.model.Prato;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -109,7 +108,7 @@ public class CardapioDiarioFragment extends Fragment {
         @Override
         public PratoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(R.layout.list_item_cardapio, parent, false);
+            View view = layoutInflater.inflate(R.layout.list_item_cardapio_recycler_view, parent, false);
             return new PratoHolder(view);
         }
 
@@ -150,7 +149,7 @@ public class CardapioDiarioFragment extends Fragment {
                     itemPedido.mPedido = mPedido;
                     itemPedido.save();
                 }
-                Intent intent = PedidoActivity.newIntent(getActivity(), mPedido.getId());
+                Intent intent = ResumoPedidoActivity.newIntent(getActivity(), mPedido.getId());
                 startActivity(intent);
             }
         });

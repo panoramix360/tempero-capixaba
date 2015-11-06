@@ -7,14 +7,10 @@ import com.creativityloop.android.temperocapixaba.model.Pedido;
 
 import java.util.List;
 
-/**
- * Created by LucasReis on 29/10/2015.
- */
 public class PedidoLab {
     private static PedidoLab sPedidoLab;
 
     private Context mContext;
-    private List<Pedido> mPedidos;
 
     public static PedidoLab get(Context context) {
         if(sPedidoLab == null) {
@@ -26,16 +22,14 @@ public class PedidoLab {
 
     private PedidoLab(Context context) {
         mContext = context.getApplicationContext();
-        mPedidos = Pedido.listAll(Pedido.class);
+    }
+
+    public List<Pedido> getPedidos() {
+        return Pedido.listAll(Pedido.class);
     }
 
     public Pedido getPedido(long pedidoId) {
-        for(Pedido pedido : mPedidos) {
-            if(pedido.getId() == pedidoId) {
-                return pedido;
-            }
-        }
-        return null;
+        return Pedido.findById(Pedido.class, pedidoId);
     }
 
     public void savePedido(Pedido pedido) {
