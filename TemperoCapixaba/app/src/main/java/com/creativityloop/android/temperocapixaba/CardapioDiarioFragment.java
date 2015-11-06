@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.creativityloop.android.temperocapixaba.database.ItemPedidoLab;
+import com.creativityloop.android.temperocapixaba.database.PedidoLab;
 import com.creativityloop.android.temperocapixaba.model.Cardapio;
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Mock;
@@ -56,12 +58,13 @@ public class CardapioDiarioFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mPedido = new Pedido(null, "", new GregorianCalendar());
-                mPedido.save();
+                PedidoLab.get(getActivity()).savePedido(mPedido);
+
                 for (ItemPedido itemPedido : mItensPedido) {
                     itemPedido.mPedido = mPedido;
-                    itemPedido.save();
+                    ItemPedidoLab.get(getActivity()).saveItemPedido(itemPedido);
                 }
-                Intent intent = PedidoActivity.newIntent(getActivity(), mPedido.getId());
+                Intent intent = ResumoPedidoActivity.newIntent(getActivity(), mPedido.getId());
                 startActivity(intent);
             }
         });

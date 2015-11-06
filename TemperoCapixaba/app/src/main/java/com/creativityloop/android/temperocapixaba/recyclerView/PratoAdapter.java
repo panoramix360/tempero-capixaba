@@ -1,5 +1,6 @@
 package com.creativityloop.android.temperocapixaba.recyclerView;
 
+import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,19 +18,19 @@ import java.util.List;
  */
 public class PratoAdapter extends RecyclerView.Adapter<PratoHolder> {
     private List<Prato> mPratos;
-    private FragmentActivity mCurrentActivity;
+    private Context mContext;
     private List<ItemPedido> mItensPedido;
 
-    public PratoAdapter(List<Prato> pratos, List<ItemPedido> itensPedido, FragmentActivity currentActivity) {
+    public PratoAdapter(List<Prato> pratos, List<ItemPedido> itensPedido, Context currentContext) {
         mPratos = pratos;
         mItensPedido = itensPedido;
-        mCurrentActivity = currentActivity;
+        mContext = currentContext;
     }
 
     @Override
     public PratoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(mCurrentActivity);
-        View view = layoutInflater.inflate(R.layout.list_item_cardapio, parent, false);
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+        View view = layoutInflater.inflate(R.layout.list_item_cardapio_recycler_view, parent, false);
         return new PratoHolder(view, mItensPedido);
     }
 
