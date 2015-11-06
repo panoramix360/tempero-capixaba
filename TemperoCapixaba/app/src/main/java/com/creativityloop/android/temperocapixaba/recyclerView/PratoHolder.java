@@ -40,6 +40,9 @@ public class PratoHolder extends RecyclerView.ViewHolder {
         mPrato = prato;
         mNomeTextView.setText(mPrato.mNome);
 
+        ItemPedido itemPedidoSearch = new ItemPedido();
+        itemPedidoSearch.mPrato = mPrato;
+        mPratoCheckBox.setChecked(mItensPedido.contains(itemPedidoSearch));
         mPratoCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +73,7 @@ public class PratoHolder extends RecyclerView.ViewHolder {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
