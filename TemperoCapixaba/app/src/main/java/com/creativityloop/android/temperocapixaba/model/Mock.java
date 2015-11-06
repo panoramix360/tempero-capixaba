@@ -30,7 +30,7 @@ public class Mock {
     }
 
     private void initPratos() {
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < 25; i++) {
             Prato prato = new Prato();
             prato.mNome = "Prato #" + i;
             mPratos.add(prato);
@@ -39,7 +39,7 @@ public class Mock {
 
     private void initCardapios() {
         GregorianCalendar dataInicio = new GregorianCalendar(2015, 9, 28);
-        for(int i = 0; i < 8; i++, dataInicio.add(Calendar.DAY_OF_MONTH, 1)) {
+        for(int i = 0; i < 20; i++, dataInicio.add(Calendar.DAY_OF_MONTH, 1)) {
             Cardapio cardapio = new Cardapio();
             cardapio.setPratos(mPratos);
             cardapio.setData(dataInicio);
