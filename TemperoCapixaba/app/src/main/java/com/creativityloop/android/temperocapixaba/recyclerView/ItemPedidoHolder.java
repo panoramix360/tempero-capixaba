@@ -1,6 +1,8 @@
 package com.creativityloop.android.temperocapixaba.recyclerView;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -38,7 +40,50 @@ public class ItemPedidoHolder extends RecyclerView.ViewHolder {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mItemPedido.setmChecked(isChecked);
+
+                mQuantidadePequenaEditText.setEnabled(isChecked);
+                mQuantidadeGrandeEditText.setEnabled(isChecked);
             }
+        });
+
+        mQuantidadePequenaEditText.setEnabled(mItemPedido.ismChecked());
+        mQuantidadeGrandeEditText.setEnabled(mItemPedido.ismChecked());
+
+        if(mItemPedido.mQuantidadePequena != 0) {
+            mQuantidadePequenaEditText.setText(mItemPedido.mQuantidadePequena + "");
+        }
+
+        if(mItemPedido.mQuantidadeGrande != 0) {
+            mQuantidadeGrandeEditText.setText(mItemPedido.mQuantidadeGrande + "");
+        }
+
+        mQuantidadePequenaEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                mItemPedido.mQuantidadePequena = Integer.parseInt(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        mQuantidadeGrandeEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                mItemPedido.mQuantidadeGrande = Integer.parseInt(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
     }
 }
