@@ -51,16 +51,22 @@ public class ItemPedidoHolder extends RecyclerView.ViewHolder {
 
         if(mItemPedido.mQuantidadePequena != 0) {
             mQuantidadePequenaEditText.setText(mItemPedido.mQuantidadePequena + "");
+        } else {
+            mQuantidadePequenaEditText.setText("");
         }
 
         if(mItemPedido.mQuantidadeGrande != 0) {
             mQuantidadeGrandeEditText.setText(mItemPedido.mQuantidadeGrande + "");
+        } else {
+            mQuantidadeGrandeEditText.setText("");
         }
 
         mQuantidadePequenaEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                mItemPedido.mQuantidadePequena = Integer.parseInt(s.toString());
+                if(!s.toString().equals("")) {
+                    mItemPedido.mQuantidadePequena = Integer.parseInt(s.toString());
+                }
             }
 
             @Override
@@ -75,7 +81,9 @@ public class ItemPedidoHolder extends RecyclerView.ViewHolder {
         mQuantidadeGrandeEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                mItemPedido.mQuantidadeGrande = Integer.parseInt(s.toString());
+                if(!s.toString().equals("")) {
+                    mItemPedido.mQuantidadeGrande = Integer.parseInt(s.toString());
+                }
             }
 
             @Override
