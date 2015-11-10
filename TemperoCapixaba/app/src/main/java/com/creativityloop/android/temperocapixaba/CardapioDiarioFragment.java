@@ -20,7 +20,7 @@ import com.creativityloop.android.temperocapixaba.model.Cardapio;
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Mock;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
-import com.creativityloop.android.temperocapixaba.recyclerView.PratoAdapter;
+import com.creativityloop.android.temperocapixaba.recyclerView.ItemPedidoAdapter;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -85,7 +85,7 @@ public class CardapioDiarioFragment extends Fragment {
     private void updateUI() {
         initCardapio();
 
-        PratoAdapter mAdapter = new PratoAdapter(mCardapio.getPratos(), mItensPedido, getActivity());
+        ItemPedidoAdapter mAdapter = new ItemPedidoAdapter(getActivity(), mItensPedido);
         mCardapioRecyclerView.setAdapter(mAdapter);
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -95,6 +95,7 @@ public class CardapioDiarioFragment extends Fragment {
     private void initCardapio() {
         // TODO trocar por chamada ao banco
         mCardapio = Mock.get(getActivity()).getCardapios().get(0);
+        mItensPedido = Mock.get(getActivity()).createItensPedidoComCardapio(mCardapio);
 
         mCardapioTitle.setText(getString(R.string.cardapio_diario_format, Mock.format(mCardapio.getData())));
     }

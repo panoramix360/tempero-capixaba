@@ -1,30 +1,33 @@
 package com.creativityloop.android.temperocapixaba.model;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 public class ItemPedido extends SugarRecord {
 
-    public static enum Tamanho {
-        GRANDE, PEQUENO;
-
-        @Override
-        public String toString() {
-            return super.toString().toLowerCase();
-        }
-    }
-
     public Pedido mPedido;
     public Prato mPrato;
-    public Tamanho mTamanho;
-    public int mQuantidade;
+    public int mQuantidadePequena;
+    public int mQuantidadeGrande;
+
+    @Ignore
+    private boolean mChecked;
 
     public ItemPedido() {}
 
-    public ItemPedido(Pedido pedido, Prato prato, Tamanho tamanho, int quantidade) {
+    public ItemPedido(Pedido pedido, Prato prato, int quantidadePequena, int quantidadeGrande) {
         this.mPedido = pedido;
         this.mPrato = prato;
-        this.mTamanho = tamanho;
-        this.mQuantidade = quantidade;
+        this.mQuantidadePequena = quantidadePequena;
+        this.mQuantidadeGrande = quantidadeGrande;
+    }
+
+    public boolean ismChecked() {
+        return mChecked;
+    }
+
+    public void setmChecked(boolean mChecked) {
+        this.mChecked = mChecked;
     }
 
     @Override
@@ -35,6 +38,5 @@ public class ItemPedido extends SugarRecord {
         ItemPedido itemPedido = (ItemPedido) o;
 
         return !(mPrato.mNome != null ? !mPrato.mNome.equals(itemPedido.mPrato.mNome) : itemPedido.mPrato.mNome != null);
-
     }
 }

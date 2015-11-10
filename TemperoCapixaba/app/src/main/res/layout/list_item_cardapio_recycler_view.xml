@@ -18,29 +18,21 @@
         tools:text="Nome do Prato"/>
 
     <EditText
-        android:id="@+id/prato_quantidade_edit_text"
+        android:id="@+id/prato_quantidade_grande_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:enabled="false"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:hint="@string/quantidade_grande"/>
 
-    <TextView
-        android:id="@+id/prato_quantidade_text_view"
+    <EditText
+        android:id="@+id/prato_quantidade_pequena_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_toLeftOf="@id/prato_quantidade_edit_text"
-        android:text="@string/quantidade"/>
-
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Switch"
-        android:id="@+id/switch1"
-        android:layout_below="@+id/prato_quantidade_edit_text"
-        android:layout_alignRight="@+id/prato_quantidade_text_view"
-        android:layout_alignEnd="@+id/prato_quantidade_text_view"
-        android:layout_marginTop="36dp" />
+        android:inputType="number"
+        android:enabled="false"
+        android:layout_toLeftOf="@id/prato_quantidade_grande_edit_text"
+        android:hint="@string/quantidade_pequena"/>
 
 </RelativeLayout>
