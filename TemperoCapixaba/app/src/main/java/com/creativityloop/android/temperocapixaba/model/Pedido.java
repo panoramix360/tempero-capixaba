@@ -2,11 +2,8 @@ package com.creativityloop.android.temperocapixaba.model;
 
 import com.orm.SugarRecord;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by LucasReis on 29/09/2015.

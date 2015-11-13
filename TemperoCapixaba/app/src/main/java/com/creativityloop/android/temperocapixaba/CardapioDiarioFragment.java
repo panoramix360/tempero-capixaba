@@ -21,6 +21,7 @@ import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Mock;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
 import com.creativityloop.android.temperocapixaba.recyclerView.ItemPedidoAdapter;
+import com.creativityloop.android.temperocapixaba.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -51,13 +52,19 @@ public class CardapioDiarioFragment extends Fragment {
         mCardapioTitle = (TextView) v.findViewById(R.id.cardapio_diario_title_text_view);
 
         mCardapioRecyclerView = (RecyclerView) v.findViewById(R.id.cardapio_recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mCardapioRecyclerView.setHasFixedSize(true);
+
         mCardapioRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
         mFazerPedidoButton = (Button) v.findViewById(R.id.fazer_pedido_button);
         mFazerPedidoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPedido = new Pedido(null, "", new GregorianCalendar());
+                mPedido = new Pedido(null, "", DateUtils.getToday());
                 PedidoLab.get(getActivity()).savePedido(mPedido);
 
                 for (ItemPedido itemPedido : mItensPedido) {
@@ -68,8 +75,6 @@ public class CardapioDiarioFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        mItensPedido = new ArrayList<>();
 
         updateUI();
 
@@ -94,9 +99,18 @@ public class CardapioDiarioFragment extends Fragment {
 
     private void initCardapio() {
         // TODO trocar por chamada ao banco
-        mCardapio = Mock.get(getActivity()).getCardapios().get(0);
-        mItensPedido = Mock.get(getActivity()).createItensPedidoComCardapio(mCardapio);
+        GregorianCalendar data = DateUtils.getToday();
+        mPedido = PedidoLab.get(getActivity()).getPedido(data);
 
-        mCardapioTitle.setText(getString(R.string.cardapio_diario_format, Mock.format(mCardapio.getData())));
+        if(mPedido == null) {
+            mCardapio = Mock.get(getActivity()).getCardapioOfDay(data);
+            mItensPedido = ItemPedidoLab.get(getActivity()).createItensPedidoComCardapio(mCardapio);
+        }
+        else
+        {
+            mItensPedido = ItemPedidoLab.get(getActivity()).getItemPedidos(mPedido.getId());
+        }
+
+        mCardapioTitle.setText(getString(R.string.cardapio_diario_format, Mock.format(data)));
     }
 }

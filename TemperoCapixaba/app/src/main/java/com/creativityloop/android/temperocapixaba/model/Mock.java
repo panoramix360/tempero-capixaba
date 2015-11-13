@@ -38,11 +38,10 @@ public class Mock {
     }
 
     private void initCardapios() {
-        GregorianCalendar dataInicio = new GregorianCalendar(2015, 9, 28);
-        for(int i = 0; i < 20; i++, dataInicio.add(Calendar.DAY_OF_MONTH, 1)) {
+        for(int i = 0; i < 20; i++) {
             Cardapio cardapio = new Cardapio();
             cardapio.setPratos(mPratos);
-            cardapio.setData(dataInicio);
+            cardapio.setData(new GregorianCalendar());
             mCardapios.add(cardapio);
         }
     }
@@ -60,16 +59,6 @@ public class Mock {
 
     public List<Cardapio> getCardapios() {
         return mCardapios;
-    }
-
-    public List<ItemPedido> createItensPedidoComCardapio(Cardapio cardapio) {
-        List<ItemPedido> itemPedidos = new ArrayList<>();
-        for(Prato prato : cardapio.getPratos()) {
-            ItemPedido itemPedido = new ItemPedido();
-            itemPedido.mPrato = prato;
-            itemPedidos.add(itemPedido);
-        }
-        return itemPedidos;
     }
 
     public static String format(GregorianCalendar calendar){
