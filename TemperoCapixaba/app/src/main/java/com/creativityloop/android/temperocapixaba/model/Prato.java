@@ -7,14 +7,30 @@ import java.util.UUID;
 /**
  * Created by LucasReis on 29/09/2015.
  */
-public class Prato extends SugarRecord {
+public class Prato {
 
+    public int mId;
     public String mNome;
 
-    public Prato() {}
-
-    public Prato(String nome) {
+    public Prato(int id, String nome) {
+        this.mId = id;
         this.mNome = nome;
+    }
+
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
+
+    public String getNome() {
+        return mNome;
+    }
+
+    public void setNome(String nome) {
+        mNome = nome;
     }
 
     @Override

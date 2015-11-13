@@ -1,33 +1,57 @@
 package com.creativityloop.android.temperocapixaba.model;
 
+import android.content.Context;
+
+import com.creativityloop.android.temperocapixaba.database.PratoLab;
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 
 public class ItemPedido extends SugarRecord {
 
     public Pedido mPedido;
-    public Prato mPrato;
+    public int mPratoId;
     public int mQuantidadePequena;
     public int mQuantidadeGrande;
+
+    @Ignore
+    public Prato mPrato;
 
     @Ignore
     private boolean mChecked;
 
     public ItemPedido() {}
 
-    public ItemPedido(Pedido pedido, Prato prato, int quantidadePequena, int quantidadeGrande) {
+    public ItemPedido(Pedido pedido, int pratoId, int quantidadePequena, int quantidadeGrande) {
         this.mPedido = pedido;
-        this.mPrato = prato;
+        this.mPratoId = pratoId;
         this.mQuantidadePequena = quantidadePequena;
         this.mQuantidadeGrande = quantidadeGrande;
     }
 
-    public boolean ismChecked() {
+    public boolean isChecked() {
         return mChecked;
     }
 
-    public void setmChecked(boolean mChecked) {
-        this.mChecked = mChecked;
+    public void setChecked(boolean checked) {
+        mChecked = checked;
+    }
+
+    public Prato getPrato() {
+        return mPrato;
+    }
+
+    public void setPrato(Prato prato) {
+        mPrato = prato;
+        mPratoId = prato.getId();
+    }
+
+    public void preencherPrato(Context context) {
+        this.mPrato = PratoLab.get(context).getPrato(mPratoId);
+    }
+
+    @Override
+    public String toString() {
+        return "- " + mQuantidadeGrande + "x " + mPrato.getNome() + "\n - " + mQuantidadePequena + "x " + mPrato.mNome;
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.creativityloop.android.temperocapixaba.model;
 
 import android.content.Context;
 
+import com.creativityloop.android.temperocapixaba.database.PratoLab;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,8 +13,9 @@ import java.util.List;
 public class Mock {
     private static Mock sMock;
 
+    private Context mContext;
+
     private List<Cardapio> mCardapios;
-    private List<Prato> mPratos;
 
     public static Mock get(Context context) {
         if(sMock == null) {
@@ -22,8 +25,8 @@ public class Mock {
     }
 
     private Mock(Context context) {
+        mContext = context;
         mCardapios = new ArrayList<>();
-        mPratos = new ArrayList<>();
 
         initPratos();
         initCardapios();
@@ -31,9 +34,8 @@ public class Mock {
 
     private void initPratos() {
         for(int i = 0; i < 25; i++) {
-            Prato prato = new Prato();
-            prato.mNome = "Prato #" + i;
-            mPratos.add(prato);
+            Prato prato = new Prato(i, "Prato #" + i);
+            PratoLab.get(mContext).savePrato(prato);
         }
     }
 
@@ -41,7 +43,7 @@ public class Mock {
         GregorianCalendar dataInicio = new GregorianCalendar(2015, 9, 28);
         for(int i = 0; i < 20; i++, dataInicio.add(Calendar.DAY_OF_MONTH, 1)) {
             Cardapio cardapio = new Cardapio();
-            cardapio.setPratos(mPratos);
+            cardapio.setPratos(PratoLab.get(mContext).getPratos());
             cardapio.setData(dataInicio);
             mCardapios.add(cardapio);
         }
@@ -66,7 +68,7 @@ public class Mock {
         List<ItemPedido> itemPedidos = new ArrayList<>();
         for(Prato prato : cardapio.getPratos()) {
             ItemPedido itemPedido = new ItemPedido();
-            itemPedido.mPrato = prato;
+            itemPedido.setPrato(prato);
             itemPedidos.add(itemPedido);
         }
         return itemPedidos;

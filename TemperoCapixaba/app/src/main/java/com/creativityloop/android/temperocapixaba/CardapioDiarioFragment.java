@@ -61,8 +61,10 @@ public class CardapioDiarioFragment extends Fragment {
                 PedidoLab.get(getActivity()).savePedido(mPedido);
 
                 for (ItemPedido itemPedido : mItensPedido) {
-                    itemPedido.mPedido = mPedido;
-                    ItemPedidoLab.get(getActivity()).saveItemPedido(itemPedido);
+                    if(itemPedido.isChecked()) {
+                        itemPedido.mPedido = mPedido;
+                        ItemPedidoLab.get(getActivity()).saveItemPedido(itemPedido);
+                    }
                 }
                 Intent intent = ResumoPedidoActivity.newIntent(getActivity(), mPedido.getId());
                 startActivity(intent);

@@ -24,7 +24,7 @@ public class ItemPedidoLab {
     }
 
     public List<ItemPedido> getItemPedidos(long pedidoId) {
-        return ItemPedido.find(ItemPedido.class, "id = ?", pedidoId + "");
+        return ItemPedido.find(ItemPedido.class, "m_pedido = ?", pedidoId + "");
     }
 
     public void saveItemPedido(ItemPedido itemPedido) {

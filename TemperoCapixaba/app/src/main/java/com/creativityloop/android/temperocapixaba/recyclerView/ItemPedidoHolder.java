@@ -33,21 +33,23 @@ public class ItemPedidoHolder extends RecyclerView.ViewHolder {
 
     public void bindItemPedido(ItemPedido itemPedido) {
         mItemPedido = itemPedido;
-        mNomeTextView.setText(mItemPedido.mPrato.mNome);
+        mNomeTextView.setText(mItemPedido.mPrato.getNome());
 
-        mPratoCheckBox.setChecked(mItemPedido.ismChecked());
+        mPratoCheckBox.setChecked(mItemPedido.isChecked());
+        mPratoCheckBox.setChecked(mItemPedido.isChecked());
+        mPratoCheckBox.setChecked(mItemPedido.isChecked());
         mPratoCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mItemPedido.setmChecked(isChecked);
+                mItemPedido.setChecked(isChecked);
 
                 mQuantidadePequenaEditText.setEnabled(isChecked);
                 mQuantidadeGrandeEditText.setEnabled(isChecked);
             }
         });
 
-        mQuantidadePequenaEditText.setEnabled(mItemPedido.ismChecked());
-        mQuantidadeGrandeEditText.setEnabled(mItemPedido.ismChecked());
+        mQuantidadePequenaEditText.setEnabled(mItemPedido.isChecked());
+        mQuantidadeGrandeEditText.setEnabled(mItemPedido.isChecked());
 
         if(mItemPedido.mQuantidadePequena != 0) {
             mQuantidadePequenaEditText.setText(mItemPedido.mQuantidadePequena + "");
