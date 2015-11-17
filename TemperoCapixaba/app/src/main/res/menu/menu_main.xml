@@ -3,7 +3,7 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".MainActivity">
 
-    <item android:id="@+id/action_contato"
+    <item android:id="@+id/menu_item_sobre"
           android:title="@string/action_contato"
           android:icon="@drawable/ic_action_about"
           app:showAsAction="ifRoom|withText"/>

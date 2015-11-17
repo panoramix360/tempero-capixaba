@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Tempero Capixaba</string>
 
-    <string name="action_contato">Contato</string>
+    <string name="action_contato">Sobre</string>
     <string name="cardapio_diario_title">Cardápio do Dia</string>
     <string name="cardapio_diario_format">Dia %s</string>
     <string name="cardapio_button">Fazer Pedido</string>
@@ -10,4 +10,10 @@
     <string name="quantidade_grande">Grande</string>
     <string name="resumo_pedido">Resumo do Pedido</string>
     <string name="confirmar_pedido_button">Confirmar Pedido</string>
+
+    <string name="sobre">Uma empresa que trabalha para atender com qualidade, seriedade e com um estilo de temperos do Espírito Santo que
+        foram desenvolvidos com muitos anos de carinho e dedicação para dar o melhor sabor a sua refeição.</string>
+
+    <string name="telefones"></string>
+    <string name="sobre_title">Sobre nós</string>
 </resources>
