@@ -9,10 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.creativityloop.android.temperocapixaba.database.ItemPedidoLab;
 import com.creativityloop.android.temperocapixaba.database.PedidoLab;
@@ -64,17 +66,21 @@ public class CardapioDiarioFragment extends Fragment {
         mFazerPedidoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPedido = new Pedido(null, "", DateUtils.getToday());
-                PedidoLab.get(getActivity()).savePedido(mPedido);
+                if (isAnyItemPedidoChecked()) {
+                    mPedido = new Pedido(null, "", DateUtils.getToday());
+                    PedidoLab.get(getActivity()).savePedido(mPedido);
 
-                for (ItemPedido itemPedido : mItensPedido) {
-                    if(itemPedido.isChecked()) {
-                        itemPedido.mPedido = mPedido;
-                        ItemPedidoLab.get(getActivity()).saveItemPedido(itemPedido);
+                    for (ItemPedido itemPedido : mItensPedido) {
+                        if (itemPedido.isChecked()) {
+                            itemPedido.mPedido = mPedido;
+                            ItemPedidoLab.get(getActivity()).saveItemPedido(itemPedido);
+                        }
                     }
+                    Intent intent = ResumoPedidoActivity.newIntent(getActivity(), mPedido.getId());
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), "Selecione pelo menos 1 prato", Toast.LENGTH_SHORT).show();
                 }
-                Intent intent = ResumoPedidoActivity.newIntent(getActivity(), mPedido.getId());
-                startActivity(intent);
             }
         });
 
@@ -87,6 +93,18 @@ public class CardapioDiarioFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_sobre:
+                Intent intent = SobreActivity.newIntent(getActivity());
+                startActivity(intent);
+                return true;
+            default:
+                return false;
+        }
     }
 
     private void updateUI() {
@@ -107,12 +125,19 @@ public class CardapioDiarioFragment extends Fragment {
         if(mPedido == null) {
             mCardapio = Mock.get(getActivity()).getCardapioOfDay(data);
             mItensPedido = ItemPedidoLab.get(getActivity()).createItensPedidoComCardapio(mCardapio);
-        }
-        else
-        {
+        } else {
             mItensPedido = ItemPedidoLab.get(getActivity()).getItemPedidos(mPedido.getId());
         }
 
         mCardapioTitle.setText(getString(R.string.cardapio_diario_format, Mock.format(data)));
+    }
+
+    private boolean isAnyItemPedidoChecked() {
+        for(ItemPedido itemPedido : mItensPedido) {
+            if(itemPedido.isChecked()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
