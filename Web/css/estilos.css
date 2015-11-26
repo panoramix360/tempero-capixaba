@@ -1,0 +1,98 @@
+@charset "utf-8";
+/* CSS Document */
+
+*{padding:0; margin:0;}
+
+body{ background:#FFF url(../images/backgrounds/bg_fundo.gif) repeat-x top;	color:#692c2e; font-family:Arial, "Trebuchet MS", "Times New Roman", Verdana; }
+
+/* DIV CONTAINER */
+
+div#container{ width:960px; margin:0 auto; background: #FFF url(../images/backgrounds/bg_fundo.gif) repeat-x top; }
+
+h2{ text-align:center; font-size:24px; }
+
+/* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+/* DIV TOPO */
+
+div#topo { height:174px; }
+
+	div#logo{ width:353px; height:100px; float:left; margin-top:30px; }
+	
+		div#logo img{ border:0;	}
+	
+	div#menu{ background:url(../images/backgrounds/bg_menu.gif) repeat-x; float:right; color:#FFF; width:491px; margin-top:100px; margin-right:60px; }
+	
+		ul.menu{ width:491px; list-style:none; }
+		
+		ul.menu li{ float:left;	padding:11px 15px 11px 15px; }
+		
+			ul.menu li a{ text-decoration:none; color:#FFF; }
+				
+			ul.menu li a:hover{ text-decoration:underline; }
+			
+			a#selecionado{ text-decoration:underline; }
+			
+/* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+/* DIV CONTEUDO */
+
+div#conteudo{ background:url(../images/backgrounds/bg_conteudo.png) repeat-y #FFF; width:960px; }
+	
+	div#titulo{ background:url(../images/backgrounds/bg_titulo.png) no-repeat; text-align:center; width:960px; height:115px; padding-top:20px; }
+	
+		div#titulo h1{ font-size:36px; }
+		
+	div#texto p{ padding: 5px 70px 5px 70px; }
+	
+		div#texto img{ padding-left:110px; }
+	
+ 	div#texto hr{ width:850px; margin-left:40px; }
+
+div#lapis{ background: url(../images/backgrounds/lapis.png) no-repeat; width:86px; height:485px; position:absolute;	z-index:20;	top: 335px; }
+
+div#rodape_conteudo{ background:url(../images/backgrounds/rodape_conteudo.png) no-repeat bottom; width:911px; height:25px; margin-bottom:20px; }
+
+/* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+/* PAGINA CARDAPIO */
+
+	div#texto_cardapio img{	padding-left:150px;	}
+
+div#texto_cardapio hr{ width:850px; margin-left:40px; }
+
+div#texto_cardapio ul {padding: 5px 30px 5px 30px; margin-left:170px; list-style:none; }
+
+div#texto_cardapio p { text-align:center; font-weight:bold; font-size:24px; padding-bottom:20px; }
+
+
+/* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+/* PAGINA CARDAPIO */
+
+div#texto form { margin-left:40px; float:left; margin-bottom:100px; }
+
+div#texto_contato { float:left; width:500px; text-align:justify; }
+
+/* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+/* RODAPE */
+
+div#rodape{	background:url(../images/backgrounds/bg_rodape.gif) repeat-x; height:130px; color:#FFF; }
+
+div#rodape2 { width:850px; margin:0 auto; height:130px; }
+
+div#direitos{ text-align:center; font-size:12px; padding-top:20px; }
+
+div#marca { font-size:12px; margin-top:20px; float:left; }
+
+div#cartoes { float:right; width:400px; font-size:10px; margin-top:20px; }
+
+/* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+/* TAGS */
+.vermelho { color:#F00; }
+
+.clear {clear:both;}
+
+/* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
