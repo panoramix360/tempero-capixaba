@@ -1,0 +1,3 @@
+/usuario		POST	Cadastro de Usuario
+/usuarios		GET		Trazer todos os usuários
+/usuarios/:id	GET		Trazer um único usuário
