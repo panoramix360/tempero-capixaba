@@ -10,6 +10,9 @@ class DbHandler {
 		$this->conn = $db->connect();
 	}
 	
+    /*
+    ** User
+    */
 	public function createUser($nome, $email, $endereco, $tipo_usuario, $horario_almoco) {
         $response = array();
  
@@ -53,56 +56,58 @@ class DbHandler {
     }
     
     public function getUserByEmail($email) {
-        $stmt = $this->conn->prepare("SELECT name, email, endereco, tipo_usuario, horario_almoco, api_key FROM tc_usuario WHERE email = ?");
+        $stmt = $this->conn->prepare("SELECT cd_usuario, nome, email, endereco, tipo_usuario, horario_almoco, api_key FROM tc_usuario WHERE email = ?");
         $stmt->bind_param("s", $email);
         if ($stmt->execute()) {
-            $user = $stmt->get_result()->fetch_assoc();
+            $stmt->bind_result($id, $nome, $email, $endereco, $tipo_usuario, $horario_almoco, $api_key);
+            $stmt->fetch();
+            $user = array();
+            $user["cd_usuario"] = $id;
+            $user["nome"] = $nome;
+            $user["email"] = $email;
+            $user["endereco"] = $endereco;
+            $user["tipo_usuario"] = $tipo_usuario;
+            $user["horario_almoco"] = $horario_almoco;
+            $user["api_key"] = $api_key;
             $stmt->close();
             return $user;
         } else {
             return NULL;
         }
     }
-    
-    public function getApiKeyById($user_id) {
-        $stmt = $this->conn->prepare("SELECT api_key FROM tc_usuario WHERE cd_usuario = ?");
-        $stmt->bind_param("i", $user_id);
-        if ($stmt->execute()) {
-            $api_key = $stmt->get_result()->fetch_assoc();
-            $stmt->close();
-            return $api_key;
-        } else {
-            return NULL;
-        }
-    }
-    
-    public function getUserId($api_key) {
-        $stmt = $this->conn->prepare("SELECT cd_usuario FROM tc_usuario WHERE api_key = ?");
-        $stmt->bind_param("s", $api_key);
-        if ($stmt->execute()) {
-            $user_id = $stmt->get_result()->fetch_assoc();
-            $stmt->close();
-            return $user_id;
-        } else {
-            return NULL;
-        }
-    }
-    
+
     public function getAllUsers() {
-        $stmt = $this->conn->prepare("SELECT cd_usuario, nome, email, endereco FROM tc_usuario");
+        $stmt = $this->conn->prepare("SELECT cd_usuario, nome, email, endereco, tipo_usuario, horario_almoco, api_key FROM tc_usuario");
         $stmt->execute();
         $users = array();
-        $stmt->bind_result($id, $nome, $email, $endereco);
-        while($user = $stmt->fetch()) {
+        $stmt->bind_result($id, $nome, $email, $endereco, $tipo_usuario, $horario_almoco, $api_key);
+        while($stmt->fetch()) {
             $user = array();
             $user["cd_usuario"] = $id;
             $user["nome"] = $nome;
             $user["email"] = $email;
             $user["endereco"] = $endereco;
+            $user["tipo_usuario"] = $tipo_usuario;
+            $user["horario_almoco"] = $horario_almoco;
+            $user["api_key"] = $api_key;
             array_push($users, $user);
         }
         $stmt->close();
         return $users;
+    }
+    
+    public function getUserByApiId($api_key) {
+        $stmt = $this->conn->prepare("SELECT cd_usuario FROM tc_usuario WHERE api_key = ?");
+        $stmt->bind_param("s", $api_key);
+        if ($stmt->execute()) {
+            $stmt->bind_result($id);
+            $stmt->fetch();
+            $user_id = $id;
+            $stmt->close();
+            return $user_id;
+        } else {
+            return NULL;
+        }
     }
     
     public function isValidApiKey($api_key) {
@@ -114,7 +119,7 @@ class DbHandler {
         $stmt->close();
         return $num_rows > 0;
     }
-    
+
     private function generateApiKey() {
         return md5(uniqid(rand(), true));
     }
