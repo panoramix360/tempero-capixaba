@@ -149,5 +149,71 @@ $app->get('/usuarios/:email', function($email) use ($app) {
     echoRespnse(200, $response);
 });
 
+/**
+ * Create pedido
+ * url - /create-pedido
+ * method - POST
+ * params - 'nome', 'email', 'endereco', 'tipo_usuario', 'horario_almoco'
+ */
+$app->post('/create-pedido', function() use ($app) {
+    verifyRequiredParams(array('usuario_id', 'endereco', 'data', 'itens'));
+
+    $response = array();
+
+    $usuario_id = $app->request->post('usuario_id');
+    $endereco = $app->request->post('endereco');
+    $data = $app->request->post('data');
+    $itens = $app->request->post('itens');
+
+    $db = new DbHandler();
+    $res = $db->createPedido($usuario_id, $endereco, $data, $itens);
+    
+    if ($res == PEDIDO_CREATED_SUCCESSFULLY) {
+        $response["error"] = false;
+        $response["message"] = "Pedido cadastrado com sucesso.";
+        echoRespnse(201, $response);
+    } else if ($res == PEDIDO_CREATED_FAILED) {
+        $response["error"] = true;
+        $response["message"] = "Ocorreu um erro ao cadastrar o pedido.";
+        echoRespnse(200, $response);
+    } else if ($res == PEDIDO_ALREADY_EXISTED) {
+        $response["error"] = true;
+        $response["message"] = "Pedido já existente.";
+        echoRespnse(200, $response);
+    }
+});
+
+/**
+ * Get all users
+ * url - /usuarios
+ * method - GET
+ * params - none
+ */
+$app->get('/pedido/:usuario_id/:data', function($usuario_id, $data) use ($app) {
+    $response = array();
+    $db = new DbHandler();
+    
+    $result = $db->getAllUsers();
+    
+    $response["error"] = false;
+    $response["users"] = array();
+    
+    if(count($result) > 0) {
+        foreach ($result as $user) {
+            $tmp = array();
+            $tmp["cd_usuario"] = $user["cd_usuario"];
+            $tmp["nome"] = $user["nome"];
+            $tmp["email"] = $user["email"];
+            $tmp["endereco"] = $user["endereco"];
+            $tmp["tipo_usuario"] = $user["tipo_usuario"];
+            $tmp["horario_almoco"] = $user["horario_almoco"];
+            $tmp["api_key"] = $user["api_key"];
+            array_push($response["users"], $tmp);
+        }
+    }
+
+    echoRespnse(200, $response);
+});
+
 $app->run();
 ?>

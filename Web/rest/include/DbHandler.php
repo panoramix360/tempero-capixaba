@@ -11,7 +11,7 @@ class DbHandler {
 	}
 	
     /*
-    ** User
+    ** Usuário
     */
 	public function createUser($nome, $email, $endereco, $tipo_usuario, $horario_almoco) {
         $response = array();
@@ -122,6 +122,88 @@ class DbHandler {
 
     private function generateApiKey() {
         return md5(uniqid(rand(), true));
+    }
+    
+    /*
+    ** Pedido
+    */
+    public function createPedido($usuario_id, $endereco, $data, $itens) {
+        $response = array();
+ 
+        // First check if user already existed in db
+        if (!$this->isPedidoExists($usuario_id, $data)) {
+ 
+            $stmt = $this->conn->prepare("INSERT INTO tc_pedido(cd_usuario, endereco, data) values(?, ?, ?)");
+            $stmt->bind_param("iss", $usuario_id, $endereco, $data);
+            $result = $stmt->execute();
+            
+            $pedido_id = $stmt->lastInsertId();
+            
+            foreach($itens as $item) {
+                $stmt = $this->conn->prepare("INSERT INTO tc_item_pedido(cd_pedido, cd_prato, qtd_pequena, qtd_grande) values(?, ?, ?, ?)");
+                $stmt->bind_param("iiii", $pedido_id, $item["cd_prato"], $item["qtd_pequena"], $item["qtd_grande"]);
+                $result = $stmt->execute();
+            }
+ 
+            $stmt->close();
+ 
+            if ($result) {
+                return PEDIDO_CREATED_SUCCESSFULLY;
+            } else {
+                return PEDIDO_CREATE_FAILED;
+            }
+        } else {
+            return PEDIDO_ALREADY_EXISTED;
+        }
+ 
+        return $response;
+    }
+    
+    public function isPedidoExists($usuario_id, $data) {
+        $stmt = $this->conn->prepare("SELECT cd_usuario from tc_pedido WHERE cd_ususario = ? and data = ?");
+        $stmt->bind_param("ss", $email, $data);
+        $stmt->execute();
+        $stmt->store_result();
+        $num_rows = $stmt->num_rows;
+        $stmt->close();
+        return $num_rows > 0;
+    }
+    
+    public function getPedidoByUserAndDate($usuario_id, $data) {
+        $stmt = $this->conn->prepare("SELECT cd_pedido, cd_usuario, endereco, data FROM tc_pedido WHERE cd_usuario = ? and data = ?");
+        $stmt->bind_param("ss", $email, $data);
+        if ($stmt->execute()) {
+            $stmt->bind_result($id, $usuario_id, $endereco, $data);
+            $stmt->fetch();
+            $pedido = array();
+            $pedido["cd_pedido"] = $id;
+            $pedido["cd_usuario"] = $usuario_id;
+            $pedido["endereco"] = $endereco;
+            $pedido["data"] = $data;
+
+            $pedido["itens"] = array();
+            
+            $stmt = $this->conn->prepare("SELECT cd_item_pedido, cd_pedido, cd_prato, qtd_pequena, qtd_grande FROM tc_item_pedido WHERE cd_pedido = ?");
+            $stmt->bind_param("i", $id);
+            
+            if($stmt->execute()) {
+                $stmt->bind_result($item_pedido_id, $pedido_id, $prato_id, $qtd_pequena, $qtd_grande);
+                while($stmt->fetch()) {
+                    $item = array();
+                    $item["cd_item_pedido"] = $item_pedido_id;
+                    $item["cd_pedido"] = $pedido_id;
+                    $item["cd_prato"] = $prato_id;
+                    $item["qtd_pequena"] = $qtd_pequena;
+                    $item["qtd_grande"] = $qtd_grande;
+                    array_push($pedido["itens"], $item);
+                }
+            }
+            
+            $stmt->close();
+            return $pedido;
+        } else {
+            return NULL;
+        }
     }
 }
 
