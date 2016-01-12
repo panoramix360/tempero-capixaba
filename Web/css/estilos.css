@@ -8,6 +8,7 @@ body{ background:#FFF url(../images/backgrounds/bg_fundo.gif) repeat-x top;	colo
 /* DIV CONTAINER */
 
 div#container{ width:960px; margin:0 auto; background: #FFF url(../images/backgrounds/bg_fundo.gif) repeat-x top; }
+div#container-cardapio { width:960px; margin:0 auto; background: #FFF url(../images/backgrounds/bg_fundo.gif) repeat-x top; }
 
 h2{ text-align:center; font-size:24px; }
 
@@ -87,6 +88,16 @@ div#direitos{ text-align:center; font-size:12px; padding-top:20px; }
 div#marca { font-size:12px; margin-top:20px; float:left; }
 
 div#cartoes { float:right; width:400px; font-size:10px; margin-top:20px; }
+
+/* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+/* CADASTRO CARDAPIO */
+
+div.dia-da-semana { float: left; margin-left: 10px; margin-top: 100px; }
+
+div.dia-da-semana input { margin-bottom: 10px; height: 20px; width: 175px; }
+
+form#cadastro-cardapio input[type="submit"] { padding: 10px;  }
 
 /* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
 

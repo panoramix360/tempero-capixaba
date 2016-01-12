@@ -139,6 +139,8 @@ class DbHandler {
             
             $pedido_id = $stmt->lastInsertId();
             
+            $stmt->close();
+            
             foreach($itens as $item) {
                 $stmt = $this->conn->prepare("INSERT INTO tc_item_pedido(cd_pedido, cd_prato, qtd_pequena, qtd_grande) values(?, ?, ?, ?)");
                 $stmt->bind_param("iiii", $pedido_id, $item["cd_prato"], $item["qtd_pequena"], $item["qtd_grande"]);
@@ -180,6 +182,7 @@ class DbHandler {
             $pedido["cd_usuario"] = $usuario_id;
             $pedido["endereco"] = $endereco;
             $pedido["data"] = $data;
+            $stmt->close();
 
             $pedido["itens"] = array();
             
@@ -197,10 +200,88 @@ class DbHandler {
                     $item["qtd_grande"] = $qtd_grande;
                     array_push($pedido["itens"], $item);
                 }
+            }            
+            $stmt->close();
+            
+            return $pedido;
+        } else {
+            return NULL;
+        }
+    }
+    
+    /*
+    ** Cardapio
+    */
+    public function createCardapioPorDia($pratos, $contador_cardapio) {
+        $response = array();
+        
+        $this->deletePratos($contador_cardapio);
+        
+        $stmt = $this->conn->prepare("INSERT INTO tc_prato(contador, nome) values(?, ?)");
+
+        foreach($pratos as $prato) {
+            $stmt->bind_param("is", $contador_cardapio, $prato);
+            $result = $stmt->execute();
+        }
+        
+        $stmt->close();
+ 
+        if ($result) {
+            return PRATO_CREATED_SUCCESSFULLY;
+        } else {
+            return PRATO_CREATE_FAILED;
+        }
+        
+        return $response;
+    }
+    
+    public function deletePratos($contador) {
+        $stmt = $this->conn->prepare("delete from tc_prato WHERE contador = ?");
+        $stmt->bind_param("i", $contador);
+        $stmt->execute();
+        $stmt->close();
+    }
+    
+    public function isPratoExists($nome, $contador) {
+        $stmt = $this->conn->prepare("SELECT cd_prato from tc_prato WHERE nome = ? and contador = ?");
+        $stmt->bind_param("ss", $nome, $contador);
+        $stmt->execute();
+        $stmt->store_result();
+        $num_rows = $stmt->num_rows;
+        $stmt->close();
+        return $num_rows > 0;
+    }
+    
+    public function getCardapioByContador($contador) {
+        $stmt = $this->conn->prepare("SELECT cd_cardapio, contador FROM tc_cardapio WHERE contador = ?");
+        $stmt->bind_param("i", $contador);
+        if ($stmt->execute()) {
+            $stmt->bind_result($id, $contador_cardapio);
+            $stmt->fetch();
+            $cardapio = array();
+            $cardapio["cd_cardapio"] = $id;
+            $cardapio["contador"] = $contador_cardapio;
+            $stmt->close();
+
+            $cardapio["pratos"] = array();
+
+            $stmt = $this->conn->prepare("SELECT cd_prato, contador, nome FROM tc_prato WHERE contador = ? ORDER BY nome");
+            $stmt->bind_param("i", $contador);
+            
+            if($stmt->execute()) {
+                $stmt->bind_result($prato_id, $contador, $nome);
+                while($stmt->fetch()) {
+                    $item = array();
+                    $item["cd_prato"] = $prato_id;
+                    $item["contador"] = $contador;
+                    $item["nome"] = $nome;
+                    array_push($cardapio["pratos"], $item);
+                }
             }
             
             $stmt->close();
-            return $pedido;
+            
+            return $cardapio;
         } else {
             return NULL;
         }
