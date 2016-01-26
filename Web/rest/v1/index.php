@@ -215,5 +215,27 @@ $app->get('/pedido/:usuario_id/:data', function($usuario_id, $data) use ($app) {
     echoRespnse(200, $response);
 });
 
+$app->get('/getCardapio/:contador', function($contador) {
+    $response = array();
+    $db = new DbHandler();
+    
+    $result = $db->getCardapioByContador($contador);
+    
+    $response["error"] = false;
+    $response["pratos"] = array();
+    
+    if(count($result["pratos"]) > 0) {
+        foreach($result["pratos"] as $prato) {
+            $tmp = array();
+            $tmp["cd_prato"] = $prato["cd_prato"];
+            $tmp["contador"] = $prato["contador"];
+            $tmp["nome"] = $prato["nome"];
+            array_push($response["pratos"], $tmp);
+        }
+    }
+    
+    echoRespnse(200, $response);
+});
+
 $app->run();
 ?>
