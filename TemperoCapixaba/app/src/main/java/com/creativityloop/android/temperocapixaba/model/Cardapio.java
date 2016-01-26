@@ -12,6 +12,7 @@ public class Cardapio {
     private UUID mId;
     private List<Prato> mPratos;
     private GregorianCalendar mData;
+    private int mContador;
 
     public List<Prato> getPratos() {
         return mPratos;
@@ -27,5 +28,13 @@ public class Cardapio {
 
     public void setData(GregorianCalendar data) {
         this.mData = data;
+    }
+
+    public int getContador() {
+        return mContador;
+    }
+
+    public void setContador(int contador) {
+        mContador = contador;
     }
 }

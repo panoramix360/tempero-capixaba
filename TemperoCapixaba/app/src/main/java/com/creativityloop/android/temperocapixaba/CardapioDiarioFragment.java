@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.creativityloop.android.temperocapixaba.database.CardapioLab;
 import com.creativityloop.android.temperocapixaba.database.ItemPedidoLab;
 import com.creativityloop.android.temperocapixaba.database.PedidoLab;
 import com.creativityloop.android.temperocapixaba.model.Cardapio;
@@ -50,6 +51,8 @@ public class CardapioDiarioFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_cardapio_diario, container, false);
+
+        Cardapio cardapio = CardapioLab.get(getActivity()).getCardapio(1);
 
         mCardapioTitle = (TextView) v.findViewById(R.id.cardapio_diario_title_text_view);
 
