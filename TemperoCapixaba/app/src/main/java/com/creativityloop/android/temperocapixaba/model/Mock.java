@@ -62,10 +62,4 @@ public class Mock {
     public List<Cardapio> getCardapios() {
         return mCardapios;
     }
-
-    public static String format(GregorianCalendar calendar){
-        SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
-        fmt.setCalendar(calendar);
-        return fmt.format(calendar.getTime());
-    }
 }

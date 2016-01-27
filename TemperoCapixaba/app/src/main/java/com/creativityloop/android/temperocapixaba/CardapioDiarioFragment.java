@@ -21,21 +21,22 @@ import com.creativityloop.android.temperocapixaba.database.ItemPedidoLab;
 import com.creativityloop.android.temperocapixaba.database.PedidoLab;
 import com.creativityloop.android.temperocapixaba.model.Cardapio;
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;
-import com.creativityloop.android.temperocapixaba.model.Mock;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
 import com.creativityloop.android.temperocapixaba.recyclerView.ItemPedidoAdapter;
 import com.creativityloop.android.temperocapixaba.util.DateUtils;
+import com.creativityloop.android.temperocapixaba.util.CardapioUIUpdater;
 
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class CardapioDiarioFragment extends Fragment {
+public class CardapioDiarioFragment extends Fragment implements CardapioUIUpdater {
 
     private Cardapio mCardapio;
 
     private Pedido mPedido;
     private List<ItemPedido> mItensPedido;
+
+    private GregorianCalendar mToday;
 
     // UI
     private TextView mCardapioTitle;
@@ -51,8 +52,6 @@ public class CardapioDiarioFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_cardapio_diario, container, false);
-
-        Cardapio cardapio = CardapioLab.get(getActivity()).getCardapio(1);
 
         mCardapioTitle = (TextView) v.findViewById(R.id.cardapio_diario_title_text_view);
 
@@ -87,7 +86,12 @@ public class CardapioDiarioFragment extends Fragment {
             }
         });
 
-        updateUI();
+        mToday = DateUtils.getToday();
+
+        int contadorCardapio = DateUtils.getDayOfWeek(mToday) - 1;
+
+        // load cardapio
+        CardapioLab.get(getActivity()).getCardapio(this, contadorCardapio);
 
         return v;
     }
@@ -110,7 +114,8 @@ public class CardapioDiarioFragment extends Fragment {
         }
     }
 
-    private void updateUI() {
+    public void updateUI(Cardapio cardapio) {
+        mCardapio = cardapio;
         initCardapio();
 
         ItemPedidoAdapter mAdapter = new ItemPedidoAdapter(getActivity(), mItensPedido);
@@ -121,18 +126,15 @@ public class CardapioDiarioFragment extends Fragment {
     }
 
     private void initCardapio() {
-        // TODO trocar por chamada ao banco
-        GregorianCalendar data = DateUtils.getToday();
-        mPedido = PedidoLab.get(getActivity()).getPedido(data);
+        mPedido = PedidoLab.get(getActivity()).getPedido(mToday);
 
         if(mPedido == null) {
-            mCardapio = Mock.get(getActivity()).getCardapioOfDay(data);
             mItensPedido = ItemPedidoLab.get(getActivity()).createItensPedidoComCardapio(mCardapio);
         } else {
             mItensPedido = ItemPedidoLab.get(getActivity()).getItemPedidos(mPedido.getId());
         }
 
-        mCardapioTitle.setText(getString(R.string.cardapio_diario_format, Mock.format(data)));
+        mCardapioTitle.setText(getString(R.string.cardapio_diario_format, DateUtils.formatDate(mToday)));
     }
 
     private boolean isAnyItemPedidoChecked() {

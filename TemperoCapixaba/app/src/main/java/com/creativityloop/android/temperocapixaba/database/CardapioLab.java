@@ -6,6 +6,7 @@ import com.creativityloop.android.temperocapixaba.model.Cardapio;
 import com.creativityloop.android.temperocapixaba.model.Prato;
 import com.creativityloop.android.temperocapixaba.util.RestAPI;
 import com.creativityloop.android.temperocapixaba.util.RestExecute;
+import com.creativityloop.android.temperocapixaba.util.CardapioUIUpdater;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +21,7 @@ import java.util.List;
 public class CardapioLab implements RestExecute {
     private static CardapioLab sCardapioLab;
 
+    private CardapioUIUpdater mUpdater;
     private Cardapio mCardapio;
 
     public final static String URL_BASE = "http://www.temperocapixaba.com.br/rest/v1/";
@@ -39,14 +41,14 @@ public class CardapioLab implements RestExecute {
         mContext = context.getApplicationContext();
     }
 
-    public Cardapio getCardapio(int contadorCardapio) {
+    public void getCardapio(CardapioUIUpdater updater, int contadorCardapio) {
+        mUpdater = updater;
+
         String urlString = URL_GET_CARDAPIO + contadorCardapio;
         mCardapio = new Cardapio();
         mCardapio.setContador(contadorCardapio);
 
         new RestAPI(this).execute(urlString);
-
-        return mCardapio;
     }
 
     @Override
@@ -63,5 +65,7 @@ public class CardapioLab implements RestExecute {
         }
 
         mCardapio.setPratos(pratos);
+
+        mUpdater.updateUI(mCardapio);
     }
 }
