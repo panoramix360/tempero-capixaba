@@ -25,6 +25,11 @@
             android:parentActivityName=".MainActivity"/>
 
         <activity
+            android:name=".FinalizarPedidoActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".ResumoPedidoActivity"/>
+
+        <activity
             android:name=".SobreActivity"
             android:label="@string/app_name"
             android:parentActivityName=".MainActivity"/>

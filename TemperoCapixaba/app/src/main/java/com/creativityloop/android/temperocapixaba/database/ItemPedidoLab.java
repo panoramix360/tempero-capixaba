@@ -39,11 +39,13 @@ public class ItemPedidoLab {
         ItemPedido itemPedido = ItemPedido.findById(ItemPedido.class, itemPedidoId);
         itemPedido.delete();
     }
+
     public List<ItemPedido> createItensPedidoComCardapio(Cardapio cardapio) {
         List<ItemPedido> itemPedidos = new ArrayList<>();
         for(Prato prato : cardapio.getPratos()) {
             ItemPedido itemPedido = new ItemPedido();
             itemPedido.mPrato = prato;
+            itemPedido.mPratoId = prato.getId();
             itemPedidos.add(itemPedido);
         }
         return itemPedidos;

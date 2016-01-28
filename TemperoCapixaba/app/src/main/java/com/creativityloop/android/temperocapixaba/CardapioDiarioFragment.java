@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.creativityloop.android.temperocapixaba.database.CardapioLab;
 import com.creativityloop.android.temperocapixaba.database.ItemPedidoLab;
 import com.creativityloop.android.temperocapixaba.database.PedidoLab;
+import com.creativityloop.android.temperocapixaba.database.PratoLab;
 import com.creativityloop.android.temperocapixaba.model.Cardapio;
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
@@ -63,7 +64,6 @@ public class CardapioDiarioFragment extends Fragment implements CardapioUIUpdate
 
         mCardapioRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
         mFazerPedidoButton = (Button) v.findViewById(R.id.fazer_pedido_button);
         mFazerPedidoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,9 +73,11 @@ public class CardapioDiarioFragment extends Fragment implements CardapioUIUpdate
                     PedidoLab.get(getActivity()).savePedido(mPedido);
 
                     for (ItemPedido itemPedido : mItensPedido) {
-                        if (itemPedido.isChecked()) {
+                        if (itemPedido.isChecked()
+                                && (itemPedido.mQuantidadePequena > 0 || itemPedido.mQuantidadeGrande > 0)) {
                             itemPedido.mPedido = mPedido;
                             ItemPedidoLab.get(getActivity()).saveItemPedido(itemPedido);
+                            PratoLab.get(getActivity()).savePrato(itemPedido.getPrato());
                         }
                     }
                     Intent intent = ResumoPedidoActivity.newIntent(getActivity(), mPedido.getId());
@@ -139,7 +141,8 @@ public class CardapioDiarioFragment extends Fragment implements CardapioUIUpdate
 
     private boolean isAnyItemPedidoChecked() {
         for(ItemPedido itemPedido : mItensPedido) {
-            if(itemPedido.isChecked()) {
+            if(itemPedido.isChecked()
+                    && (itemPedido.mQuantidadePequena > 0 || itemPedido.mQuantidadeGrande > 0)) {
                 return true;
             }
         }

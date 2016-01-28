@@ -53,15 +53,15 @@ public class ItemPedido extends SugarRecord {
     public String toString() {
         String itemPedidoStr = "";
         if(mQuantidadeGrande > 0) {
-            itemPedidoStr += mQuantidadeGrande + "x " + mPrato.getNome() + " Tamanho: Grande\n";
-        } else {
-            itemPedidoStr += "-------------------------------";
+            itemPedidoStr += mQuantidadeGrande + "x Grande ";
         }
+
         if(mQuantidadePequena > 0) {
-            itemPedidoStr += mQuantidadePequena + "x " + mPrato.getNome() + " Tamanho: Pequena";
-        } else {
-            itemPedidoStr += "-------------------------------";
+            itemPedidoStr += mQuantidadePequena + "x Pequena ";
         }
+
+        itemPedidoStr += "\n" + mPrato.getNome();
+
         return itemPedidoStr;
     }
 
