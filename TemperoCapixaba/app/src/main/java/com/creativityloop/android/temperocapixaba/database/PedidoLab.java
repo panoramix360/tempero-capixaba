@@ -4,12 +4,18 @@ import android.content.Context;
 
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
+import com.creativityloop.android.temperocapixaba.util.RestAPI;
+import com.creativityloop.android.temperocapixaba.util.RestExecute;
+
+import org.json.JSONException;
 
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class PedidoLab {
+public class PedidoLab implements RestExecute {
     private static PedidoLab sPedidoLab;
+
+    public final static String URL_GET_CARDAPIO = "getCardapioAPI/";
 
     private Context mContext;
 
@@ -55,8 +61,20 @@ public class PedidoLab {
         Pedido.save(pedido);
     }
 
+    public void savePedidoAPI(Pedido pedido) {
+
+        String urlString = "";
+
+        new RestAPI(this).execute(urlString);
+    }
+
     public void deletePedido(long pedidoId) {
         Pedido pedido = Pedido.findById(Pedido.class, pedidoId);
         pedido.delete();
+    }
+
+    @Override
+    public void execute(String result) throws JSONException {
+
     }
 }

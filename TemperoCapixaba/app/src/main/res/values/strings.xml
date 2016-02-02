@@ -25,4 +25,5 @@
     <string name="telefone_text_view">Seu telefone</string>
     <string name="finalizar_pedido_title">Finalize o seu pedido</string>
     <string name="finalizar_pedido_button">Finalizar Pedido</string>
+    <string name="email_text_view">Seu email (opcional)</string>
 </resources>

@@ -19,7 +19,6 @@ public class FinalizarPedidoFragment extends Fragment {
 
     private static final String ARG_PEDIDO_ID = "pedido_id";
 
-    private long mPedidoId;
     private Pedido mPedido;
 
     // UI
@@ -43,8 +42,8 @@ public class FinalizarPedidoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPedidoId = (long) getArguments().getSerializable(ARG_PEDIDO_ID);
-        mPedido = PedidoLab.get(getActivity()).getPedido(mPedidoId);
+        long pedidoId = (long) getArguments().getSerializable(ARG_PEDIDO_ID);
+        mPedido = PedidoLab.get(getActivity()).getPedido(pedidoId);
     }
 
     @Override
@@ -74,8 +73,7 @@ public class FinalizarPedidoFragment extends Fragment {
     }
 
     public void updateUI() {
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.getSupportActionBar().setSubtitle(R.string.finalizar_pedido_title);
+
     }
 
     public Boolean validarCampos() {

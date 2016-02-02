@@ -11,26 +11,25 @@ import java.util.UUID;
  */
 public class Usuario extends SugarRecord {
 
-    public enum TipoUsuario {
-        VENDEDOR,COMPRADOR;
-
-        @Override
-        public String toString() {
-            return super.toString().toLowerCase();
-        }
+    public enum TIPO_ENTREGA {
+        ENTREGA_ENDERECO, BUSCAR_LOCAL
     }
 
-    public TipoUsuario mTipoUsuario;
     public String mNome;
     public String mEndereco;
-    public GregorianCalendar mHorarioAlmoco;
+    public String mTelefone;
+    public String mEmail;
+    public String mEmpresa;
+    public TIPO_ENTREGA mTipoEntrega;
 
     public Usuario() {}
 
-    public Usuario(TipoUsuario tipoUsuario, String nome, String endereco, GregorianCalendar horarioAlmoco) {
-        this.mTipoUsuario = tipoUsuario;
+    public Usuario(String nome, String endereco, String telefone, String email, String empresa, TIPO_ENTREGA tipoEntrega) {
         this.mNome = nome;
         this.mEndereco = endereco;
-        this.mHorarioAlmoco = horarioAlmoco;
+        this.mTelefone = telefone;
+        this.mEmail = email;
+        this.mEmpresa = empresa;
+        this.mTipoEntrega = tipoEntrega;
     }
 }

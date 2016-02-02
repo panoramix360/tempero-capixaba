@@ -14,26 +14,24 @@ $user_id = NULL;
  * Create user
  * url - /create-user
  * method - POST
- * params - 'nome', 'email', 'endereco', 'tipo_usuario', 'horario_almoco'
+ * params - 'nome', 'endereco', 'telefone', 'email', 'empresa', 'tipo_entrega'
  */
 $app->post('/create-user', function() use ($app) {
     // check for required params
-    verifyRequiredParams(array('nome', 'email', 'endereco', 'tipo_usuario', 'horario_almoco'));
+    verifyRequiredParams(array('nome', 'endereco', 'telefone', 'email', 'empresa', 'tipo_entrega'));
     
     $response = array();
     
     // reading post params
     $nome = $app->request->post('nome');
-    $email = $app->request->post('email');
     $endereco = $app->request->post('endereco');
-    $tipo_usuario = $app->request->post('tipo_usuario');
-    $horario_almoco = $app->request->post('horario_almoco');
-    
-    // validating email address
-    validateEmail($email);
-    
+    $telefone = $app->request->post('telefone');
+    $email = $app->request->post('email');
+    $empresa = $app->request->post('empresa');
+    $tipo_entrega = $app->request->post('tipo_entrega');
+
     $db = new DbHandler();
-    $res = $db->createUser($nome, $email, $endereco, $tipo_usuario, $horario_almoco);
+    $res = $db->createUser($nome, $endereco, $telefone, $email, $empresa, $tipo_entrega);
     
     if ($res == USER_CREATED_SUCCESSFULLY) {
         $response["error"] = false;
@@ -181,38 +179,6 @@ $app->post('/create-pedido', function() use ($app) {
         $response["message"] = "Pedido já existente.";
         echoRespnse(200, $response);
     }
-});
-
-/**
- * Get all users
- * url - /usuarios
- * method - GET
- * params - none
- */
-$app->get('/pedido/:usuario_id/:data', function($usuario_id, $data) use ($app) {
-    $response = array();
-    $db = new DbHandler();
-    
-    $result = $db->getAllUsers();
-    
-    $response["error"] = false;
-    $response["users"] = array();
-    
-    if(count($result) > 0) {
-        foreach ($result as $user) {
-            $tmp = array();
-            $tmp["cd_usuario"] = $user["cd_usuario"];
-            $tmp["nome"] = $user["nome"];
-            $tmp["email"] = $user["email"];
-            $tmp["endereco"] = $user["endereco"];
-            $tmp["tipo_usuario"] = $user["tipo_usuario"];
-            $tmp["horario_almoco"] = $user["horario_almoco"];
-            $tmp["api_key"] = $user["api_key"];
-            array_push($response["users"], $tmp);
-        }
-    }
-
-    echoRespnse(200, $response);
 });
 
 $app->get('/getCardapio/:contador', function($contador) {

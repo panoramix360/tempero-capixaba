@@ -24,8 +24,7 @@ public class CardapioLab implements RestExecute {
     private CardapioUIUpdater mUpdater;
     private Cardapio mCardapio;
 
-    public final static String URL_BASE = "http://www.temperocapixaba.com.br/rest/v1/";
-    public final static String URL_GET_CARDAPIO = URL_BASE + "getCardapio/";
+    public final static String URL_GET_CARDAPIO = "getCardapioAPI/";
 
     private Context mContext;
 
@@ -41,7 +40,7 @@ public class CardapioLab implements RestExecute {
         mContext = context.getApplicationContext();
     }
 
-    public void getCardapio(CardapioUIUpdater updater, int contadorCardapio) {
+    public void getCardapioAPI(CardapioUIUpdater updater, int contadorCardapio) {
         mUpdater = updater;
 
         String urlString = URL_GET_CARDAPIO + contadorCardapio;

@@ -4,6 +4,14 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/finalizar_pedido_title"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        style="?android:listSeparatorTextViewStyle"/>
+
     <EditText
         android:id="@+id/nome_edit_text"
         android:layout_width="match_parent"
@@ -25,6 +33,13 @@
         android:layout_height="wrap_content"
         android:inputType="phone"
         android:hint="@string/telefone_text_view" />
+
+    <EditText
+        android:id="@+id/email_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="@string/email_text_view" />
 
     <EditText
         android:id="@+id/empresa_edit_text"

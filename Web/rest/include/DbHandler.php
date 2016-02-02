@@ -13,17 +13,17 @@ class DbHandler {
     /*
     ** Usuário
     */
-	public function createUser($nome, $email, $endereco, $tipo_usuario, $horario_almoco) {
+	public function createUser($nome, $endereco, $telefone, $email, $empresa, $tipo_entrega) {
         $response = array();
  
         // First check if user already existed in db
-        if (!$this->isUserExists($email)) {
+        if (!$this->isUserExists($nome, $telefone)) {
             // Generating API key
             $api_key = $this->generateApiKey();
- 
+
             // insert query
-            $stmt = $this->conn->prepare("INSERT INTO tc_usuario(nome, email, endereco, tipo_usuario, horario_almoco, api_key) values(?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssiss", $name, $email, $endereco, $tipo_usuario, $horario_almoco, $api_key);
+            $stmt = $this->conn->prepare("INSERT INTO tc_usuario(nome, endereco, telefone, email, empresa, tipo_entrega, api_key) values(?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssssi", $nome, $endereco, $telefone, $email, $empresa, $tipo_entrega, $api_key);
  
             $result = $stmt->execute();
  
@@ -45,9 +45,9 @@ class DbHandler {
         return $response;
     }
     
-    public function isUserExists($email) {
-        $stmt = $this->conn->prepare("SELECT cd_usuario from tc_usuario WHERE email = ?");
-        $stmt->bind_param("s", $email);
+    public function isUserExists($nome, $telefone) {
+        $stmt = $this->conn->prepare("SELECT cd_usuario from tc_usuario WHERE nome = ?, telefone = ?");
+        $stmt->bind_param("ss", $nome, $telefone);
         $stmt->execute();
         $stmt->store_result();
         $num_rows = $stmt->num_rows;

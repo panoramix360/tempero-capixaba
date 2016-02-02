@@ -73,7 +73,7 @@ public class CardapioDiarioFragment extends Fragment implements CardapioUIUpdate
         int contadorCardapio = DateUtils.getDayOfWeek(mToday) - 1;
 
         // load cardapio
-        CardapioLab.get(getActivity()).getCardapio(this, contadorCardapio);
+        CardapioLab.get(getActivity()).getCardapioAPI(this, contadorCardapio);
 
         // clear pratos
         PratoLab.get(getActivity()).clearPratos();

@@ -18,6 +18,8 @@ import java.net.URL;
  */
 public class RestAPI extends AsyncTask<String, String, String> {
 
+    public final static String URL_BASE = "http://www.temperocapixaba.com.br/rest/v1/";
+
     private RestExecute mRestExecute;
 
     public RestAPI(RestExecute restExecute) {
@@ -35,7 +37,7 @@ public class RestAPI extends AsyncTask<String, String, String> {
         // HTTP GET
         try {
 
-            URL url = new URL(urlString);
+            URL url = new URL(URL_BASE + urlString);
 
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
