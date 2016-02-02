@@ -1,6 +1,8 @@
 package com.creativityloop.android.temperocapixaba.database;
 
 import android.content.Context;
+
+import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
 
 import java.util.GregorianCalendar;
@@ -28,7 +30,12 @@ public class PedidoLab {
     }
 
     public Pedido getPedido(long pedidoId) {
-        return Pedido.findById(Pedido.class, pedidoId);
+        Pedido pedido = Pedido.findById(Pedido.class, pedidoId);
+        pedido.setItensPedido(ItemPedidoLab.get(mContext).getItemPedidos(pedidoId));
+        for(ItemPedido itemPedido : pedido.getItensPedido()) {
+            itemPedido.preencherPrato(mContext);
+        }
+        return pedido;
     }
 
     public Pedido getPedido(GregorianCalendar data) {

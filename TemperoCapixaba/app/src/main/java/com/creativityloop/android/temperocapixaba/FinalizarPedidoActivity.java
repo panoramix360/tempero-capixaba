@@ -6,13 +6,18 @@ import android.support.v4.app.Fragment;
 
 public class FinalizarPedidoActivity extends SingleFragmentActivity {
 
-    public static Intent newIntent(Context packageContext) {
+    public static final String EXTRA_PEDIDO_ID = "com.creativityloop.android.temperocapixaba.pedido_id";
+
+    public static Intent newIntent(Context packageContext, long pedidoId) {
         Intent intent = new Intent(packageContext, FinalizarPedidoActivity.class);
+        intent.putExtra(EXTRA_PEDIDO_ID, pedidoId);
         return intent;
     }
 
     @Override
     public Fragment createFragment() {
-        return new FinalizarPedidoFragment();
+        long pedidoId = (long) getIntent().getSerializableExtra(EXTRA_PEDIDO_ID);
+
+        return FinalizarPedidoFragment.newInstance(pedidoId);
     }
 }

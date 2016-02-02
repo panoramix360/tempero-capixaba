@@ -57,34 +57,14 @@ public class CardapioDiarioFragment extends Fragment implements CardapioUIUpdate
         mCardapioTitle = (TextView) v.findViewById(R.id.cardapio_diario_title_text_view);
 
         mCardapioRecyclerView = (RecyclerView) v.findViewById(R.id.cardapio_recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         mCardapioRecyclerView.setHasFixedSize(true);
-
         mCardapioRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mFazerPedidoButton = (Button) v.findViewById(R.id.fazer_pedido_button);
         mFazerPedidoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isAnyItemPedidoChecked()) {
-                    mPedido = new Pedido(null, "", DateUtils.getToday());
-                    PedidoLab.get(getActivity()).savePedido(mPedido);
-
-                    for (ItemPedido itemPedido : mItensPedido) {
-                        if (itemPedido.isChecked()
-                                && (itemPedido.mQuantidadePequena > 0 || itemPedido.mQuantidadeGrande > 0)) {
-                            itemPedido.mPedido = mPedido;
-                            ItemPedidoLab.get(getActivity()).saveItemPedido(itemPedido);
-                            PratoLab.get(getActivity()).savePrato(itemPedido.getPrato());
-                        }
-                    }
-                    Intent intent = ResumoPedidoActivity.newIntent(getActivity(), mPedido.getId());
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getActivity(), "Selecione pelo menos 1 prato", Toast.LENGTH_SHORT).show();
-                }
+                fazerPedido();
             }
         });
 
@@ -94,6 +74,9 @@ public class CardapioDiarioFragment extends Fragment implements CardapioUIUpdate
 
         // load cardapio
         CardapioLab.get(getActivity()).getCardapio(this, contadorCardapio);
+
+        // clear pratos
+        PratoLab.get(getActivity()).clearPratos();
 
         return v;
     }
@@ -141,11 +124,35 @@ public class CardapioDiarioFragment extends Fragment implements CardapioUIUpdate
 
     private boolean isAnyItemPedidoChecked() {
         for(ItemPedido itemPedido : mItensPedido) {
-            if(itemPedido.isChecked()
-                    && (itemPedido.mQuantidadePequena > 0 || itemPedido.mQuantidadeGrande > 0)) {
+            if(isItemPedidoValid(itemPedido)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private void fazerPedido() {
+        if (isAnyItemPedidoChecked()) {
+            if(mPedido == null) {
+                mPedido = new Pedido(null, "", DateUtils.getToday());
+            }
+            PedidoLab.get(getActivity()).savePedido(mPedido);
+
+            for (ItemPedido itemPedido : mItensPedido) {
+                if (itemPedido.isChecked()) {
+                    itemPedido.mPedido = mPedido;
+                    ItemPedidoLab.get(getActivity()).saveItemPedido(itemPedido);
+                    PratoLab.get(getActivity()).savePrato(itemPedido.getPrato());
+                }
+            }
+            Intent intent = ResumoPedidoActivity.newIntent(getActivity(), mPedido.getId());
+            startActivity(intent);
+        } else {
+            Toast.makeText(getActivity(), "Selecione e preencha pelo menos 1 prato", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isItemPedidoValid(ItemPedido itemPedido) {
+        return itemPedido.isChecked() && (itemPedido.mQuantidadePequena > 0 || itemPedido.mQuantidadeGrande > 0);
     }
 }

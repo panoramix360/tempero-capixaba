@@ -16,4 +16,13 @@
 
     <string name="telefones"></string>
     <string name="sobre_title">Sobre nós</string>
+
+    <string name="nome_text_view">Seu nome</string>
+    <string name="endereco_text_view">Seu endereço</string>
+    <string name="empresa_text_view">Sua empresa (opcional)</string>
+    <string name="entrega_radio_button">Entregar no endereço</string>
+    <string name="buscar_radio_button">Buscar no local</string>
+    <string name="telefone_text_view">Seu telefone</string>
+    <string name="finalizar_pedido_title">Finalize o seu pedido</string>
+    <string name="finalizar_pedido_button">Finalizar Pedido</string>
 </resources>

@@ -1,9 +1,11 @@
 package com.creativityloop.android.temperocapixaba.model;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * Created by LucasReis on 29/09/2015.
@@ -14,11 +16,22 @@ public class Pedido extends SugarRecord {
     public String mEndereco;
     public GregorianCalendar mData;
 
+    @Ignore
+    public List<ItemPedido> mItensPedido;
+
     public Pedido() {}
 
     public Pedido(Usuario usuario, String endereco, GregorianCalendar data) {
         this.mUsuario = usuario;
         this.mEndereco = endereco;
         this.mData = data;
+    }
+
+    public List<ItemPedido> getItensPedido() {
+        return mItensPedido;
+    }
+
+    public void setItensPedido(List<ItemPedido> itensPedido) {
+        mItensPedido = itensPedido;
     }
 }

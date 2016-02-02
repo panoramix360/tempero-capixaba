@@ -31,6 +31,10 @@ public class PratoLab {
         mPratos = new ArrayList<>();
     }
 
+    public void clearPratos() {
+        mPratos = new ArrayList<Prato>();
+    }
+
     public List<Prato> getPratos() {
         return mPratos;
     }
