@@ -20,7 +20,7 @@ public class UsuarioFetchr extends Fetchr {
     public static final String URL_POST_USUARIO = "create-user?";
 
     public boolean saveUsuario(Usuario usuario) {
-        boolean isError = false;
+        boolean isSaved = false;
 
         try {
             String data = "nome=" + URLEncoder.encode(usuario.mNome, "UTF-8");
@@ -41,8 +41,7 @@ public class UsuarioFetchr extends Fetchr {
             String response = postData(url, data);
 
             JSONObject jsonResponse = new JSONObject(response);
-
-            isError = (boolean) jsonResponse.get("error");
+            isSaved = !((boolean) jsonResponse.get("error"));
 
         } catch (JSONException ex) {
             Log.e(TAG, "Failed to parse JSON", ex);
@@ -51,7 +50,7 @@ public class UsuarioFetchr extends Fetchr {
             Log.e(TAG, "Failed to save usuario", ioe);
         }
 
-        return !isError;
+        return isSaved;
     }
 
     public void parseUsuario(Usuario usuario, JSONObject reader) throws JSONException {
