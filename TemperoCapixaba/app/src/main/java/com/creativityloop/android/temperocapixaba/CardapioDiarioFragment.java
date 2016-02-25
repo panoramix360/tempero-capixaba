@@ -1,6 +1,7 @@
 package com.creativityloop.android.temperocapixaba;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -16,21 +17,20 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.creativityloop.android.temperocapixaba.database.CardapioLab;
 import com.creativityloop.android.temperocapixaba.database.ItemPedidoLab;
 import com.creativityloop.android.temperocapixaba.database.PedidoLab;
 import com.creativityloop.android.temperocapixaba.database.PratoLab;
+import com.creativityloop.android.temperocapixaba.fetchr.CardapioFetchr;
 import com.creativityloop.android.temperocapixaba.model.Cardapio;
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
 import com.creativityloop.android.temperocapixaba.recyclerView.ItemPedidoAdapter;
 import com.creativityloop.android.temperocapixaba.util.DateUtils;
-import com.creativityloop.android.temperocapixaba.util.CardapioUIUpdater;
 
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class CardapioDiarioFragment extends Fragment implements CardapioUIUpdater {
+public class CardapioDiarioFragment extends Fragment {
 
     private Cardapio mCardapio;
 
@@ -73,7 +73,7 @@ public class CardapioDiarioFragment extends Fragment implements CardapioUIUpdate
         int contadorCardapio = DateUtils.getDayOfWeek(mToday) - 1;
 
         // load cardapio
-        CardapioLab.get(getActivity()).getCardapioAPI(this, contadorCardapio);
+        new FetchCardapioTask().execute(contadorCardapio);
 
         // clear pratos
         PratoLab.get(getActivity()).clearPratos();
@@ -99,8 +99,7 @@ public class CardapioDiarioFragment extends Fragment implements CardapioUIUpdate
         }
     }
 
-    public void updateUI(Cardapio cardapio) {
-        mCardapio = cardapio;
+    public void updateUI() {
         initCardapio();
 
         ItemPedidoAdapter mAdapter = new ItemPedidoAdapter(getActivity(), mItensPedido);
@@ -154,5 +153,21 @@ public class CardapioDiarioFragment extends Fragment implements CardapioUIUpdate
 
     private boolean isItemPedidoValid(ItemPedido itemPedido) {
         return itemPedido.isChecked() && (itemPedido.mQuantidadePequena > 0 || itemPedido.mQuantidadeGrande > 0);
+    }
+
+    private class FetchCardapioTask extends AsyncTask<Integer, Void, Cardapio> {
+        @Override
+        protected Cardapio doInBackground(Integer... params) {
+            if(params.length > 0) {
+                return new CardapioFetchr().fetchCardapio(params[0]);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Cardapio cardapio) {
+            mCardapio = cardapio;
+            updateUI();
+        }
     }
 }

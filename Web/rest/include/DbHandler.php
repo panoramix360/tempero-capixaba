@@ -2,12 +2,14 @@
 
 class DbHandler {
 	private $conn;
+    private $log;
 	
 	function __construct() {
 		require_once dirname(__FILE__) . '/DbConnect.php';
 		// opening db connection
 		$db = new DbConnect();
 		$this->conn = $db->connect();
+        $this->log = new Log();
 	}
 	
     /*
@@ -23,8 +25,8 @@ class DbHandler {
 
             // insert query
             $stmt = $this->conn->prepare("INSERT INTO tc_usuario(nome, endereco, telefone, email, empresa, tipo_entrega, api_key) values(?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssssi", $nome, $endereco, $telefone, $email, $empresa, $tipo_entrega, $api_key);
- 
+            $stmt->bind_param("sssssis", $nome, $endereco, $telefone, $email, $empresa, $tipo_entrega, $api_key);
+
             $result = $stmt->execute();
  
             $stmt->close();
@@ -32,42 +34,44 @@ class DbHandler {
             // Check for successful insertion
             if ($result) {
                 // User successfully inserted
-                return USER_CREATED_SUCCESSFULLY;
+                return true;
             } else {
                 // Failed to create user
-                return USER_CREATE_FAILED;
+                return false;
             }
-        } else {
-            // User with same email already existed in the db
-            return USER_ALREADY_EXISTED;
         }
  
         return $response;
     }
     
     public function isUserExists($nome, $telefone) {
-        $stmt = $this->conn->prepare("SELECT cd_usuario from tc_usuario WHERE nome = ?, telefone = ?");
-        $stmt->bind_param("ss", $nome, $telefone);
-        $stmt->execute();
-        $stmt->store_result();
-        $num_rows = $stmt->num_rows;
-        $stmt->close();
-        return $num_rows > 0;
+        if($stmt = $this->conn->prepare("SELECT cd_usuario from tc_usuario WHERE nome = ? and telefone = ?")) {
+            $stmt->bind_param("ss", $nome, $telefone);
+            $stmt->execute();
+            $stmt->store_result();
+            $num_rows = $stmt->num_rows;
+            $stmt->close();
+            return $num_rows > 0;
+        } else {
+            $this->log->write("SQL ERROR: " . $this->conn->error);
+            exit;
+        }
     }
     
-    public function getUserByEmail($email) {
-        $stmt = $this->conn->prepare("SELECT cd_usuario, nome, email, endereco, tipo_usuario, horario_almoco, api_key FROM tc_usuario WHERE email = ?");
-        $stmt->bind_param("s", $email);
+    public function getUserByNameAndTelefone($nome, $telefone) {
+        $stmt = $this->conn->prepare("SELECT cd_usuario, nome, email, endereco, telefone, empresa, tipo_entrega, api_key FROM tc_usuario WHERE nome = ? and telefone = ?");
+        $stmt->bind_param("ss", $nome, $telefone);
         if ($stmt->execute()) {
-            $stmt->bind_result($id, $nome, $email, $endereco, $tipo_usuario, $horario_almoco, $api_key);
+            $stmt->bind_result($id, $nome, $email, $endereco, $telefone, $empresa, $tipo_entrega, $api_key);
             $stmt->fetch();
             $user = array();
             $user["cd_usuario"] = $id;
             $user["nome"] = $nome;
             $user["email"] = $email;
             $user["endereco"] = $endereco;
-            $user["tipo_usuario"] = $tipo_usuario;
-            $user["horario_almoco"] = $horario_almoco;
+            $user["telefone"] = $telefone;
+            $user["empresa"] = $empresa;
+            $user["tipo_entrega"] = $tipo_entrega;
             $user["api_key"] = $api_key;
             $stmt->close();
             return $user;
@@ -127,48 +131,34 @@ class DbHandler {
     /*
     ** Pedido
     */
-    public function createPedido($usuario_id, $endereco, $data, $itens) {
+    public function createPedido($nome, $telefone, $endereco, $data) {
         $response = array();
+        
+        $user = $this->getUserByNameAndTelefone($nome, $telefone);
  
-        // First check if user already existed in db
-        if (!$this->isPedidoExists($usuario_id, $data)) {
- 
-            $stmt = $this->conn->prepare("INSERT INTO tc_pedido(cd_usuario, endereco, data) values(?, ?, ?)");
-            $stmt->bind_param("iss", $usuario_id, $endereco, $data);
-            $result = $stmt->execute();
-            
-            $pedido_id = $stmt->lastInsertId();
-            
-            $stmt->close();
-            
-            foreach($itens as $item) {
-                $stmt = $this->conn->prepare("INSERT INTO tc_item_pedido(cd_pedido, cd_prato, qtd_pequena, qtd_grande) values(?, ?, ?, ?)");
-                $stmt->bind_param("iiii", $pedido_id, $item["cd_prato"], $item["qtd_pequena"], $item["qtd_grande"]);
-                $result = $stmt->execute();
-            }
- 
-            $stmt->close();
- 
-            if ($result) {
-                return PEDIDO_CREATED_SUCCESSFULLY;
-            } else {
-                return PEDIDO_CREATE_FAILED;
-            }
+        $stmt = $this->conn->prepare("INSERT INTO tc_pedido(cd_usuario, endereco, data) values(?, ?, ?)");
+        $stmt->bind_param("iss", $user["cd_usuario"], $endereco, $data);
+        $result = $stmt->execute();
+        
+        $pedido_id = $stmt->lastInsertId();
+        
+        $stmt->close();
+        
+        // foreach($itens as $item) {
+        //     $stmt = $this->conn->prepare("INSERT INTO tc_item_pedido(cd_pedido, cd_prato, qtd_pequena, qtd_grande) values(?, ?, ?, ?)");
+        //     $stmt->bind_param("iiii", $pedido_id, $item["cd_prato"], $item["qtd_pequena"], $item["qtd_grande"]);
+        //     $result = $stmt->execute();
+        // }
+
+        $stmt->close();
+
+        if ($result) {
+            return PEDIDO_CREATED_SUCCESSFULLY;
         } else {
-            return PEDIDO_ALREADY_EXISTED;
+            return PEDIDO_CREATE_FAILED;
         }
  
         return $response;
-    }
-    
-    public function isPedidoExists($usuario_id, $data) {
-        $stmt = $this->conn->prepare("SELECT cd_usuario from tc_pedido WHERE cd_ususario = ? and data = ?");
-        $stmt->bind_param("ss", $email, $data);
-        $stmt->execute();
-        $stmt->store_result();
-        $num_rows = $stmt->num_rows;
-        $stmt->close();
-        return $num_rows > 0;
     }
     
     public function getPedidoByUserAndDate($usuario_id, $data) {

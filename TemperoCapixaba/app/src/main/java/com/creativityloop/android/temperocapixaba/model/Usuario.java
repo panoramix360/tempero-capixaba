@@ -1,6 +1,7 @@
 package com.creativityloop.android.temperocapixaba.model;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
 import java.util.GregorianCalendar;
@@ -12,7 +13,16 @@ import java.util.UUID;
 public class Usuario extends SugarRecord {
 
     public enum TIPO_ENTREGA {
-        ENTREGA_ENDERECO, BUSCAR_LOCAL
+        ENTREGA_ENDERECO(1), BUSCAR_LOCAL(2);
+
+        private final int value;
+        TIPO_ENTREGA(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return this.value;
+        }
     }
 
     public String mNome;

@@ -1,4 +1,5 @@
 <?php
+require_once 'rest/include/Log.php';
 require_once 'rest/include/DbHandler.php';
 
 function saveCardapio($db, $pratos, $contador) {
@@ -15,6 +16,16 @@ function saveCardapio($db, $pratos, $contador) {
 }
 
 $db = new DbHandler();
+
+// reading post params
+    $nome = "teste";
+    $endereco = "asdas";
+    $telefone = "sadas";
+    $email = "sadas";
+    $empresa = "asdas";
+    $tipo_entrega = 1;
+
+    $res = $db->createUser($nome, $endereco, $telefone, $email, $empresa, $tipo_entrega);
 
 $result = null;
 

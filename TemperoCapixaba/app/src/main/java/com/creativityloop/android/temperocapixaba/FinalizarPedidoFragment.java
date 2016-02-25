@@ -1,5 +1,6 @@
 package com.creativityloop.android.temperocapixaba;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,11 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.creativityloop.android.temperocapixaba.database.PedidoLab;
+import com.creativityloop.android.temperocapixaba.database.UsuarioLab;
+import com.creativityloop.android.temperocapixaba.fetchr.PedidoFetchr;
+import com.creativityloop.android.temperocapixaba.fetchr.UsuarioFetchr;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
+import com.creativityloop.android.temperocapixaba.model.Usuario;
 
 public class FinalizarPedidoFragment extends Fragment {
 
@@ -26,6 +31,7 @@ public class FinalizarPedidoFragment extends Fragment {
     private EditText mEndereco;
     private EditText mTelefone;
     private EditText mEmpresa;
+    private EditText mEmail;
     private RadioGroup mTipoEntrega;
     private Button mFinalizarPedido;
 
@@ -50,30 +56,57 @@ public class FinalizarPedidoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_finalizar_pedido, container, false);
 
-        updateUI();
-
         mNome = (EditText) v.findViewById(R.id.nome_edit_text);
         mEndereco = (EditText) v.findViewById(R.id.endereco_edit_text);
         mTelefone = (EditText) v.findViewById(R.id.telefone_edit_text);
         mTelefone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         mEmpresa = (EditText) v.findViewById(R.id.empresa_edit_text);
+        mEmail = (EditText) v.findViewById(R.id.email_edit_text);
         mTipoEntrega = (RadioGroup) v.findViewById(R.id.tipo_entrega_radio_group);
 
         mFinalizarPedido = (Button) v.findViewById(R.id.finalizar_pedido_button);
         mFinalizarPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validarCampos()) {
-
+                if (validarCampos()) {
+                    Usuario usuario = createUserFromView();
+                    UsuarioLab.get(getActivity()).saveUsuario(usuario);
+                    mPedido.mUsuario = usuario;
+                    new PostPedidoTask().execute(mPedido);
                 }
             }
         });
 
+        updateUI();
+
         return v;
     }
 
-    public void updateUI() {
+    private Usuario createUserFromView() {
+        Usuario usuario = new Usuario();
+        usuario.mNome = mNome.getText().toString();
+        usuario.mEndereco = mEndereco.getText().toString();
+        usuario.mTelefone = mTelefone.getText().toString();
+        usuario.mEmpresa = mEmpresa.getText().toString();
+        usuario.mEmail = mEmail.getText().toString();
+        usuario.mTipoEntrega = Usuario.TIPO_ENTREGA.values()[mTipoEntrega.getCheckedRadioButtonId() - 1];
+        return usuario;
+    }
 
+    public void updateUI() {
+        setUsuario();
+    }
+
+    public void setUsuario() {
+        Usuario usuario = UsuarioLab.get(getActivity()).getLastUsuario();
+        if(usuario != null) {
+            mNome.setText(usuario.mNome);
+            mEndereco.setText(usuario.mEndereco);
+            mTelefone.setText(usuario.mTelefone);
+            mEmpresa.setText(usuario.mEmpresa);
+            mEmail.setText(usuario.mEmail);
+            mTipoEntrega.check(usuario.mTipoEntrega.getValue());
+        }
     }
 
     public Boolean validarCampos() {
@@ -94,5 +127,25 @@ public class FinalizarPedidoFragment extends Fragment {
         }
 
         return validado;
+    }
+
+    private class PostPedidoTask extends AsyncTask<Pedido, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Pedido... params) {
+            Pedido pedido = params[0];
+
+            boolean isSaved = new UsuarioFetchr().saveUsuario(pedido.mUsuario);
+
+            if(isSaved) {
+                //isSaved = new PedidoFetchr().savePedido(pedido);
+            }
+
+            return isSaved;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+
+        }
     }
 }

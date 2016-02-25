@@ -1,5 +1,5 @@
 <?php 
-
+require_once '../include/Log.php';
 require_once '../include/DbHandler.php';
 require_once '../include/Utils.php';
 require_once '../libs/Slim/Slim.php';
@@ -8,7 +8,7 @@ require_once '../libs/Slim/Slim.php';
 
 $app = new \Slim\Slim();
 
-$user_id = NULL;
+$log = new Log();
 
 /**
  * Create user
@@ -16,57 +16,51 @@ $user_id = NULL;
  * method - POST
  * params - 'nome', 'endereco', 'telefone', 'email', 'empresa', 'tipo_entrega'
  */
-$app->post('/create-user', function() use ($app) {
+$app->post('/create-user', function() use ($app, $log) {
     // check for required params
-    verifyRequiredParams(array('nome', 'endereco', 'telefone', 'email', 'empresa', 'tipo_entrega'));
+    verifyRequiredParams(array('nome', 'endereco', 'telefone', 'tipo_entrega'));
     
     $response = array();
     
     // reading post params
-    $nome = $app->request->post('nome');
-    $endereco = $app->request->post('endereco');
-    $telefone = $app->request->post('telefone');
-    $email = $app->request->post('email');
-    $empresa = $app->request->post('empresa');
-    $tipo_entrega = $app->request->post('tipo_entrega');
+    $nome = $_REQUEST["nome"];
+    $endereco = $_REQUEST["endereco"];
+    $telefone = $_REQUEST["telefone"];
+    $email = $_REQUEST["email"];
+    $empresa = $_REQUEST["empresa"];
+    $tipo_entrega = $_REQUEST["tipo_entrega"];
 
     $db = new DbHandler();
     $res = $db->createUser($nome, $endereco, $telefone, $email, $empresa, $tipo_entrega);
     
-    if ($res == USER_CREATED_SUCCESSFULLY) {
+    if ($res) {
         $response["error"] = false;
-        $response["message"] = "Usuário cadastrado com sucesso.";
-        echoRespnse(201, $response);
-    } else if ($res == USER_CREATE_FAILED) {
+        echoResponse(201, $response);
+    } else {
         $response["error"] = true;
-        $response["message"] = "Ocorreu um erro ao registrar o usuário.";
-        echoRespnse(200, $response);
-    } else if ($res == USER_ALREADY_EXISTED) {
-        $response["error"] = true;
-        $response["message"] = "Usuário já existente.";
-        echoRespnse(200, $response);
+        echoResponse(200, $response);
     }
 });
 
 /**
- * Login
- * url - /login
+ * Get user
+ * url - /get-user
  * method - POST
  * params - email
  */
-$app->post('/login', function() use ($app) {
+$app->post('/get-user', function() use ($app) {
     // check for required params
-    verifyRequiredParams(array('email'));
+    verifyRequiredParams(array('nome', 'telefone'));
     
     // reading post params
-    $email = $app->request()->post('email');
+    $nome = $_REQUEST["nome"];
+    $telefone = $_REQUEST["telefone"];
     $response = array();
     
     $db = new DbHandler();
-    // check for correct email and password
-    if ($db->isUserExists($email)) {
+    if ($db->isUserExists($nome, $telefone)) {
         // get the user by email
-        $user = $db->getUserByEmail($email);
+        $user = $db->getUserByTelefone($email);
         
         if ($user != NULL) {
             $response["error"] = false;
@@ -74,8 +68,9 @@ $app->post('/login', function() use ($app) {
             $response["nome"] = $user["nome"];
             $response["email"] = $user["email"];
             $response["endereco"] = $user["endereco"];
-            $response["tipo_usuario"] = $user["tipo_usuario"];
-            $response["horario_almoco"] = $user["horario_almoco"];
+            $response["telefone"] = $user["telefone"];
+            $response["empresa"] = $user["empresa"];
+            $response["tipo_entrega"] = $user["tipo_entrega"];
             $response["api_key"] = $user["api_key"];
         } else {
             // unknown error occurred
@@ -88,39 +83,7 @@ $app->post('/login', function() use ($app) {
         $response['message'] = 'Login falho, credenciais incorretas.';
     }
     
-    echoRespnse(200, $response);
-});
-
-/**
- * Get all users
- * url - /usuarios
- * method - GET
- * params - none
- */
-$app->get('/usuarios', function() {
-    $response = array();
-    $db = new DbHandler();
-    
-    $result = $db->getAllUsers();
-    
-    $response["error"] = false;
-    $response["users"] = array();
-    
-    if(count($result) > 0) {
-        foreach ($result as $user) {
-            $tmp = array();
-            $tmp["cd_usuario"] = $user["cd_usuario"];
-            $tmp["nome"] = $user["nome"];
-            $tmp["email"] = $user["email"];
-            $tmp["endereco"] = $user["endereco"];
-            $tmp["tipo_usuario"] = $user["tipo_usuario"];
-            $tmp["horario_almoco"] = $user["horario_almoco"];
-            $tmp["api_key"] = $user["api_key"];
-            array_push($response["users"], $tmp);
-        }
-    }
-
-    echoRespnse(200, $response);
+    echoResponse(200, $response);
 });
 
 /**
@@ -144,7 +107,7 @@ $app->get('/usuarios/:email', function($email) use ($app) {
         $response["message"] = "Usuário não encontrado.";
     }
     
-    echoRespnse(200, $response);
+    echoResponse(200, $response);
 });
 
 /**
@@ -154,30 +117,31 @@ $app->get('/usuarios/:email', function($email) use ($app) {
  * params - 'nome', 'email', 'endereco', 'tipo_usuario', 'horario_almoco'
  */
 $app->post('/create-pedido', function() use ($app) {
-    verifyRequiredParams(array('usuario_id', 'endereco', 'data', 'itens'));
+    verifyRequiredParams(array('nome', 'telefone', 'endereco', 'data'));
 
     $response = array();
 
-    $usuario_id = $app->request->post('usuario_id');
-    $endereco = $app->request->post('endereco');
-    $data = $app->request->post('data');
-    $itens = $app->request->post('itens');
+    $nome = $_REQUEST["nome"];
+    $telefone = $_REQUEST["telefone"];
+    $endereco = $_REQUEST["endereco"];
+    $data = $_REQUEST["data"];
+    $cd_usuario = $_REQUEST["cd_usuario"];
 
     $db = new DbHandler();
-    $res = $db->createPedido($usuario_id, $endereco, $data, $itens);
+    $res = $db->createPedido($nome, $telefone, $endereco, $data);
     
     if ($res == PEDIDO_CREATED_SUCCESSFULLY) {
         $response["error"] = false;
         $response["message"] = "Pedido cadastrado com sucesso.";
-        echoRespnse(201, $response);
+        echoResponse(201, $response);
     } else if ($res == PEDIDO_CREATED_FAILED) {
         $response["error"] = true;
         $response["message"] = "Ocorreu um erro ao cadastrar o pedido.";
-        echoRespnse(200, $response);
+        echoResponse(200, $response);
     } else if ($res == PEDIDO_ALREADY_EXISTED) {
-        $response["error"] = true;
+        $response["error"] = false;
         $response["message"] = "Pedido já existente.";
-        echoRespnse(200, $response);
+        echoResponse(200, $response);
     }
 });
 
@@ -200,7 +164,7 @@ $app->get('/getCardapio/:contador', function($contador) {
         }
     }
     
-    echoRespnse(200, $response);
+    echoResponse(200, $response);
 });
 
 $app->run();

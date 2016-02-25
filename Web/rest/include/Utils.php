@@ -24,7 +24,7 @@ function verifyRequiredParams($required_fields) {
         $app = \Slim\Slim::getInstance();
         $response["error"] = true;
         $response["message"] = 'Required field(s) ' . substr($error_fields, 0, -2) . ' is missing or empty';
-        echoRespnse(400, $response);
+        echoResponse(400, $response);
         $app->stop();
     }
 }
@@ -34,12 +34,12 @@ function validateEmail($email) {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $response["error"] = true;
         $response["message"] = 'Email inválido.';
-        echoRespnse(400, $response);
+        echoResponse(400, $response);
         $app->stop();
     }
 }
 
-function echoRespnse($status_code, $response) {
+function echoResponse($status_code, $response) {
     $app = \Slim\Slim::getInstance();
     // Http response code
     $app->status($status_code);
@@ -71,7 +71,7 @@ function authenticate(\Slim\Route $route) {
             // api key is not present in users table
             $response["error"] = true;
             $response["message"] = "Acesso negado.";
-            echoRespnse(401, $response);
+            echoResponse(401, $response);
             $app->stop();
         } else {
             global $user_id;
@@ -84,7 +84,7 @@ function authenticate(\Slim\Route $route) {
         // api key is missing in header
         $response["error"] = true;
         $response["message"] = "Api key necessária";
-        echoRespnse(400, $response);
+        echoResponse(400, $response);
         $app->stop();
     }
 }
