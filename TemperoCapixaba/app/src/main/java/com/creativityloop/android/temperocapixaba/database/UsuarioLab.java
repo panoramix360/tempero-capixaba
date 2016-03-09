@@ -28,6 +28,7 @@ public class UsuarioLab {
     }
 
     public void saveUsuario(Usuario usuario) {
+        Usuario.deleteAll(Usuario.class);
         Usuario.save(usuario);
     }
 

@@ -34,11 +34,40 @@ class DbHandler {
             // Check for successful insertion
             if ($result) {
                 // User successfully inserted
-                return true;
+                return $this->conn->insert_id;
             } else {
                 // Failed to create user
-                return false;
+                return 0;
             }
+        } else {
+            return 1;
+        }
+ 
+        return $response;
+    }
+    
+    public function updateUser($cd_usuario, $nome, $endereco, $telefone, $email, $empresa, $tipo_entrega) {
+        $response = array();
+ 
+        if ($cd_usuario > 0) {
+            // update query
+            $stmt = $this->conn->prepare("UPDATE tc_usuario set nome = ?, endereco = ?, telefone = ?, email = ?, empresa = ?, tipo_entrega = ? where cd_usuario = ?");
+            $stmt->bind_param("sssssii", $nome, $endereco, $telefone, $email, $empresa, $tipo_entrega, $cd_usuario);
+
+            $result = $stmt->execute();
+ 
+            $stmt->close();
+ 
+            // Check for successful insertion
+            if ($result) {
+                // User successfully inserted
+                return $cd_usuario;
+            } else {
+                // Failed to create user
+                return 0;
+            }
+        } else {
+            return 0;
         }
  
         return $response;

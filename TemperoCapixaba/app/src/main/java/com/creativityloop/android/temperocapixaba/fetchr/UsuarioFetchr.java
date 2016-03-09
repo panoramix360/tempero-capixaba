@@ -17,31 +17,29 @@ import java.net.URLEncoder;
 public class UsuarioFetchr extends Fetchr {
 
     private static final String TAG = "UsuarioFetchr";
-    public static final String URL_POST_USUARIO = "create-user?";
+    public static final String URL_INSERT_USUARIO = "create-user?";
+    public static final String URL_UPDATE_USUARIO = "update-user?";
 
-    public boolean saveUsuario(Usuario usuario) {
-        boolean isSaved = false;
+    public int saveUsuario(Usuario usuario, Usuario usuarioAlreadyCreated) {
+        int usuarioId = 0;
 
         try {
-            String data = "nome=" + URLEncoder.encode(usuario.mNome, "UTF-8");
-            data += "&endereco=" + URLEncoder.encode(usuario.mEndereco, "UTF-8");
-            data += "&telefone=" + URLEncoder.encode(usuario.mTelefone, "UTF-8");
-            if(!usuario.mEmail.isEmpty()) {
-                data += "&email=" + URLEncoder.encode(usuario.mEmail, "UTF-8");
-            }
-            if(!usuario.mEmpresa.isEmpty()) {
-                data += "&empresa=" + URLEncoder.encode(usuario.mEmpresa, "UTF-8");
-            }
-            data += "&tipo_entrega=" + URLEncoder.encode(usuario.mTipoEntrega.getValue() + "", "UTF-8");
+            String data = createDataFromUsuario(usuario, (usuarioAlreadyCreated != null) ? usuarioAlreadyCreated.mId: 0);
 
-            String url = Uri.parse(URL_BASE + URL_POST_USUARIO + data)
-                    .buildUpon()
-                    .build().toString();
+            String response;
 
-            String response = postData(url, data);
+            if(usuarioAlreadyCreated == null) {
+                response = insertUsuario(data);
+            } else if(!usuario.equals(usuarioAlreadyCreated)) {
+                response = updateUsuario(data);
+            } else {
+                return usuarioAlreadyCreated.mId;
+            }
 
             JSONObject jsonResponse = new JSONObject(response);
-            isSaved = !((boolean) jsonResponse.get("error"));
+            if(!((boolean) jsonResponse.get("error"))) {
+                usuarioId = Integer.parseInt(jsonResponse.get("cd_usuario").toString());
+            }
 
         } catch (JSONException ex) {
             Log.e(TAG, "Failed to parse JSON", ex);
@@ -50,7 +48,39 @@ public class UsuarioFetchr extends Fetchr {
             Log.e(TAG, "Failed to save usuario", ioe);
         }
 
-        return isSaved;
+        return usuarioId;
+    }
+
+    public String insertUsuario(String data) throws IOException {
+        String url = Uri.parse(URL_BASE + URL_INSERT_USUARIO + data)
+                .buildUpon()
+                .build().toString();
+
+        return postData(url, data);
+    }
+
+    public String updateUsuario(String data) throws IOException {
+        String url = Uri.parse(URL_BASE + URL_UPDATE_USUARIO + data)
+                .buildUpon()
+                .build().toString();
+
+        return postData(url, data);
+    }
+
+    public String createDataFromUsuario(Usuario usuario, int idUsuario) throws IOException {
+        String data = "nome=" + URLEncoder.encode(usuario.mNome, "UTF-8");
+        data += "&endereco=" + URLEncoder.encode(usuario.mEndereco, "UTF-8");
+        data += "&telefone=" + URLEncoder.encode(usuario.mTelefone, "UTF-8");
+        if(!usuario.mEmail.isEmpty()) {
+            data += "&email=" + URLEncoder.encode(usuario.mEmail, "UTF-8");
+        }
+        if(!usuario.mEmpresa.isEmpty()) {
+            data += "&empresa=" + URLEncoder.encode(usuario.mEmpresa, "UTF-8");
+        }
+        data += "&tipo_entrega=" + URLEncoder.encode(usuario.mTipoEntrega.getValue() + "", "UTF-8");
+        data += "&cd_usuario=" + URLEncoder.encode(idUsuario + "", "UTF-8");
+
+        return data;
     }
 
     public void parseUsuario(Usuario usuario, JSONObject reader) throws JSONException {

@@ -133,7 +133,7 @@ public class CardapioDiarioFragment extends Fragment {
     private void fazerPedido() {
         if (isAnyItemPedidoChecked()) {
             if(mPedido == null) {
-                mPedido = new Pedido(null, "", DateUtils.getToday());
+                mPedido = new Pedido(null, "", DateUtils.getToday().toString());
             }
             PedidoLab.get(getActivity()).savePedido(mPedido);
 

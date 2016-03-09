@@ -25,6 +25,7 @@ public class Usuario extends SugarRecord {
         }
     }
 
+    public int mId;
     public String mNome;
     public String mEndereco;
     public String mTelefone;
@@ -34,12 +35,32 @@ public class Usuario extends SugarRecord {
 
     public Usuario() {}
 
-    public Usuario(String nome, String endereco, String telefone, String email, String empresa, TIPO_ENTREGA tipoEntrega) {
+    public Usuario(int id, String nome, String endereco, String telefone, String email, String empresa, TIPO_ENTREGA tipoEntrega) {
+        this.mId = id;
         this.mNome = nome;
         this.mEndereco = endereco;
         this.mTelefone = telefone;
         this.mEmail = email;
         this.mEmpresa = empresa;
         this.mTipoEntrega = tipoEntrega;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Usuario)) {
+            return false;
+        }
+        if(obj == this) {
+            return true;
+        }
+
+        Usuario usuario = (Usuario) obj;
+        return this.mNome.equals(usuario.mNome)
+                && this.mEndereco.equals(usuario.mEndereco)
+                && this.mTelefone.equals(usuario.mTelefone)
+                && this.mEmail.equals(usuario.mEmail)
+                && this.mEmpresa.equals(usuario.mEmpresa)
+                && this.mTipoEntrega.getValue() == usuario.mTipoEntrega.getValue();
+
     }
 }

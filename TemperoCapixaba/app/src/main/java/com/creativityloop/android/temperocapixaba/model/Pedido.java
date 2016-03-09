@@ -14,14 +14,17 @@ public class Pedido extends SugarRecord {
 
     public Usuario mUsuario;
     public String mEndereco;
-    public GregorianCalendar mData;
+    public String mData;
+
+    @Ignore
+    public GregorianCalendar mDataObj;
 
     @Ignore
     public List<ItemPedido> mItensPedido;
 
     public Pedido() {}
 
-    public Pedido(Usuario usuario, String endereco, GregorianCalendar data) {
+    public Pedido(Usuario usuario, String endereco, String data) {
         this.mUsuario = usuario;
         this.mEndereco = endereco;
         this.mData = data;

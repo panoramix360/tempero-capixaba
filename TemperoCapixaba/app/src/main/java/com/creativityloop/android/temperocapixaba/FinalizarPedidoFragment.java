@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class FinalizarPedidoFragment extends Fragment {
     private static final String ARG_PEDIDO_ID = "pedido_id";
 
     private Pedido mPedido;
+    private Usuario mUsuarioSalvo;
 
     // UI
     private EditText mNome;
@@ -70,7 +72,6 @@ public class FinalizarPedidoFragment extends Fragment {
             public void onClick(View view) {
                 if (validarCampos()) {
                     Usuario usuario = createUserFromView();
-                    UsuarioLab.get(getActivity()).saveUsuario(usuario);
                     mPedido.mUsuario = usuario;
                     new PostPedidoTask().execute(mPedido);
                 }
@@ -89,7 +90,7 @@ public class FinalizarPedidoFragment extends Fragment {
         usuario.mTelefone = mTelefone.getText().toString();
         usuario.mEmpresa = mEmpresa.getText().toString();
         usuario.mEmail = mEmail.getText().toString();
-        usuario.mTipoEntrega = Usuario.TIPO_ENTREGA.values()[mTipoEntrega.getCheckedRadioButtonId() - 1];
+        usuario.mTipoEntrega = Usuario.TIPO_ENTREGA.values()[mTipoEntrega.indexOfChild(getActivity().findViewById(mTipoEntrega.getCheckedRadioButtonId()))];
         return usuario;
     }
 
@@ -98,14 +99,15 @@ public class FinalizarPedidoFragment extends Fragment {
     }
 
     public void setUsuario() {
-        Usuario usuario = UsuarioLab.get(getActivity()).getLastUsuario();
-        if(usuario != null) {
-            mNome.setText(usuario.mNome);
-            mEndereco.setText(usuario.mEndereco);
-            mTelefone.setText(usuario.mTelefone);
-            mEmpresa.setText(usuario.mEmpresa);
-            mEmail.setText(usuario.mEmail);
-            mTipoEntrega.check(usuario.mTipoEntrega.getValue());
+        mUsuarioSalvo = UsuarioLab.get(getActivity()).getLastUsuario();
+        if(mUsuarioSalvo != null) {
+            mNome.setText(mUsuarioSalvo.mNome);
+            mEndereco.setText(mUsuarioSalvo.mEndereco);
+            mTelefone.setText(mUsuarioSalvo.mTelefone);
+            mEmpresa.setText(mUsuarioSalvo.mEmpresa);
+            mEmail.setText(mUsuarioSalvo.mEmail);
+            RadioButton radioButton = (RadioButton) mTipoEntrega.getChildAt(mUsuarioSalvo.mTipoEntrega.getValue() - 1);
+            radioButton.setChecked(true);
         }
     }
 
@@ -134,13 +136,17 @@ public class FinalizarPedidoFragment extends Fragment {
         protected Boolean doInBackground(Pedido... params) {
             Pedido pedido = params[0];
 
-            boolean isSaved = new UsuarioFetchr().saveUsuario(pedido.mUsuario);
+            int pedidoId = 0;
+            int usuarioId = new UsuarioFetchr().saveUsuario(pedido.mUsuario, mUsuarioSalvo);
 
-            if(isSaved) {
-                //isSaved = new PedidoFetchr().savePedido(pedido);
+            if(usuarioId > 0) {
+                pedido.mUsuario.mId = usuarioId;
+                UsuarioLab.get(getActivity()).saveUsuario(pedido.mUsuario);
+
+                //pedidoId = new PedidoFetchr().savePedido(pedido);
             }
 
-            return isSaved;
+            return usuarioId > 0 && pedidoId > 0;
         }
 
         @Override

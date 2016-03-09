@@ -33,8 +33,44 @@ $app->post('/create-user', function() use ($app, $log) {
     $db = new DbHandler();
     $res = $db->createUser($nome, $endereco, $telefone, $email, $empresa, $tipo_entrega);
     
+    if ($res > 0) {
+        $response["error"] = false;
+        $response["cd_usuario"] = $res;
+        echoResponse(201, $response);
+    } else {
+        $response["error"] = true;
+        echoResponse(200, $response);
+    }
+});
+
+/**
+ * Create user
+ * url - /update-user
+ * method - POST
+ * params - 'nome', 'endereco', 'telefone', 'email', 'empresa', 'tipo_entrega'
+ */
+$app->post('/update-user', function() use ($app, $log) {
+    // check for required params
+    verifyRequiredParams(array('cd_usuario', 'nome', 'endereco', 'telefone', 'tipo_entrega'));
+    
+    $response = array();
+    
+    // reading post params
+    
+    $cd_usuario = $_REQUEST["cd_usuario"];
+    $nome = $_REQUEST["nome"];
+    $endereco = $_REQUEST["endereco"];
+    $telefone = $_REQUEST["telefone"];
+    $email = $_REQUEST["email"];
+    $empresa = $_REQUEST["empresa"];
+    $tipo_entrega = $_REQUEST["tipo_entrega"];
+
+    $db = new DbHandler();
+    $res = $db->updateUser($cd_usuario, $nome, $endereco, $telefone, $email, $empresa, $tipo_entrega);
+    
     if ($res) {
         $response["error"] = false;
+        $response["cd_usuario"] = $res;
         echoResponse(201, $response);
     } else {
         $response["error"] = true;
@@ -116,7 +152,7 @@ $app->get('/usuarios/:email', function($email) use ($app) {
  * method - POST
  * params - 'nome', 'email', 'endereco', 'tipo_usuario', 'horario_almoco'
  */
-$app->post('/create-pedido', function() use ($app) {
+$app->post('/create-pedido', function() use ($app, $log) {
     verifyRequiredParams(array('nome', 'telefone', 'endereco', 'data'));
 
     $response = array();
@@ -125,8 +161,8 @@ $app->post('/create-pedido', function() use ($app) {
     $telefone = $_REQUEST["telefone"];
     $endereco = $_REQUEST["endereco"];
     $data = $_REQUEST["data"];
-    $cd_usuario = $_REQUEST["cd_usuario"];
-
+    print var_dump(json_decode($_REQUEST["itens"][0]));
+    exit();
     $db = new DbHandler();
     $res = $db->createPedido($nome, $telefone, $endereco, $data);
     

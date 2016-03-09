@@ -3,6 +3,7 @@ package com.creativityloop.android.temperocapixaba.fetchr;
 import android.net.Uri;
 import android.util.Log;
 
+import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
 import com.creativityloop.android.temperocapixaba.model.Usuario;
 
@@ -26,7 +27,16 @@ public class PedidoFetchr extends Fetchr {
             String data = "nome=" + URLEncoder.encode(pedido.mUsuario.mNome, "UTF-8");
             data += "&endereco=" + URLEncoder.encode(pedido.mUsuario.mEndereco, "UTF-8");
             data += "&telefone=" + URLEncoder.encode(pedido.mUsuario.mTelefone, "UTF-8");
-            data += "&data=" + URLEncoder.encode(pedido.mData.toString(), "UTF-8");
+            data += "&data=" + URLEncoder.encode(pedido.mData, "UTF-8");
+            int i = 0;
+            for(ItemPedido itemPedido : pedido.mItensPedido) {
+                JSONObject itemObject = new JSONObject();
+                itemObject.put("cd_prato", itemPedido.mPratoId);
+                itemObject.put("qtd_pequena", itemPedido.mQuantidadePequena);
+                itemObject.put("qtd_grande", itemPedido.mQuantidadeGrande);
+                data += "&itens[" + i + "]=" + itemObject.toString();
+                i++;
+            }
 
             String url = Uri.parse(URL_BASE + URL_POST_PEDIDO + data)
                     .buildUpon()
