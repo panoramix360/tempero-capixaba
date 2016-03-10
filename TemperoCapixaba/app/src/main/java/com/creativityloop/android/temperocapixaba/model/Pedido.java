@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class Pedido extends SugarRecord {
 
+    public int mId;
     public Usuario mUsuario;
     public String mEndereco;
     public String mData;
@@ -24,7 +25,8 @@ public class Pedido extends SugarRecord {
 
     public Pedido() {}
 
-    public Pedido(Usuario usuario, String endereco, String data) {
+    public Pedido(int id, Usuario usuario, String endereco, String data) {
+        this.mId = id;
         this.mUsuario = usuario;
         this.mEndereco = endereco;
         this.mData = data;

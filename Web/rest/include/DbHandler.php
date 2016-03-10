@@ -160,7 +160,7 @@ class DbHandler {
     /*
     ** Pedido
     */
-    public function createPedido($nome, $telefone, $endereco, $data) {
+    public function createPedido($nome, $telefone, $endereco, $data, $itens) {
         $response = array();
         
         $user = $this->getUserByNameAndTelefone($nome, $telefone);
@@ -169,22 +169,22 @@ class DbHandler {
         $stmt->bind_param("iss", $user["cd_usuario"], $endereco, $data);
         $result = $stmt->execute();
         
-        $pedido_id = $stmt->lastInsertId();
+        $pedido_id = $this->conn->insert_id;
         
         $stmt->close();
         
-        // foreach($itens as $item) {
-        //     $stmt = $this->conn->prepare("INSERT INTO tc_item_pedido(cd_pedido, cd_prato, qtd_pequena, qtd_grande) values(?, ?, ?, ?)");
-        //     $stmt->bind_param("iiii", $pedido_id, $item["cd_prato"], $item["qtd_pequena"], $item["qtd_grande"]);
-        //     $result = $stmt->execute();
-        // }
+        foreach($itens as $item) {
+            $stmt = $this->conn->prepare("INSERT INTO tc_item_pedido(cd_pedido, cd_prato, qtd_pequena, qtd_grande) values(?, ?, ?, ?)");
+            $stmt->bind_param("iiii", $pedido_id, $item->cd_prato, $item->qtd_pequena, $item->qtd_grande);
+            $result = $stmt->execute();
+        }
 
         $stmt->close();
 
         if ($result) {
-            return PEDIDO_CREATED_SUCCESSFULLY;
+            return $pedido_id;
         } else {
-            return PEDIDO_CREATE_FAILED;
+            return 0;
         }
  
         return $response;

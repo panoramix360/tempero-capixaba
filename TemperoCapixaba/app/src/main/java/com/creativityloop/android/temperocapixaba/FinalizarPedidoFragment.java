@@ -73,6 +73,7 @@ public class FinalizarPedidoFragment extends Fragment {
                 if (validarCampos()) {
                     Usuario usuario = createUserFromView();
                     mPedido.mUsuario = usuario;
+                    mPedido.mEndereco = usuario.mEndereco;
                     new PostPedidoTask().execute(mPedido);
                 }
             }
@@ -143,7 +144,9 @@ public class FinalizarPedidoFragment extends Fragment {
                 pedido.mUsuario.mId = usuarioId;
                 UsuarioLab.get(getActivity()).saveUsuario(pedido.mUsuario);
 
-                //pedidoId = new PedidoFetchr().savePedido(pedido);
+                pedidoId = new PedidoFetchr().savePedido(pedido);
+                pedido.mId = pedidoId;
+                pedido.save();
             }
 
             return usuarioId > 0 && pedidoId > 0;

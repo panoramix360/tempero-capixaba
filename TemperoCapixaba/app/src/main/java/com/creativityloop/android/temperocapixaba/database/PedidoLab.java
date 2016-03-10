@@ -57,9 +57,6 @@ public class PedidoLab {
         Pedido.save(pedido);
     }
 
-    public void savePedidoAPI(Pedido pedido) {
-    }
-
     public void deletePedido(long pedidoId) {
         Pedido pedido = Pedido.findById(Pedido.class, pedidoId);
         pedido.delete();

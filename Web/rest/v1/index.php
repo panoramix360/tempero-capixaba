@@ -160,23 +160,24 @@ $app->post('/create-pedido', function() use ($app, $log) {
     $nome = $_REQUEST["nome"];
     $telefone = $_REQUEST["telefone"];
     $endereco = $_REQUEST["endereco"];
-    $data = $_REQUEST["data"];
-    print var_dump(json_decode($_REQUEST["itens"][0]));
-    exit();
-    $db = new DbHandler();
-    $res = $db->createPedido($nome, $telefone, $endereco, $data);
+    $data = formatDate($_REQUEST["data"]);
+    $itens = $_REQUEST["itens"];
+    $itensDePedido = array();
     
-    if ($res == PEDIDO_CREATED_SUCCESSFULLY) {
+    foreach($itens as $item) {
+        $itemObj = json_decode(stripslashes($item));
+        array_push($itensDePedido, $itemObj);
+    }
+    
+    $db = new DbHandler();
+    $res = $db->createPedido($nome, $telefone, $endereco, $data, $itensDePedido);
+    
+    if ($res) {
         $response["error"] = false;
-        $response["message"] = "Pedido cadastrado com sucesso.";
+        $response["cd_pedido"] = $res;
         echoResponse(201, $response);
-    } else if ($res == PEDIDO_CREATED_FAILED) {
+    } else {
         $response["error"] = true;
-        $response["message"] = "Ocorreu um erro ao cadastrar o pedido.";
-        echoResponse(200, $response);
-    } else if ($res == PEDIDO_ALREADY_EXISTED) {
-        $response["error"] = false;
-        $response["message"] = "Pedido já existente.";
         echoResponse(200, $response);
     }
 });
