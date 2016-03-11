@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.github.satyan:sugar:1.4'
     compile 'org.apache:apache:17'
+    compile 'com.google.code.gson:gson:2.6.2'
 }

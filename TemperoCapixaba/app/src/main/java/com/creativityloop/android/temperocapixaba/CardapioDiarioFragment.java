@@ -26,11 +26,19 @@ import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
 import com.creativityloop.android.temperocapixaba.recyclerView.ItemPedidoAdapter;
 import com.creativityloop.android.temperocapixaba.util.DateUtils;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 public class CardapioDiarioFragment extends Fragment {
+
+    private static final String KEY_ITENS_PEDIDO = "ItensPedido";
 
     private Cardapio mCardapio;
 
@@ -48,6 +56,7 @@ public class CardapioDiarioFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setSavedInstanceState(savedInstanceState);
     }
 
     @Override
@@ -99,6 +108,25 @@ public class CardapioDiarioFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        savedInstanceState.putString(KEY_ITENS_PEDIDO, gson.toJson(mItensPedido));
+    }
+
+    private void setSavedInstanceState(Bundle savedInstanceState) {
+        if(savedInstanceState != null) {
+            GsonBuilder builder = new GsonBuilder();
+            Gson gson = builder.create();
+
+            Type listItemPedidoType = new TypeToken<List<ItemPedido>>() {}.getType();
+
+            mItensPedido = gson.fromJson(savedInstanceState.getString(KEY_ITENS_PEDIDO), listItemPedidoType);
+        }
+    }
+
     public void updateUI() {
         initCardapio();
 
@@ -112,9 +140,9 @@ public class CardapioDiarioFragment extends Fragment {
     private void initCardapio() {
         mPedido = PedidoLab.get(getActivity()).getPedido(mToday);
 
-        if(mPedido == null) {
+        if(mPedido == null && mItensPedido == null) {
             mItensPedido = ItemPedidoLab.get(getActivity()).createItensPedidoComCardapio(mCardapio);
-        } else {
+        } else if(mItensPedido == null) {
             mItensPedido = ItemPedidoLab.get(getActivity()).getItemPedidos(mPedido.getId());
         }
 
