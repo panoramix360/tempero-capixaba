@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
-import com.creativityloop.android.temperocapixaba.util.DateUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

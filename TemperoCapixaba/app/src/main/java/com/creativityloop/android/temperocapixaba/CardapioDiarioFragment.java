@@ -30,8 +30,6 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.json.JSONObject;
-
 import java.lang.reflect.Type;
 import java.util.GregorianCalendar;
 import java.util.List;
