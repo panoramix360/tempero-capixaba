@@ -26,4 +26,7 @@
     <string name="finalizar_pedido_title">Finalize o seu pedido</string>
     <string name="finalizar_pedido_button">Finalizar Pedido</string>
     <string name="email_text_view">Seu email (opcional)</string>
+    <string name="title_activity_meus_pedidos">Meus Pedidos</string>
+    <string name="meus_pedidos_text_view">Meus Pedidos</string>
+    <string name="nao_tem_pedidos_text_view">Não existem pedidos criados.</string>
 </resources>

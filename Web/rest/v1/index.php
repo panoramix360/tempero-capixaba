@@ -128,19 +128,23 @@ $app->post('/get-user', function() use ($app) {
  * method - GET
  * params - none
  */
-$app->get('/usuarios/:email', function($email) use ($app) {
+$app->get('/get-pedido/:user_id', function($user_id) use ($app) {
     $response = array();
     $db = new DbHandler();
 
-    $result = $db->getUserByEmail($email);
+    $result = $db->getPedidoByUserAndDate($user_id, date("Y-m-d"));
 
     $response["error"] = false;
     
     if(count($result) > 0) {
-        $response["user"] = $result;
+        $response["pedidos"] = $result;
+        $response["vazio"] = false;
+    } else if(count($result) == 0) {
+        $response["error"] = false;
+        $response["vazio"] = true;
     } else {
         $response["error"] = true;
-        $response["message"] = "Usuário não encontrado.";
+        $response["message"] = "Pedido não encontrado.";
     }
     
     echoResponse(200, $response);

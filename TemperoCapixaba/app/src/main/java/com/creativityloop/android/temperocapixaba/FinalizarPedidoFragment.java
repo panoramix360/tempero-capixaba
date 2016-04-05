@@ -1,5 +1,6 @@
 package com.creativityloop.android.temperocapixaba;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -147,6 +148,9 @@ public class FinalizarPedidoFragment extends Fragment {
                 pedido.mId = pedidoId;
                 pedido.save();
             }
+
+            Intent intent = MeusPedidosActivity.newIntent(getActivity());
+            startActivity(intent);
 
             return usuarioId > 0 && pedidoId > 0;
         }

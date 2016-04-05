@@ -5,12 +5,17 @@ import android.util.Log;
 
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
+import com.creativityloop.android.temperocapixaba.model.Usuario;
+import com.creativityloop.android.temperocapixaba.util.DateUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by LucasReis on 10/02/2016.
@@ -18,6 +23,7 @@ import java.net.URLEncoder;
 public class PedidoFetchr extends Fetchr {
     private static final String TAG = "PedidoFetchr";
     public static final String URL_POST_PEDIDO = "create-pedido?";
+    public static final String URL_GET_PEDIDO = "get-pedido/";
 
     public int savePedido(Pedido pedido) {
         int pedidoId = 0;
@@ -45,6 +51,52 @@ public class PedidoFetchr extends Fetchr {
         }
 
         return pedidoId;
+    }
+
+    public List<Pedido> fetchPedidosByUserId(int userId) {
+        List<Pedido> pedidos = new ArrayList<Pedido>();
+
+        try {
+            String url = Uri.parse(URL_BASE + URL_GET_PEDIDO + userId)
+                    .buildUpon()
+                    .build().toString();
+            String jsonString = getUrlString(url);
+            Log.i(TAG, "Received JSON: " + jsonString);
+
+            JSONObject jsonBody = new JSONObject(jsonString);
+
+            if(!(boolean) jsonBody.get("vazio")) {
+                parsePedidos(pedidos, userId, jsonBody);
+            }
+        } catch(JSONException je) {
+            Log.e(TAG, "Failed to parse JSON", je);
+        } catch(IOException ioe) {
+            Log.e(TAG, "Failed to fetch items", ioe);
+        }
+
+        return pedidos;
+    }
+
+    private void parsePedidos(List<Pedido> pedidos, int userId, JSONObject jsonBody) throws JSONException {
+        JSONArray pedidosJson = jsonBody.getJSONArray("pedidos");
+
+        for(int i = 0; i < pedidosJson.length(); i++) {
+            JSONObject pedidoJson = pedidosJson.getJSONObject(i);
+            Usuario usuario = new Usuario();
+            usuario.mId = userId;
+            Pedido pedido = new Pedido(pedidoJson.getInt("cd_pedido"), usuario, pedidoJson.getString("endereco"), DateUtils.formatDate(DateUtils.getToday()));
+            pedido.mItensPedido = new ArrayList<>();
+            JSONArray itensPedidoJson = pedidoJson.getJSONArray("itens");
+            for(int j = 0; j < itensPedidoJson.length(); j++) {
+                JSONObject itemPedidoJson = itensPedidoJson.getJSONObject(j);
+                ItemPedido itemPedido = new ItemPedido();
+                itemPedido.mPratoId = itemPedidoJson.getInt("cd_prato");
+                itemPedido.mQuantidadePequena = itemPedidoJson.getInt("qtd_pequena");
+                itemPedido.mQuantidadeGrande = itemPedidoJson.getInt("qtd_grande");
+                pedido.mItensPedido.add(itemPedido);
+            }
+            pedidos.add(pedido);
+        }
     }
 
     public String createDataFromPedido(Pedido pedido) throws IOException, JSONException {

@@ -50,6 +50,11 @@ public class CardapioDiarioFragment extends Fragment {
     private RecyclerView mCardapioRecyclerView;
     private Button mFazerPedidoButton;
 
+    public static CardapioDiarioFragment newInstance() {
+        CardapioDiarioFragment fragment = new CardapioDiarioFragment();
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -191,38 +191,46 @@ class DbHandler {
     }
     
     public function getPedidoByUserAndDate($usuario_id, $data) {
+        $pedidos = array();
         $stmt = $this->conn->prepare("SELECT cd_pedido, cd_usuario, endereco, data FROM tc_pedido WHERE cd_usuario = ? and data = ?");
-        $stmt->bind_param("ss", $email, $data);
+        $stmt->bind_param("ss", $usuario_id, $data);
         if ($stmt->execute()) {
             $stmt->bind_result($id, $usuario_id, $endereco, $data);
-            $stmt->fetch();
-            $pedido = array();
-            $pedido["cd_pedido"] = $id;
-            $pedido["cd_usuario"] = $usuario_id;
-            $pedido["endereco"] = $endereco;
-            $pedido["data"] = $data;
+            while($stmt->fetch()) {
+                $pedido = array();
+                $pedido["cd_pedido"] = $id;
+                $pedido["cd_usuario"] = $usuario_id;
+                $pedido["endereco"] = $endereco;
+                $pedido["data"] = $data;
+                array_push($pedidos, $pedido);
+            }
             $stmt->close();
-
-            $pedido["itens"] = array();
             
-            $stmt = $this->conn->prepare("SELECT cd_item_pedido, cd_pedido, cd_prato, qtd_pequena, qtd_grande FROM tc_item_pedido WHERE cd_pedido = ?");
-            $stmt->bind_param("i", $id);
-            
-            if($stmt->execute()) {
-                $stmt->bind_result($item_pedido_id, $pedido_id, $prato_id, $qtd_pequena, $qtd_grande);
-                while($stmt->fetch()) {
-                    $item = array();
-                    $item["cd_item_pedido"] = $item_pedido_id;
-                    $item["cd_pedido"] = $pedido_id;
-                    $item["cd_prato"] = $prato_id;
-                    $item["qtd_pequena"] = $qtd_pequena;
-                    $item["qtd_grande"] = $qtd_grande;
-                    array_push($pedido["itens"], $item);
+            if(count($pedidos) > 0) {
+                foreach($pedidos as $key => $field) {
+                    $itensPedido = array();
+                    
+                    $stmt = $this->conn->prepare("SELECT cd_item_pedido, cd_pedido, cd_prato, qtd_pequena, qtd_grande FROM tc_item_pedido WHERE cd_pedido = ?");
+                    $stmt->bind_param("i", $id);
+                    
+                    if($stmt->execute()) {
+                        $stmt->bind_result($item_pedido_id, $pedido_id, $prato_id, $qtd_pequena, $qtd_grande);
+                        while($stmt->fetch()) {
+                            $item = array();
+                            $item["cd_item_pedido"] = $item_pedido_id;
+                            $item["cd_pedido"] = $pedido_id;
+                            $item["cd_prato"] = $prato_id;
+                            $item["qtd_pequena"] = $qtd_pequena;
+                            $item["qtd_grande"] = $qtd_grande;
+                            array_push($itensPedido, $item);
+                        }
+                    }
+                    $pedidos[$key]["itens"] = $itensPedido;
                 }
-            }            
-            $stmt->close();
+                $stmt->close();
+            }
             
-            return $pedido;
+            return $pedidos;
         } else {
             return NULL;
         }

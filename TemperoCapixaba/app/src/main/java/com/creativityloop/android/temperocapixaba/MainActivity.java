@@ -10,6 +10,6 @@ public class MainActivity extends SingleFragmentActivity {
         //Limpar a base caso necessario
         //getBaseContext().deleteDatabase("temperoCapixaba.db");
 
-        return new CardapioDiarioFragment();
+        return new MeusPedidosFragment();
     }
 }
