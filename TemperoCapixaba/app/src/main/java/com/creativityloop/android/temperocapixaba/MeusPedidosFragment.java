@@ -88,7 +88,7 @@ public class MeusPedidosFragment extends Fragment {
         }
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.getSupportActionBar().setSubtitle(R.string.cardapio_diario_title);
+        activity.getSupportActionBar().setTitle(R.string.meus_pedidos_text_view);
     }
 
     private class FetchPedidoTask extends AsyncTask<Integer, Void, List<Pedido>> {
