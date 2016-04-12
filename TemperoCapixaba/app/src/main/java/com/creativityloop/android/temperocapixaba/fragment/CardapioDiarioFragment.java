@@ -1,4 +1,4 @@
-package com.creativityloop.android.temperocapixaba;
+package com.creativityloop.android.temperocapixaba.fragment;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -17,6 +17,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.creativityloop.android.temperocapixaba.R;
+import com.creativityloop.android.temperocapixaba.activity.ResumoPedidoActivity;
+import com.creativityloop.android.temperocapixaba.activity.SobreActivity;
 import com.creativityloop.android.temperocapixaba.database.ItemPedidoLab;
 import com.creativityloop.android.temperocapixaba.database.PedidoLab;
 import com.creativityloop.android.temperocapixaba.database.PratoLab;

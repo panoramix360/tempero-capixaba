@@ -29,4 +29,6 @@
     <string name="title_activity_meus_pedidos">Meus Pedidos</string>
     <string name="meus_pedidos_text_view">Meus Pedidos</string>
     <string name="nao_tem_pedidos_text_view">Não existem pedidos criados.</string>
+    <string name="pedido_detalhes_subtitle">Detalhes do Pedido</string>
+    <string name="voltar_button">Voltar</string>
 </resources>

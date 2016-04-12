@@ -1,8 +1,10 @@
-package com.creativityloop.android.temperocapixaba;
+package com.creativityloop.android.temperocapixaba.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+
+import com.creativityloop.android.temperocapixaba.fragment.ResumoPedidoFragment;
 
 public class ResumoPedidoActivity extends SingleFragmentActivity {
 

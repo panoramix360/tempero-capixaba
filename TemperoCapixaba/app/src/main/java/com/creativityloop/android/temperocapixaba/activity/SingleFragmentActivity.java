@@ -1,10 +1,11 @@
-package com.creativityloop.android.temperocapixaba;
+package com.creativityloop.android.temperocapixaba.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.creativityloop.android.temperocapixaba.R;
 import com.orm.SugarContext;
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.creativityloop.android.temperocapixaba;
+package com.creativityloop.android.temperocapixaba.fragment;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -7,21 +7,16 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.creativityloop.android.temperocapixaba.database.PedidoLab;
+import com.creativityloop.android.temperocapixaba.R;
+import com.creativityloop.android.temperocapixaba.activity.CardapioDiarioActivity;
 import com.creativityloop.android.temperocapixaba.database.UsuarioLab;
 import com.creativityloop.android.temperocapixaba.fetchr.PedidoFetchr;
-import com.creativityloop.android.temperocapixaba.fetchr.UsuarioFetchr;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
 import com.creativityloop.android.temperocapixaba.model.Usuario;
 import com.creativityloop.android.temperocapixaba.recyclerView.PedidoAdapter;

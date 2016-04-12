@@ -1,4 +1,4 @@
-package com.creativityloop.android.temperocapixaba;
+package com.creativityloop.android.temperocapixaba.fragment;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.creativityloop.android.temperocapixaba.R;
 
 public class SobreFragment extends Fragment {
 

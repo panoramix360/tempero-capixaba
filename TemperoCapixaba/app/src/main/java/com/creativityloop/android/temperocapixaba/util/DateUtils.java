@@ -3,6 +3,7 @@ package com.creativityloop.android.temperocapixaba.util;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * Created by Guilherme on 11/11/2015.
@@ -10,7 +11,7 @@ import java.util.GregorianCalendar;
 public class DateUtils {
 
     public static GregorianCalendar getToday() {
-        GregorianCalendar data = new GregorianCalendar();
+        GregorianCalendar data = new GregorianCalendar(TimeZone.getTimeZone("America/Sao_Paulo"));
         data.set(GregorianCalendar.HOUR_OF_DAY, 0);
         data.set(GregorianCalendar.MINUTE, 0);
         data.set(GregorianCalendar.SECOND, 0);

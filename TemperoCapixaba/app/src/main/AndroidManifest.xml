@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MeusPedidosActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -20,23 +20,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ResumoPedidoActivity"
+            android:name=".activity.PedidoDetalhesActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".activity.MeusPedidosActivity"/>
         <activity
-            android:name=".FinalizarPedidoActivity"
+            android:name=".activity.CardapioDiarioActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".ResumoPedidoActivity"/>
+            android:parentActivityName=".activity.MeusPedidosActivity"/>
         <activity
-            android:name=".CardapioDiarioActivity"
+            android:name=".activity.ResumoPedidoActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".MeusPedidosActivity"/>
+            android:parentActivityName=".activity.CardapioDiarioActivity"/>
         <activity
-            android:name=".MeusPedidosActivity" />
-        <activity
-            android:name=".SobreActivity"
+            android:name=".activity.FinalizarPedidoActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".activity.ResumoPedidoActivity"/>
+        <activity
+            android:name=".activity.SobreActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".activity.MeusPedidosActivity"/>
 
         <!-- Sugar Database Config -->
         <meta-data

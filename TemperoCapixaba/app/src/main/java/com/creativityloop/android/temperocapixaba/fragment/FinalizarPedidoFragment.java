@@ -1,4 +1,4 @@
-package com.creativityloop.android.temperocapixaba;
+package com.creativityloop.android.temperocapixaba.fragment;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -14,6 +14,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.creativityloop.android.temperocapixaba.R;
+import com.creativityloop.android.temperocapixaba.activity.MeusPedidosActivity;
 import com.creativityloop.android.temperocapixaba.database.PedidoLab;
 import com.creativityloop.android.temperocapixaba.database.UsuarioLab;
 import com.creativityloop.android.temperocapixaba.fetchr.PedidoFetchr;

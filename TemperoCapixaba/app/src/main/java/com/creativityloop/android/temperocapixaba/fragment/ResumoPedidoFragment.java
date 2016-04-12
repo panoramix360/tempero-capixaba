@@ -1,4 +1,4 @@
-package com.creativityloop.android.temperocapixaba;
+package com.creativityloop.android.temperocapixaba.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,12 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.creativityloop.android.temperocapixaba.database.ItemPedidoLab;
+import com.creativityloop.android.temperocapixaba.R;
+import com.creativityloop.android.temperocapixaba.activity.FinalizarPedidoActivity;
 import com.creativityloop.android.temperocapixaba.database.PedidoLab;
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
-
-import java.util.List;
 
 public class ResumoPedidoFragment extends Fragment {
 

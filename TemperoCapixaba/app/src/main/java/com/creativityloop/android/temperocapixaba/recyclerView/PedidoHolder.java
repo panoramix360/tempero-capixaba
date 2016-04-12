@@ -11,7 +11,7 @@ import com.creativityloop.android.temperocapixaba.model.Pedido;
 /**
  * Created by LucasReis on 29/03/2016.
  */
-public class PedidoHolder extends RecyclerView.ViewHolder {
+public class PedidoHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private Pedido mPedido;
 
@@ -38,5 +38,10 @@ public class PedidoHolder extends RecyclerView.ViewHolder {
         }
 
         mTotalTextView.setText(total + " comida(s)");
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
