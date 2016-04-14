@@ -39,4 +39,18 @@
         android:text="@string/endereco_valor"
         android:layout_margin="10dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/endereco_loja"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/endereco_loja_valor"
+        android:layout_margin="10dp" />
+
 </LinearLayout>
