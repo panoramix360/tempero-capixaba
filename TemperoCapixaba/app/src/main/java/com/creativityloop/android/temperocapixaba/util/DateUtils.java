@@ -11,7 +11,7 @@ import java.util.TimeZone;
 public class DateUtils {
 
     public static GregorianCalendar getToday() {
-        GregorianCalendar data = new GregorianCalendar(TimeZone.getTimeZone("America/Sao_Paulo"));
+        GregorianCalendar data = new GregorianCalendar(TimeZone.getTimeZone("America/Brasilia"));
         data.set(GregorianCalendar.HOUR_OF_DAY, 0);
         data.set(GregorianCalendar.MINUTE, 0);
         data.set(GregorianCalendar.SECOND, 0);

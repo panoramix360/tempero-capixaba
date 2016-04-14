@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.creativityloop.android.temperocapixaba.R;
 import com.creativityloop.android.temperocapixaba.activity.CardapioDiarioActivity;
+import com.creativityloop.android.temperocapixaba.database.PedidoLab;
 import com.creativityloop.android.temperocapixaba.database.UsuarioLab;
 import com.creativityloop.android.temperocapixaba.fetchr.PedidoFetchr;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
@@ -62,8 +63,12 @@ public class MeusPedidosFragment extends Fragment {
 
         mUsuario = UsuarioLab.get(getActivity()).getLastUsuario();
 
-        // load pedidos
-        new FetchPedidoTask().execute(mUsuario.mId);
+        if(mUsuario != null) {
+            // load pedidos
+            new FetchPedidoTask().execute(mUsuario.mId);
+        } else {
+            updateUI();
+        }
 
         return v;
     }
@@ -74,7 +79,7 @@ public class MeusPedidosFragment extends Fragment {
     }
 
     public void updateUI() {
-        if(mPedidos.size() > 0) {
+        if(mPedidos != null && mPedidos.size() > 0) {
             PedidoAdapter adapter = new PedidoAdapter(getActivity(), mPedidos);
             mPedidosRecyclerView.setAdapter(adapter);
         } else {

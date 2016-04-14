@@ -32,10 +32,19 @@ public class PedidoLab {
     }
 
     public Pedido getPedido(long pedidoId) {
-        Pedido pedido = Pedido.findById(Pedido.class, pedidoId);
-        pedido.setItensPedido(ItemPedidoLab.get(mContext).getItemPedidos(pedidoId));
-        for(ItemPedido itemPedido : pedido.getItensPedido()) {
-            itemPedido.preencherPrato(mContext);
+        Pedido pedido = null;
+        List<Pedido> pedidos = Pedido.find(Pedido.class, "m_id = ?", pedidoId + "");
+        if(pedidos.size() == 0) {
+            pedido = Pedido.findById(Pedido.class, pedidoId);
+        } else {
+            pedido = pedidos.get(0);
+        }
+
+        if(pedido != null) {
+            pedido.setItensPedido(ItemPedidoLab.get(mContext).getItemPedidos(pedidoId));
+            for(ItemPedido itemPedido : pedido.getItensPedido()) {
+                itemPedido.preencherPrato(mContext);
+            }
         }
         return pedido;
     }

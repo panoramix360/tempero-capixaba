@@ -8,21 +8,23 @@ import com.orm.dsl.Ignore;
 
 public class ItemPedido extends SugarRecord {
 
-    public Pedido mPedido;
+    public long mPedidoId;
     public int mPratoId;
     public int mQuantidadePequena;
     public int mQuantidadeGrande;
 
     @Ignore
     public Prato mPrato;
+    @Ignore
+    private Pedido mPedido;
 
     @Ignore
     private boolean mChecked;
 
     public ItemPedido() {}
 
-    public ItemPedido(Pedido pedido, int pratoId, int quantidadePequena, int quantidadeGrande) {
-        this.mPedido = pedido;
+    public ItemPedido(int pedidoId, int pratoId, int quantidadePequena, int quantidadeGrande) {
+        this.mPedidoId = pedidoId;
         this.mPratoId = pratoId;
         this.mQuantidadePequena = quantidadePequena;
         this.mQuantidadeGrande = quantidadeGrande;
@@ -43,6 +45,14 @@ public class ItemPedido extends SugarRecord {
     public void setPrato(Prato prato) {
         mPrato = prato;
         mPratoId = prato.getId();
+    }
+
+    public Pedido getPedido() {
+        return mPedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.mPedido = pedido;
     }
 
     public void preencherPrato(Context context) {

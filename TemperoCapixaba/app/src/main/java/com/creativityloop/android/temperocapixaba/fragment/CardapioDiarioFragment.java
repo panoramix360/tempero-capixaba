@@ -173,7 +173,8 @@ public class CardapioDiarioFragment extends Fragment {
 
             for (ItemPedido itemPedido : mItensPedido) {
                 if (itemPedido.isChecked()) {
-                    itemPedido.mPedido = mPedido;
+                    itemPedido.setPedido(mPedido);
+                    itemPedido.mPedidoId = mPedido.getId();
                     ItemPedidoLab.get(getActivity()).saveItemPedido(itemPedido);
                     PratoLab.get(getActivity()).savePrato(itemPedido.getPrato());
                 }

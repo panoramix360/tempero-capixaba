@@ -1,6 +1,7 @@
 package com.creativityloop.android.temperocapixaba.database;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteException;
 
 import com.creativityloop.android.temperocapixaba.model.Cardapio;
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;
@@ -33,6 +34,10 @@ public class UsuarioLab {
     }
 
     public Usuario getLastUsuario() {
-        return Usuario.last(Usuario.class);
+        try {
+            return Usuario.last(Usuario.class);
+        } catch(SQLiteException ex) {
+            return null;
+        }
     }
 }
