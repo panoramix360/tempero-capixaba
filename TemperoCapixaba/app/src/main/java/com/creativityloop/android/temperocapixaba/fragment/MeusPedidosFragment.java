@@ -16,11 +16,16 @@ import android.widget.TextView;
 import com.creativityloop.android.temperocapixaba.R;
 import com.creativityloop.android.temperocapixaba.activity.CardapioDiarioActivity;
 import com.creativityloop.android.temperocapixaba.database.PedidoLab;
+import com.creativityloop.android.temperocapixaba.database.PratoLab;
 import com.creativityloop.android.temperocapixaba.database.UsuarioLab;
+import com.creativityloop.android.temperocapixaba.fetchr.CardapioFetchr;
 import com.creativityloop.android.temperocapixaba.fetchr.PedidoFetchr;
+import com.creativityloop.android.temperocapixaba.model.Cardapio;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
+import com.creativityloop.android.temperocapixaba.model.Prato;
 import com.creativityloop.android.temperocapixaba.model.Usuario;
 import com.creativityloop.android.temperocapixaba.recyclerView.PedidoAdapter;
+import com.creativityloop.android.temperocapixaba.util.DateUtils;
 
 import java.util.List;
 
@@ -70,6 +75,12 @@ public class MeusPedidosFragment extends Fragment {
             updateUI();
         }
 
+        List<Prato> pratos = PratoLab.get(getActivity()).getPratos();
+        if(pratos.size() == 0) {
+            int contadorCardapio = DateUtils.getDayOfWeek(DateUtils.getToday()) - 1;
+            new FetchCardapioTask().execute(contadorCardapio);
+        }
+
         return v;
     }
 
@@ -102,6 +113,23 @@ public class MeusPedidosFragment extends Fragment {
         protected void onPostExecute(List<Pedido> result) {
             mPedidos = result;
             updateUI();
+        }
+    }
+
+    private class FetchCardapioTask extends AsyncTask<Integer, Void, Cardapio> {
+        @Override
+        protected Cardapio doInBackground(Integer... params) {
+            if(params.length > 0) {
+                return new CardapioFetchr().fetchCardapio(params[0]);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Cardapio cardapio) {
+            for(Prato prato : cardapio.getPratos()) {
+                PratoLab.get(getActivity()).savePrato(prato);
+            }
         }
     }
 }

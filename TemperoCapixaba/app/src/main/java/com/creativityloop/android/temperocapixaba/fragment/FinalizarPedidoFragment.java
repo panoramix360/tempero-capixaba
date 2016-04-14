@@ -20,6 +20,7 @@ import com.creativityloop.android.temperocapixaba.database.PedidoLab;
 import com.creativityloop.android.temperocapixaba.database.UsuarioLab;
 import com.creativityloop.android.temperocapixaba.fetchr.PedidoFetchr;
 import com.creativityloop.android.temperocapixaba.fetchr.UsuarioFetchr;
+import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
 import com.creativityloop.android.temperocapixaba.model.Usuario;
 
@@ -148,6 +149,10 @@ public class FinalizarPedidoFragment extends Fragment {
 
                 pedidoId = new PedidoFetchr().savePedido(pedido);
                 pedido.mId = pedidoId;
+                for(ItemPedido i : pedido.getItensPedido()) {
+                    i.mPedidoId = pedidoId;
+                    i.save();
+                }
                 pedido.save();
             }
 

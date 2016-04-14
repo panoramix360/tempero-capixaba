@@ -25,6 +25,6 @@ public class PedidoDetalhesActivity extends SingleFragmentActivity {
     public Fragment createFragment() {
         long pedidoId = (long) getIntent().getSerializableExtra(EXTRA_PEDIDO_ID);
 
-        return ResumoPedidoFragment.newInstance(pedidoId);
+        return ResumoPedidoFragment.newInstance(pedidoId, true);
     }
 }
