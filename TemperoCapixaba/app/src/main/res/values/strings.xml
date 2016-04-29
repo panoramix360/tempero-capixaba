@@ -14,7 +14,7 @@
     <string name="sobre">Uma empresa que trabalha para atender com qualidade, seriedade e com um estilo de temperos do Espírito Santo que
         foram desenvolvidos com muitos anos de carinho e dedicação para dar o melhor sabor a sua refeição.</string>
 
-    <string name="telefones"></string>
+    <string name="telefones">Telefones:</string>
     <string name="sobre_title">Sobre nós</string>
 
     <string name="nome_text_view">Seu nome</string>
@@ -31,4 +31,9 @@
     <string name="nao_tem_pedidos_text_view">Não existem pedidos criados.</string>
     <string name="pedido_detalhes_subtitle">Detalhes do Pedido</string>
     <string name="voltar_button">Voltar</string>
+    <string name="telefones_numeros">(21) 98804-8545 / (21) 3071-0403</string>
+    <string name="endereco">Endereço:</string>
+    <string name="endereco_valor">Largo da Carioca, ao lado do metrô na saída do Ed. Central</string>
+    <string name="endereco_loja">Endereço da Loja:</string>
+    <string name="endereco_loja_valor">Rua 20 de Abril, 37 - Loja 2</string>
 </resources>

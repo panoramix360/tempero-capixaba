@@ -3,7 +3,7 @@
 class DbHandler {
 	private $conn;
     private $log;
-	
+
 	function __construct() {
 		require_once dirname(__FILE__) . '/DbConnect.php';
 		// opening db connection
@@ -11,13 +11,13 @@ class DbHandler {
 		$this->conn = $db->connect();
         $this->log = new Log();
 	}
-	
+
     /*
     ** Usuário
     */
 	public function createUser($nome, $endereco, $telefone, $email, $empresa, $tipo_entrega) {
         $response = array();
- 
+
         // First check if user already existed in db
         if (!$this->isUserExists($nome, $telefone)) {
             // Generating API key
@@ -28,9 +28,9 @@ class DbHandler {
             $stmt->bind_param("sssssis", $nome, $endereco, $telefone, $email, $empresa, $tipo_entrega, $api_key);
 
             $result = $stmt->execute();
- 
+
             $stmt->close();
- 
+
             // Check for successful insertion
             if ($result) {
                 // User successfully inserted
@@ -42,22 +42,22 @@ class DbHandler {
         } else {
             return 1;
         }
- 
+
         return $response;
     }
-    
+
     public function updateUser($cd_usuario, $nome, $endereco, $telefone, $email, $empresa, $tipo_entrega) {
         $response = array();
- 
+
         if ($cd_usuario > 0) {
             // update query
             $stmt = $this->conn->prepare("UPDATE tc_usuario set nome = ?, endereco = ?, telefone = ?, email = ?, empresa = ?, tipo_entrega = ? where cd_usuario = ?");
             $stmt->bind_param("sssssii", $nome, $endereco, $telefone, $email, $empresa, $tipo_entrega, $cd_usuario);
 
             $result = $stmt->execute();
- 
+
             $stmt->close();
- 
+
             // Check for successful insertion
             if ($result) {
                 // User successfully inserted
@@ -69,10 +69,10 @@ class DbHandler {
         } else {
             return 0;
         }
- 
+
         return $response;
     }
-    
+
     public function isUserExists($nome, $telefone) {
         if($stmt = $this->conn->prepare("SELECT cd_usuario from tc_usuario WHERE nome = ? and telefone = ?")) {
             $stmt->bind_param("ss", $nome, $telefone);
@@ -86,7 +86,7 @@ class DbHandler {
             exit;
         }
     }
-    
+
     public function getUserByNameAndTelefone($nome, $telefone) {
         $stmt = $this->conn->prepare("SELECT cd_usuario, nome, email, endereco, telefone, empresa, tipo_entrega, api_key FROM tc_usuario WHERE nome = ? and telefone = ?");
         $stmt->bind_param("ss", $nome, $telefone);
@@ -128,7 +128,7 @@ class DbHandler {
         $stmt->close();
         return $users;
     }
-    
+
     public function getUserByApiId($api_key) {
         $stmt = $this->conn->prepare("SELECT cd_usuario FROM tc_usuario WHERE api_key = ?");
         $stmt->bind_param("s", $api_key);
@@ -142,7 +142,7 @@ class DbHandler {
             return NULL;
         }
     }
-    
+
     public function isValidApiKey($api_key) {
         $stmt = $this->conn->prepare("SELECT cd_usuario from tc_usuario WHERE api_key = ?");
         $stmt->bind_param("s", $api_key);
@@ -156,23 +156,23 @@ class DbHandler {
     private function generateApiKey() {
         return md5(uniqid(rand(), true));
     }
-    
+
     /*
     ** Pedido
     */
     public function createPedido($nome, $telefone, $endereco, $data, $itens) {
         $response = array();
-        
+
         $user = $this->getUserByNameAndTelefone($nome, $telefone);
- 
+
         $stmt = $this->conn->prepare("INSERT INTO tc_pedido(cd_usuario, endereco, data) values(?, ?, ?)");
         $stmt->bind_param("iss", $user["cd_usuario"], $endereco, $data);
         $result = $stmt->execute();
-        
+
         $pedido_id = $this->conn->insert_id;
-        
+
         $stmt->close();
-        
+
         foreach($itens as $item) {
             $stmt = $this->conn->prepare("INSERT INTO tc_item_pedido(cd_pedido, cd_prato, qtd_pequena, qtd_grande) values(?, ?, ?, ?)");
             $stmt->bind_param("iiii", $pedido_id, $item->cd_prato, $item->qtd_pequena, $item->qtd_grande);
@@ -186,10 +186,10 @@ class DbHandler {
         } else {
             return 0;
         }
- 
+
         return $response;
     }
-    
+
     public function getPedidoByUserAndDate($usuario_id, $data) {
         $pedidos = array();
         $stmt = $this->conn->prepare("SELECT cd_pedido, cd_usuario, endereco, data FROM tc_pedido WHERE cd_usuario = ? and data = ?");
@@ -205,14 +205,14 @@ class DbHandler {
                 array_push($pedidos, $pedido);
             }
             $stmt->close();
-            
+
             if(count($pedidos) > 0) {
                 foreach($pedidos as $key => $field) {
                     $itensPedido = array();
-                    
+
                     $stmt = $this->conn->prepare("SELECT cd_item_pedido, cd_pedido, cd_prato, qtd_pequena, qtd_grande FROM tc_item_pedido WHERE cd_pedido = ?");
-                    $stmt->bind_param("i", $id);
-                    
+                    $stmt->bind_param("i", $pedidos[$key]["cd_pedido"]);
+
                     if($stmt->execute()) {
                         $stmt->bind_result($item_pedido_id, $pedido_id, $prato_id, $qtd_pequena, $qtd_grande);
                         while($stmt->fetch()) {
@@ -229,46 +229,46 @@ class DbHandler {
                 }
                 $stmt->close();
             }
-            
+
             return $pedidos;
         } else {
             return NULL;
         }
     }
-    
+
     /*
     ** Cardapio
     */
     public function createCardapioPorDia($pratos, $contador_cardapio) {
         $response = array();
-        
+
         $this->deletePratos($contador_cardapio);
-        
+
         $stmt = $this->conn->prepare("INSERT INTO tc_prato(contador, nome) values(?, ?)");
 
         foreach($pratos as $prato) {
             $stmt->bind_param("is", $contador_cardapio, $prato);
             $result = $stmt->execute();
         }
-        
+
         $stmt->close();
- 
+
         if ($result) {
             return PRATO_CREATED_SUCCESSFULLY;
         } else {
             return PRATO_CREATE_FAILED;
         }
-        
+
         return $response;
     }
-    
+
     public function deletePratos($contador) {
         $stmt = $this->conn->prepare("delete from tc_prato WHERE contador = ?");
         $stmt->bind_param("i", $contador);
         $stmt->execute();
         $stmt->close();
     }
-    
+
     public function isPratoExists($nome, $contador) {
         $stmt = $this->conn->prepare("SELECT cd_prato from tc_prato WHERE nome = ? and contador = ?");
         $stmt->bind_param("ss", $nome, $contador);
@@ -278,7 +278,7 @@ class DbHandler {
         $stmt->close();
         return $num_rows > 0;
     }
-    
+
     public function getCardapioByContador($contador) {
         $stmt = $this->conn->prepare("SELECT cd_cardapio, contador FROM tc_cardapio WHERE contador = ?");
         $stmt->bind_param("i", $contador);
@@ -294,7 +294,7 @@ class DbHandler {
 
             $stmt = $this->conn->prepare("SELECT cd_prato, contador, nome FROM tc_prato WHERE contador = ? ORDER BY nome");
             $stmt->bind_param("i", $contador);
-            
+
             if($stmt->execute()) {
                 $stmt->bind_result($prato_id, $contador, $nome);
                 while($stmt->fetch()) {
@@ -305,9 +305,9 @@ class DbHandler {
                     array_push($cardapio["pratos"], $item);
                 }
             }
-            
+
             $stmt->close();
-            
+
             return $cardapio;
         } else {
             return NULL;
