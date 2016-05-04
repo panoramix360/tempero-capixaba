@@ -7,19 +7,55 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
         android:background="@color/second_action_bar">
 
         <TextView
             android:id="@+id/cardapio_diario_title_text_view"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            tools:text="Cardápio do dia"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="@string/cardapio_diario_title"
             android:textSize="20sp"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/sobre_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_about"
+            android:contentDescription="@string/sobre"
+            android:background="@null" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/nome_prato_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:textSize="20sp"
+            android:textColor="@color/vermelhoEscuroTemperoCapixaba"
+            android:textStyle="bold"
+            android:text="@string/nome_prato_text_view" />
+
+        <TextView
+            android:id="@+id/tamanho_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:textSize="20sp"
+            android:textColor="@color/vermelhoEscuroTemperoCapixaba"
+            android:textStyle="bold"
+            android:text="@string/tamanho_text_view" />
 
     </LinearLayout>
 
@@ -29,15 +65,34 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:layout_marginTop="16dp"
         android:padding="4dp" />
 
     <Button
         android:id="@+id/fazer_pedido_button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/cardapio_button"
-        android:background="#a10503"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_button"
         android:textColor="#ffffff"
         android:layout_gravity="bottom|center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:padding="10dp"
+        android:background="@color/second_action_bar">
+
+        <TextView
+            android:id="@+id/data_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="01 de Janeiro de 2016"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
 </LinearLayout>

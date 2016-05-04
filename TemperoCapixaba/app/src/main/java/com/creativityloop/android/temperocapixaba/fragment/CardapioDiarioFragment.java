@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,9 +50,10 @@ public class CardapioDiarioFragment extends Fragment {
     private GregorianCalendar mToday;
 
     // UI
-    private TextView mCardapioTitle;
+    private TextView mDataTextView;
     private RecyclerView mCardapioRecyclerView;
     private Button mFazerPedidoButton;
+    private ImageButton mSobreImageButton;
 
     public static CardapioDiarioFragment newInstance() {
         CardapioDiarioFragment fragment = new CardapioDiarioFragment();
@@ -69,7 +71,7 @@ public class CardapioDiarioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_cardapio_diario, container, false);
 
-        mCardapioTitle = (TextView) v.findViewById(R.id.cardapio_diario_title_text_view);
+        mDataTextView = (TextView) v.findViewById(R.id.data_text_view);
 
         mCardapioRecyclerView = (RecyclerView) v.findViewById(R.id.cardapio_recycler_view);
         mCardapioRecyclerView.setHasFixedSize(true);
@@ -80,6 +82,14 @@ public class CardapioDiarioFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 fazerPedido();
+            }
+        });
+
+        mSobreImageButton = (ImageButton) v.findViewById(R.id.sobre_image_button);
+        mSobreImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sobre();
             }
         });
 
@@ -102,10 +112,6 @@ public class CardapioDiarioFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_item_sobre:
-                Intent intent = SobreActivity.newIntent(getActivity());
-                startActivity(intent);
-                return true;
             default:
                 return false;
         }
@@ -149,7 +155,7 @@ public class CardapioDiarioFragment extends Fragment {
             mItensPedido = ItemPedidoLab.get(getActivity()).getItemPedidos(mPedido.getId());
         }
 
-        mCardapioTitle.setText(getString(R.string.cardapio_diario_format, DateUtils.formatDate(mToday)));
+        mDataTextView.setText(DateUtils.formatDateWithDescription(mToday));
     }
 
     private boolean isAnyItemPedidoChecked() {
@@ -180,6 +186,11 @@ public class CardapioDiarioFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), "Selecione e preencha pelo menos 1 prato", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void sobre() {
+        Intent intent = SobreActivity.newIntent(getActivity());
+        startActivity(intent);
     }
 
     private boolean isItemPedidoValid(ItemPedido itemPedido) {

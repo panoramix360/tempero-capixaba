@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
     <CheckBox
         android:id="@+id/prato_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
 
     <TextView
         android:id="@+id/prato_name_text_view"
-        android:layout_width="150dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/prato_checkbox"
-        android:layout_marginTop="8dp"
-        tools:text="Nome do Prato"/>
-
-    <EditText
-        android:id="@+id/prato_quantidade_grande_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:enabled="false"
-        android:layout_alignParentRight="true"
-        android:hint="@string/quantidade_grande"/>
+        android:textSize="16sp"
+        tools:text="Nome do Pratos"
+        android:layout_weight="5"
+        android:layout_gravity="fill" />
 
     <EditText
         android:id="@+id/prato_quantidade_pequena_edit_text"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:enabled="false"
-        android:layout_toLeftOf="@id/prato_quantidade_grande_edit_text"
-        android:hint="@string/quantidade_pequena"/>
+        android:hint="@string/quantidade_pequena"
+        android:layout_weight="2"/>
 
-</RelativeLayout>
+    <EditText
+        android:id="@+id/prato_quantidade_grande_edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:enabled="false"
+        android:hint="@string/quantidade_grande"
+        android:layout_weight="2"/>
+
+</LinearLayout>

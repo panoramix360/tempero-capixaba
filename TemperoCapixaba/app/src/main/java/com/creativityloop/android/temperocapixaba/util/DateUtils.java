@@ -3,6 +3,7 @@ package com.creativityloop.android.temperocapixaba.util;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -27,5 +28,20 @@ public class DateUtils {
         SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
         fmt.setCalendar(calendar);
         return fmt.format(calendar.getTime());
+    }
+
+    public static String formatDateWithDescription(GregorianCalendar calendar) {
+        Locale brazil = new Locale("pt", "BR");
+
+        SimpleDateFormat fmtDay = new SimpleDateFormat("dd");
+        fmtDay.setCalendar(calendar);
+
+        SimpleDateFormat fmtMonth = new SimpleDateFormat("MMMMM", brazil);
+        fmtMonth.setCalendar(calendar);
+
+        SimpleDateFormat fmtYear = new SimpleDateFormat("yyyy");
+        fmtYear.setCalendar(calendar);
+
+        return fmtDay.format(calendar.getTime()) + " de " + fmtMonth.format(calendar.getTime()) + " de " + fmtYear.format(calendar.getTime());
     }
 }
