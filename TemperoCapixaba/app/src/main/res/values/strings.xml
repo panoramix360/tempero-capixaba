@@ -3,7 +3,7 @@
 
     <string name="action_contato">Sobre</string>
     <string name="cardapio_diario_title">Cardápio do Dia</string>
-    <string name="cardapio_diario_format">Dia %s</string>
+    <string name="cardapio_diario_format">Cardápio do dia - %s</string>
     <string name="cardapio_button">Fazer Pedido</string>
     <string name="quantidade">Quantidade</string>
     <string name="quantidade_pequena">Pequena</string>
@@ -36,4 +36,6 @@
     <string name="endereco_valor">Largo da Carioca, ao lado do metrô na saída do Ed. Central</string>
     <string name="endereco_loja">Endereço da Loja:</string>
     <string name="endereco_loja_valor">Rua 20 de Abril, 37 - Loja 2</string>
+
+    <color name="second_action_bar">#626262</color>
 </resources>
