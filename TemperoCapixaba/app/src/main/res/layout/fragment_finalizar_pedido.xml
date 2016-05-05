@@ -4,19 +4,39 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/finalizar_pedido_title"
-        android:gravity="center"
-        android:layout_marginTop="16dp"
-        style="?android:listSeparatorTextViewStyle"/>
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="@color/second_action_bar">
+
+        <TextView
+            android:id="@+id/finalize_pedido_title_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/finalizar_pedido_title"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/back_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_back"
+            android:contentDescription="@string/sobre"
+            android:background="@null" />
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/nome_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
+        android:layout_margin="5dp"
         android:hint="@string/nome_text_view" />
 
 
@@ -25,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
+        android:layout_margin="5dp"
         android:hint="@string/endereco_text_view" />
 
     <EditText
@@ -32,6 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="phone"
+        android:layout_margin="5dp"
         android:hint="@string/telefone_text_view" />
 
     <EditText
@@ -39,6 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
+        android:layout_margin="5dp"
         android:hint="@string/email_text_view" />
 
     <EditText
@@ -46,6 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
+        android:layout_margin="5dp"
         android:hint="@string/empresa_text_view" />
 
     <RadioGroup
@@ -57,20 +81,26 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:text="@string/entrega_radio_button" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:text="@string/buscar_radio_button" />
 
     </RadioGroup>
 
     <Button
         android:id="@+id/finalizar_pedido_button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/finalizar_pedido_button"
-        android:layout_gravity="bottom|center" />
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_button"
+        android:textColor="#ffffff"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="15dp"/>
 
 </LinearLayout>
