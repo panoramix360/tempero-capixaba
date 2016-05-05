@@ -22,7 +22,7 @@
             android:textStyle="bold" />
 
         <ImageButton
-            android:id="@+id/sobre_image_button"
+            android:id="@+id/back_image_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_back"
@@ -45,7 +45,8 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_button"
             android:textColor="#ffffff"
-            android:layout_gravity="bottom|center" />
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="15dp"/>
 
 
 </LinearLayout>
