@@ -4,11 +4,40 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="@color/second_action_bar">
+
+        <TextView
+            android:id="@+id/finalize_pedido_title_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/sobre_title"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/back_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_back"
+            android:contentDescription="@string/sobre"
+            android:background="@null" />
+
+
+    </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/sobre"
+        android:textStyle="bold|italic"
         android:layout_margin="10dp" />
 
     <TextView
@@ -16,41 +45,54 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/telefones"
-        android:layout_margin="10dp" />
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_margin="5dp"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/telefones_numeros"
-        android:layout_margin="10dp" />
+        android:textStyle="italic"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/endereco"
-        android:layout_margin="10dp" />
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_margin="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/endereco_valor"
-        android:layout_margin="10dp" />
+        android:textStyle="italic"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/endereco_loja"
-        android:layout_margin="10dp" />
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_margin="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/endereco_loja_valor"
-        android:layout_margin="10dp" />
+        android:textStyle="italic"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp" />
 
 </LinearLayout>
