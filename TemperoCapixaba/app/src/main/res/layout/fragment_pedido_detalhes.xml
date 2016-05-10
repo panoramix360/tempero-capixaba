@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ListView
         android:id="@+id/resumo_pedido_list_view"
@@ -16,6 +17,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/voltar_button"
-        android:layout_gravity="bottom|center" />
+        style="@style/RedButton"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="15dp" />
+
+    <fragment
+        android:name="com.creativityloop.android.temperocapixaba.fragment.BottomMenuFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_menu_fragment"
+        tools:layout="@layout/fragment_bottom_menu" />
 
 </LinearLayout>

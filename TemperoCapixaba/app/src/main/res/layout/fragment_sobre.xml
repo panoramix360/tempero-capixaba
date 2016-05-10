@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,70 +30,89 @@
             android:contentDescription="@string/sobre"
             android:background="@null" />
 
-
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/sobre"
-        android:textStyle="bold|italic"
-        android:layout_margin="10dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/telefones"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:layout_margin="5dp"
-        />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/telefones_numeros"
-        android:textStyle="italic"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/sobre"
+                android:textStyle="bold|italic"
+                android:layout_margin="10dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/endereco"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:layout_margin="5dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/telefones"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:layout_margin="5dp"
+                />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/endereco_valor"
-        android:textStyle="italic"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/telefones_numeros"
+                android:textStyle="italic"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/endereco_loja"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:layout_margin="5dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/endereco"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:layout_margin="5dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/endereco_valor"
+                android:textStyle="italic"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/endereco_loja"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/endereco_loja_valor"
+                android:textStyle="italic"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <fragment
+        android:name="com.creativityloop.android.temperocapixaba.fragment.BottomMenuFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/endereco_loja_valor"
-        android:textStyle="italic"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp" />
+        android:id="@+id/bottom_menu_fragment"
+        tools:layout="@layout/fragment_bottom_menu" />
 
 </LinearLayout>

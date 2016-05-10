@@ -23,7 +23,6 @@ import com.creativityloop.android.temperocapixaba.activity.ResumoPedidoActivity;
 import com.creativityloop.android.temperocapixaba.activity.SobreActivity;
 import com.creativityloop.android.temperocapixaba.database.ItemPedidoLab;
 import com.creativityloop.android.temperocapixaba.database.PedidoLab;
-import com.creativityloop.android.temperocapixaba.database.PratoLab;
 import com.creativityloop.android.temperocapixaba.fetchr.CardapioFetchr;
 import com.creativityloop.android.temperocapixaba.model.Cardapio;
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;

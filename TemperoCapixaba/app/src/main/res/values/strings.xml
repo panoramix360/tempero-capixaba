@@ -38,6 +38,9 @@
     <string name="endereco_loja_valor">Rua 20 de Abril, 37 - Loja 2</string>
     <string name="nome_prato_text_view">Nome do prato</string>
     <string name="tamanho_text_view">Tamanho</string>
+    <string name="home_image_button">Home</string>
+    <string name="phone_image_button">Telefone</string>
+    <string name="marker_image_button">Mapa</string>
 
     <color name="second_action_bar">#626262</color>
 </resources>

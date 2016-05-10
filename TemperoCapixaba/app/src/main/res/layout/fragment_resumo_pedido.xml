@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -22,31 +23,34 @@
             android:textStyle="bold" />
 
         <ImageButton
-            android:id="@+id/back_image_button"
+            android:id="@+id/sobre_image_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_back"
+            android:src="@drawable/ic_action_about"
             android:contentDescription="@string/sobre"
             android:background="@null" />
     </LinearLayout>
 
-        <ListView
-            android:id="@+id/resumo_pedido_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:padding="4dp" />
+    <ListView
+        android:id="@+id/resumo_pedido_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:padding="4dp" />
 
-        <Button
-            android:id="@+id/confirmar_pedido_button"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="@string/confirmar_pedido_button"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/rounded_button"
-            android:textColor="#ffffff"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="15dp"/>
+    <Button
+        android:id="@+id/confirmar_pedido_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirmar_pedido_button"
+        android:layout_gravity="bottom|center"
+        style="@style/RedButton"
+        android:layout_marginBottom="15dp"/>
 
-
+    <fragment
+        android:name="com.creativityloop.android.temperocapixaba.fragment.BottomMenuFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_menu_fragment"
+        tools:layout="@layout/fragment_bottom_menu" />
 </LinearLayout>
