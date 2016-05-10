@@ -26,7 +26,7 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(getApplicationContext(),CardapioDiarioActivity.class);
+                Intent mainIntent = new Intent(getApplicationContext(),MeusPedidosActivity.class);
                 SplashActivity.this.startActivity(mainIntent);
                 SplashActivity.this.finish();
             }
