@@ -1,61 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.creativityloop.android.temperocapixaba"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.creativityloop.android.temperocapixaba">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".TemperoCapixabaApp"
         android:allowBackup="true"
-        android:logo="@drawable/logo_action_bar"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:logo="@drawable/logo_action_bar"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.MeusPedidosActivity"
-            android:logo="@drawable/logo_action_bar"
-            android:label="@string/app_name"
-            >
+            android:name=".activity.SplashActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.MeusPedidosActivity"
+            android:label="@string/app_name" />
+
         <activity
             android:name=".activity.PedidoDetalhesActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".activity.MeusPedidosActivity"/>
+            android:parentActivityName=".activity.MeusPedidosActivity" />
         <activity
             android:name=".activity.CardapioDiarioActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".activity.MeusPedidosActivity"/>
+            android:parentActivityName=".activity.MeusPedidosActivity" />
         <activity
             android:name=".activity.ResumoPedidoActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".activity.CardapioDiarioActivity"/>
+            android:parentActivityName=".activity.CardapioDiarioActivity" />
         <activity
             android:name=".activity.FinalizarPedidoActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".activity.ResumoPedidoActivity"/>
+            android:parentActivityName=".activity.ResumoPedidoActivity" />
         <activity
             android:name=".activity.SobreActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".activity.CardapioDiarioActivity"/>
+            android:parentActivityName=".activity.CardapioDiarioActivity" />
 
         <!-- Sugar Database Config -->
         <meta-data
             android:name="DATABASE"
-            android:value="temperoCapixaba.db"/>
+            android:value="temperoCapixaba.db" />
         <meta-data
             android:name="VERSION"
-            android:value="2"/>
+            android:value="2" />
         <meta-data
             android:name="QUERY_LOG"
-            android:value="true"/>
+            android:value="true" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
-            android:value="com.creativityloop.android.temperocapixaba"/>
+            android:value="com.creativityloop.android.temperocapixaba" />
+
+
     </application>
 
 </manifest>
