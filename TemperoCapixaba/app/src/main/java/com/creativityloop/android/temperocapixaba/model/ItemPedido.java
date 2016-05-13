@@ -18,9 +18,6 @@ public class ItemPedido extends SugarRecord {
     @Ignore
     private Pedido mPedido;
 
-    @Ignore
-    private boolean mChecked;
-
     public ItemPedido() {}
 
     public ItemPedido(int pedidoId, int pratoId, int quantidadePequena, int quantidadeGrande) {
@@ -28,14 +25,6 @@ public class ItemPedido extends SugarRecord {
         this.mPratoId = pratoId;
         this.mQuantidadePequena = quantidadePequena;
         this.mQuantidadeGrande = quantidadeGrande;
-    }
-
-    public boolean isChecked() {
-        return mChecked;
-    }
-
-    public void setChecked(boolean checked) {
-        mChecked = checked;
     }
 
     public Prato getPrato() {

@@ -41,6 +41,11 @@
     <string name="home_image_button">Home</string>
     <string name="phone_image_button">Telefone</string>
     <string name="marker_image_button">Mapa</string>
+    <string name="minus">-</string>
+    <string name="max">+</string>
+    <string name="zero">0</string>
+    <string name="tamanho_pequeno_text_view">Menor</string>
+    <string name="tamanho_grande_text_view">Maior</string>
 
     <color name="second_action_bar">#626262</color>
 </resources>

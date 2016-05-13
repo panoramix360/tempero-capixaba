@@ -4,38 +4,61 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
-    <CheckBox
-        android:id="@+id/prato_checkbox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-
     <TextView
         android:id="@+id/prato_name_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         tools:text="Nome do Pratos"
-        android:layout_weight="5"
-        android:layout_gravity="fill" />
+        android:layout_weight="10"
+        android:layout_gravity="center_vertical" />
 
-    <EditText
-        android:id="@+id/prato_quantidade_pequena_edit_text"
+    <Button
+        android:id="@+id/minus_pequena_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:enabled="false"
-        android:hint="@string/quantidade_pequena"
-        android:layout_weight="2"/>
+        android:layout_weight="3"
+        android:text="@string/minus"/>
 
-    <EditText
-        android:id="@+id/prato_quantidade_grande_edit_text"
+    <TextView
+        android:id="@+id/prato_quantidade_pequena_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:enabled="false"
-        android:hint="@string/quantidade_grande"
-        android:layout_weight="2"/>
+        android:layout_weight="2"
+        android:textSize="20sp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:gravity="center"
+        android:text="@string/zero" />
+
+    <Button
+        android:id="@+id/max_pequena_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:text="@string/max"/>
+
+    <Button
+        android:id="@+id/minus_grande_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:text="@string/minus"/>
+
+    <TextView
+        android:id="@+id/prato_quantidade_grande_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:textSize="20sp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:gravity="center"
+        android:text="@string/zero" />
+
+    <Button
+        android:id="@+id/max_grande_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:text="@string/max"/>
 
 </LinearLayout>

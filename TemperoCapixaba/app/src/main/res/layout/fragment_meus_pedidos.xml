@@ -28,5 +28,6 @@
         android:layout_height="wrap_content"
         android:text="@string/cardapio_button"
         style="@style/RedButton"
-        android:layout_gravity="bottom|center"/>
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="15dp"/>
 </LinearLayout>

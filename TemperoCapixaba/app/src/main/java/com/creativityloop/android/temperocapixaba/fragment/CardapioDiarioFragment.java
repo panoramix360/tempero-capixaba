@@ -174,7 +174,7 @@ public class CardapioDiarioFragment extends Fragment {
             PedidoLab.get(getActivity()).savePedido(mPedido);
 
             for (ItemPedido itemPedido : mItensPedido) {
-                if (itemPedido.isChecked()) {
+                if (isItemPedidoValid(itemPedido)) {
                     itemPedido.setPedido(mPedido);
                     itemPedido.mPedidoId = mPedido.getId();
                     ItemPedidoLab.get(getActivity()).saveItemPedido(itemPedido);
@@ -193,7 +193,7 @@ public class CardapioDiarioFragment extends Fragment {
     }
 
     private boolean isItemPedidoValid(ItemPedido itemPedido) {
-        return itemPedido.isChecked() && (itemPedido.mQuantidadePequena > 0 || itemPedido.mQuantidadeGrande > 0);
+        return (itemPedido.mQuantidadePequena > 0 || itemPedido.mQuantidadeGrande > 0);
     }
 
     private class FetchCardapioTask extends AsyncTask<Integer, Void, Cardapio> {
