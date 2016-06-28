@@ -16,6 +16,7 @@ public class Pedido extends SugarRecord {
     public Usuario mUsuario;
     public String mEndereco;
     public String mData;
+    public StatusPedido mStatus;
 
     @Ignore
     public GregorianCalendar mDataObj;
@@ -25,11 +26,12 @@ public class Pedido extends SugarRecord {
 
     public Pedido() {}
 
-    public Pedido(int id, Usuario usuario, String endereco, String data) {
+    public Pedido(int id, Usuario usuario, String endereco, String data, StatusPedido mStatus) {
         this.mId = id;
         this.mUsuario = usuario;
         this.mEndereco = endereco;
         this.mData = data;
+        this.mStatus = mStatus;
     }
 
     public List<ItemPedido> getItensPedido() {

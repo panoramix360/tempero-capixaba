@@ -28,7 +28,7 @@
     <string name="email_text_view">Seu email (opcional)</string>
     <string name="title_activity_meus_pedidos">Meus Pedidos</string>
     <string name="meus_pedidos_text_view">Meus Pedidos</string>
-    <string name="nao_tem_pedidos_text_view">Não existem pedidos criados.</string>
+    <string name="nao_tem_pedidos_text_view">Você não possui nenhum pedido.</string>
     <string name="pedido_detalhes_subtitle">Detalhes do Pedido</string>
     <string name="voltar_button">Voltar</string>
     <string name="telefones_numeros">(21) 98804-8545 / (21) 3071-0403</string>

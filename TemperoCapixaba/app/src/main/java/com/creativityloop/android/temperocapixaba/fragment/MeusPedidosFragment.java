@@ -94,7 +94,7 @@ public class MeusPedidosFragment extends Fragment {
             PedidoAdapter adapter = new PedidoAdapter(getActivity(), mPedidos);
             mPedidosRecyclerView.setAdapter(adapter);
         } else {
-            mPedidosRecyclerView.setVisibility(View.INVISIBLE);
+            mPedidosRecyclerView.setVisibility(View.GONE);
             mNaoTemPedidos.setVisibility(View.VISIBLE);
         }
 

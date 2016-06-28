@@ -165,7 +165,7 @@ class DbHandler {
 
         $user = $this->getUserByNameAndTelefone($nome, $telefone);
 
-        $stmt = $this->conn->prepare("INSERT INTO tc_pedido(cd_usuario, endereco, data) values(?, ?, ?)");
+        $stmt = $this->conn->prepare("INSERT INTO tc_pedido(cd_usuario, endereco, data, status) values(?, ?, ?, 0)");
         $stmt->bind_param("iss", $user["cd_usuario"], $endereco, $data);
         $result = $stmt->execute();
 
@@ -192,16 +192,17 @@ class DbHandler {
 
     public function getPedidoByUserAndDate($usuario_id, $data) {
         $pedidos = array();
-        $stmt = $this->conn->prepare("SELECT cd_pedido, cd_usuario, endereco, data FROM tc_pedido WHERE cd_usuario = ? and data = ?");
+        $stmt = $this->conn->prepare("SELECT cd_pedido, cd_usuario, endereco, data, status FROM tc_pedido WHERE cd_usuario = ? and data = ?");
         $stmt->bind_param("ss", $usuario_id, $data);
         if ($stmt->execute()) {
-            $stmt->bind_result($id, $usuario_id, $endereco, $data);
+            $stmt->bind_result($id, $usuario_id, $endereco, $data, $status);
             while($stmt->fetch()) {
                 $pedido = array();
                 $pedido["cd_pedido"] = $id;
                 $pedido["cd_usuario"] = $usuario_id;
                 $pedido["endereco"] = $endereco;
                 $pedido["data"] = $data;
+                $pedido["status"] = $status;
                 array_push($pedidos, $pedido);
             }
             $stmt->close();

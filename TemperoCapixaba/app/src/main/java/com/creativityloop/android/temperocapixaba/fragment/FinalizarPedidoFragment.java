@@ -22,6 +22,7 @@ import com.creativityloop.android.temperocapixaba.fetchr.PedidoFetchr;
 import com.creativityloop.android.temperocapixaba.fetchr.UsuarioFetchr;
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
+import com.creativityloop.android.temperocapixaba.model.StatusPedido;
 import com.creativityloop.android.temperocapixaba.model.Usuario;
 
 public class FinalizarPedidoFragment extends Fragment {
@@ -77,6 +78,7 @@ public class FinalizarPedidoFragment extends Fragment {
                     Usuario usuario = createUserFromView();
                     mPedido.mUsuario = usuario;
                     mPedido.mEndereco = usuario.mEndereco;
+                    mPedido.mStatus = StatusPedido.NAO_ATENDIDO;
                     new PostPedidoTask().execute(mPedido);
                 }
             }
