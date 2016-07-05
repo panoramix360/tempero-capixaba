@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once '../include/Log.php';
 require_once '../include/DbHandler.php';
 require_once '../include/Utils.php';
@@ -19,9 +19,9 @@ $log = new Log();
 $app->post('/create-user', function() use ($app, $log) {
     // check for required params
     verifyRequiredParams(array('nome', 'endereco', 'telefone', 'tipo_entrega'));
-    
+
     $response = array();
-    
+
     // reading post params
     $nome = $_REQUEST["nome"];
     $endereco = $_REQUEST["endereco"];
@@ -32,7 +32,7 @@ $app->post('/create-user', function() use ($app, $log) {
 
     $db = new DbHandler();
     $res = $db->createUser($nome, $endereco, $telefone, $email, $empresa, $tipo_entrega);
-    
+
     if ($res > 0) {
         $response["error"] = false;
         $response["cd_usuario"] = $res;
@@ -52,11 +52,11 @@ $app->post('/create-user', function() use ($app, $log) {
 $app->post('/update-user', function() use ($app, $log) {
     // check for required params
     verifyRequiredParams(array('cd_usuario', 'nome', 'endereco', 'telefone', 'tipo_entrega'));
-    
+
     $response = array();
-    
+
     // reading post params
-    
+
     $cd_usuario = $_REQUEST["cd_usuario"];
     $nome = $_REQUEST["nome"];
     $endereco = $_REQUEST["endereco"];
@@ -67,7 +67,7 @@ $app->post('/update-user', function() use ($app, $log) {
 
     $db = new DbHandler();
     $res = $db->updateUser($cd_usuario, $nome, $endereco, $telefone, $email, $empresa, $tipo_entrega);
-    
+
     if ($res) {
         $response["error"] = false;
         $response["cd_usuario"] = $res;
@@ -87,17 +87,17 @@ $app->post('/update-user', function() use ($app, $log) {
 $app->post('/get-user', function() use ($app) {
     // check for required params
     verifyRequiredParams(array('nome', 'telefone'));
-    
+
     // reading post params
     $nome = $_REQUEST["nome"];
     $telefone = $_REQUEST["telefone"];
     $response = array();
-    
+
     $db = new DbHandler();
     if ($db->isUserExists($nome, $telefone)) {
         // get the user by email
         $user = $db->getUserByTelefone($email);
-        
+
         if ($user != NULL) {
             $response["error"] = false;
             $response["cd_usuario"] = $user["cd_usuario"];
@@ -118,7 +118,7 @@ $app->post('/get-user', function() use ($app) {
         $response['error'] = true;
         $response['message'] = 'Login falho, credenciais incorretas.';
     }
-    
+
     echoResponse(200, $response);
 });
 
@@ -135,7 +135,7 @@ $app->get('/get-pedido/:user_id', function($user_id) use ($app) {
     $result = $db->getPedidoByUserAndDate($user_id, date("Y-m-d"));
 
     $response["error"] = false;
-    
+
     if(count($result) > 0) {
         $response["pedidos"] = $result;
         $response["vazio"] = false;
@@ -146,7 +146,7 @@ $app->get('/get-pedido/:user_id', function($user_id) use ($app) {
         $response["error"] = true;
         $response["message"] = "Pedido não encontrado.";
     }
-    
+
     echoResponse(200, $response);
 });
 
@@ -157,25 +157,25 @@ $app->get('/get-pedido/:user_id', function($user_id) use ($app) {
  * params - 'nome', 'email', 'endereco', 'tipo_usuario', 'horario_almoco'
  */
 $app->post('/create-pedido', function() use ($app, $log) {
-    verifyRequiredParams(array('nome', 'telefone', 'endereco', 'data'));
+    verifyRequiredParams(array('nome', 'telefone', 'endereco'));
 
     $response = array();
 
     $nome = $_REQUEST["nome"];
     $telefone = $_REQUEST["telefone"];
     $endereco = $_REQUEST["endereco"];
-    $data = formatDate($_REQUEST["data"]);
+    $data = date("Y-m-d");
     $itens = $_REQUEST["itens"];
     $itensDePedido = array();
-    
+
     foreach($itens as $item) {
         $itemObj = json_decode(stripslashes($item));
         array_push($itensDePedido, $itemObj);
     }
-    
+
     $db = new DbHandler();
     $res = $db->createPedido($nome, $telefone, $endereco, $data, $itensDePedido);
-    
+
     if ($res) {
         $response["error"] = false;
         $response["cd_pedido"] = $res;
@@ -189,12 +189,12 @@ $app->post('/create-pedido', function() use ($app, $log) {
 $app->get('/getCardapio/:contador', function($contador) {
     $response = array();
     $db = new DbHandler();
-    
+
     $result = $db->getCardapioByContador($contador);
-    
+
     $response["error"] = false;
     $response["pratos"] = array();
-    
+
     if(count($result["pratos"]) > 0) {
         foreach($result["pratos"] as $prato) {
             $tmp = array();
@@ -204,7 +204,7 @@ $app->get('/getCardapio/:contador', function($contador) {
             array_push($response["pratos"], $tmp);
         }
     }
-    
+
     echoResponse(200, $response);
 });
 

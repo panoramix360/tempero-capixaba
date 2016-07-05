@@ -18,6 +18,7 @@ public class CardapioDiarioActivity extends SingleFragmentActivity {
 
     @Override
     public Fragment createFragment() {
+        getSupportActionBar().setHomeButtonEnabled(false);
         return CardapioDiarioFragment.newInstance();
     }
 }

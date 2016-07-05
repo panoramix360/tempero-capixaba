@@ -37,7 +37,7 @@ public class UsuarioLab {
         try {
             return Usuario.last(Usuario.class);
         } catch(SQLiteException ex) {
-            return null;
+            throw ex;
         }
     }
 }

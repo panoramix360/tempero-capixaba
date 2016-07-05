@@ -46,6 +46,8 @@
     <string name="zero">0</string>
     <string name="tamanho_pequeno_text_view">Menor</string>
     <string name="tamanho_grande_text_view">Maior</string>
+    <string name="n_pedido_text_view">Nº do Pedido</string>
+    <string name="total_text_view">Total</string>
 
     <color name="second_action_bar">#626262</color>
 </resources>

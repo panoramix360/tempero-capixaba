@@ -27,11 +27,12 @@ import com.creativityloop.android.temperocapixaba.fetchr.CardapioFetchr;
 import com.creativityloop.android.temperocapixaba.model.Cardapio;
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
+import com.creativityloop.android.temperocapixaba.model.StatusPedido;
 import com.creativityloop.android.temperocapixaba.recyclerView.ItemPedidoAdapter;
 import com.creativityloop.android.temperocapixaba.util.DateUtils;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.GregorianCalendar;
@@ -169,7 +170,7 @@ public class CardapioDiarioFragment extends Fragment {
     private void fazerPedido() {
         if (isAnyItemPedidoChecked()) {
             if(mPedido == null) {
-                mPedido = new Pedido(0, null, "", DateUtils.formatDate(DateUtils.getToday()));
+                mPedido = new Pedido(0, null, "", DateUtils.formatDate(DateUtils.getToday()), StatusPedido.NAO_ATENDIDO.getValue());
             }
             PedidoLab.get(getActivity()).savePedido(mPedido);
 

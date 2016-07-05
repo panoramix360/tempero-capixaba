@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.creativityloop.android.temperocapixaba.model.ItemPedido;
 import com.creativityloop.android.temperocapixaba.model.Pedido;
+import com.creativityloop.android.temperocapixaba.model.StatusPedido;
 import com.creativityloop.android.temperocapixaba.model.Usuario;
 import com.creativityloop.android.temperocapixaba.util.DateUtils;
 
@@ -84,7 +85,8 @@ public class PedidoFetchr extends Fetchr {
             JSONObject pedidoJson = pedidosJson.getJSONObject(i);
             Usuario usuario = new Usuario();
             usuario.mId = userId;
-            Pedido pedido = new Pedido(pedidoJson.getInt("cd_pedido"), usuario, pedidoJson.getString("endereco"), DateUtils.formatDate(DateUtils.getToday()));
+            int status = Integer.parseInt(pedidoJson.getString("status"));
+            Pedido pedido = new Pedido(pedidoJson.getInt("cd_pedido"), usuario, pedidoJson.getString("endereco"), DateUtils.formatDate(DateUtils.getToday()), StatusPedido.values()[status].getValue());
             pedido.mItensPedido = new ArrayList<>();
             JSONArray itensPedidoJson = pedidoJson.getJSONArray("itens");
             for(int j = 0; j < itensPedidoJson.length(); j++) {
@@ -103,7 +105,6 @@ public class PedidoFetchr extends Fetchr {
         String data = "nome=" + URLEncoder.encode(pedido.mUsuario.mNome, "UTF-8");
         data += "&endereco=" + URLEncoder.encode(pedido.mUsuario.mEndereco, "UTF-8");
         data += "&telefone=" + URLEncoder.encode(pedido.mUsuario.mTelefone, "UTF-8");
-        data += "&data=" + URLEncoder.encode(pedido.mData, "UTF-8");
         int i = 0;
         for(ItemPedido itemPedido : pedido.mItensPedido) {
             JSONObject itemObject = new JSONObject();

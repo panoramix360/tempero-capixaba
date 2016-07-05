@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.creativityloop.android.temperocapixaba.R;
@@ -21,7 +21,7 @@ public class PedidoHolder extends RecyclerView.ViewHolder implements View.OnClic
     private Pedido mPedido;
 
     // UI
-    private RelativeLayout mItemPedidoRelativeLayout;
+    private LinearLayout mItemPedidoLinearLayout;
     private TextView mPedidoTextView;
     private TextView mTotalTextView;
 
@@ -30,8 +30,8 @@ public class PedidoHolder extends RecyclerView.ViewHolder implements View.OnClic
 
         mContext = context;
 
-        mItemPedidoRelativeLayout = (RelativeLayout) itemView.findViewById(R.id.list_item_pedido_recycler_view);
-        mItemPedidoRelativeLayout.setOnClickListener(this);
+        mItemPedidoLinearLayout = (LinearLayout) itemView.findViewById(R.id.list_item_pedido_recycler_view);
+        mItemPedidoLinearLayout.setOnClickListener(this);
         mPedidoTextView = (TextView) itemView.findViewById(R.id.pedido_text_view);
         mTotalTextView = (TextView) itemView.findViewById(R.id.total_text_view);
     }

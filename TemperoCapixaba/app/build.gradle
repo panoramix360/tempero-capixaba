@@ -20,12 +20,12 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.android.support:recyclerview-v7:23.3.0'
-    compile 'com.github.satyan:sugar:1.4'
     compile 'org.apache:apache:17'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.android.support:design:23.3.0'
+    compile 'com.github.satyan:sugar:1.5'
 }

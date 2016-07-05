@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.creativityloop.android.temperocapixaba.R;
@@ -36,6 +37,7 @@ public class MeusPedidosFragment extends Fragment {
 
     private TextView mNaoTemPedidos;
     private Button mFazerPedido;
+    private LinearLayout mTopoLinearLayout;
     private RecyclerView mPedidosRecyclerView;
 
     public static MeusPedidosFragment newInstance() {
@@ -66,6 +68,8 @@ public class MeusPedidosFragment extends Fragment {
         mPedidosRecyclerView.setHasFixedSize(true);
         mPedidosRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        mTopoLinearLayout = (LinearLayout) v.findViewById(R.id.meus_pedidos_topo_linear_layout);
+
         mUsuario = UsuarioLab.get(getActivity()).getLastUsuario();
 
         if(mUsuario != null) {
@@ -94,6 +98,7 @@ public class MeusPedidosFragment extends Fragment {
             PedidoAdapter adapter = new PedidoAdapter(getActivity(), mPedidos);
             mPedidosRecyclerView.setAdapter(adapter);
         } else {
+            mTopoLinearLayout.setVisibility(View.GONE);
             mPedidosRecyclerView.setVisibility(View.GONE);
             mNaoTemPedidos.setVisibility(View.VISIBLE);
         }
