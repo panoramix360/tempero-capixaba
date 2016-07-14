@@ -1,13 +1,8 @@
 <resources>
     <string name="app_name">Tempero Capixaba</string>
 
-    <string name="action_contato">Sobre</string>
     <string name="cardapio_diario_title">Cardápio do dia</string>
-    <string name="cardapio_diario_format">Cardápio do dia - %s</string>
     <string name="cardapio_button">Fazer o pedido</string>
-    <string name="quantidade">Quantidade</string>
-    <string name="quantidade_pequena">Menor</string>
-    <string name="quantidade_grande">Maior</string>
     <string name="resumo_pedido">Resumo do Pedido</string>
     <string name="confirmar_pedido_button">Confirmar Pedido</string>
 
@@ -26,7 +21,6 @@
     <string name="finalizar_pedido_title">Finalize o seu pedido</string>
     <string name="finalizar_pedido_button">Finalizar Pedido</string>
     <string name="email_text_view">Seu email (opcional)</string>
-    <string name="title_activity_meus_pedidos">Meus Pedidos</string>
     <string name="meus_pedidos_text_view">Meus Pedidos</string>
     <string name="nao_tem_pedidos_text_view">Você não possui nenhum pedido.</string>
     <string name="pedido_detalhes_subtitle">Detalhes do Pedido</string>

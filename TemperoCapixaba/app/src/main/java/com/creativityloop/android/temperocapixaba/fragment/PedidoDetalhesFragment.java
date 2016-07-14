@@ -41,6 +41,8 @@ public class PedidoDetalhesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_pedido_detalhes, container, false);
 
+        updateUI();
+
         return v;
     }
 

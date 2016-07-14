@@ -56,22 +56,21 @@ public class MeusPedidosFragment extends Fragment {
 
         mNaoTemPedidos = (TextView) v.findViewById(R.id.nao_tem_pedidos_text_view);
 
-        mFazerPedido = (Button) v.findViewById(R.id.fazer_pedido_button);
-        mFazerPedido.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fazerPedido();
-            }
-        });
-
         mPedidosRecyclerView = (RecyclerView) v.findViewById(R.id.meus_pedidos_recycler_view);
         mPedidosRecyclerView.setHasFixedSize(true);
         mPedidosRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mTopoLinearLayout = (LinearLayout) v.findViewById(R.id.meus_pedidos_topo_linear_layout);
 
-        mUsuario = UsuarioLab.get(getActivity()).getLastUsuario();
+        mFazerPedido = (Button) v.findViewById(R.id.fazer_pedido_button);
+        mFazerPedido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(CardapioDiarioActivity.newIntent(getActivity()));
+            }
+        });
 
+        mUsuario = UsuarioLab.get(getActivity()).getLastUsuario();
         if(mUsuario != null) {
             // load pedidos
             new FetchPedidoTask().execute(mUsuario.mId);
@@ -86,11 +85,6 @@ public class MeusPedidosFragment extends Fragment {
         }
 
         return v;
-    }
-
-    private void fazerPedido() {
-        Intent intent = CardapioDiarioActivity.newIntent(getActivity());
-        startActivity(intent);
     }
 
     public void updateUI() {
