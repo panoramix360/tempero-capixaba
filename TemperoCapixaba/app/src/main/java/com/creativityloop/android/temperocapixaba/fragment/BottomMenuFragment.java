@@ -1,8 +1,11 @@
 package com.creativityloop.android.temperocapixaba.fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +41,27 @@ public class BottomMenuFragment extends Fragment {
             }
         });
 
+        mPhoneImageButton = (ImageButton) v.findViewById(R.id.phone_image_button);
+        mPhoneImageButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String phone = "+21988048445";
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                startActivity(intent);
+            }
+        });
+
+        mMarkerImageButton = (ImageButton) v.findViewById(R.id.marker_image_button);
+        mMarkerImageButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String name = "Tempero Capixaba";
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("geo:0,0?q=-22.9075208,-43.1778019 (" + name + ")"));
+                intent.setPackage("com.google.android.apps.maps");
+                startActivity(intent);
+            }
+        });
         return v;
     }
 }
