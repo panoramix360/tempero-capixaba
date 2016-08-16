@@ -18,6 +18,8 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
+
 /**
  * Created by LucasReis on 10/02/2016.
  */
@@ -84,33 +86,38 @@ public class PedidoFetchr extends Fetchr {
         for(int i = 0; i < pedidosJson.length(); i++) {
             JSONObject pedidoJson = pedidosJson.getJSONObject(i);
             Usuario usuario = new Usuario();
-            usuario.mId = userId;
+            usuario.setId(userId);
             int status = Integer.parseInt(pedidoJson.getString("status"));
-            Pedido pedido = new Pedido(pedidoJson.getInt("cd_pedido"), usuario, pedidoJson.getString("endereco"), DateUtils.formatDate(DateUtils.getToday()), StatusPedido.values()[status].getValue());
-            pedido.mItensPedido = new ArrayList<>();
+            Pedido pedido = new Pedido();
+            pedido.setId(pedidoJson.getInt("cd_pedido"));
+            pedido.setUsuario(usuario);
+            pedido.setEndereco(pedidoJson.getString("endereco"));
+            pedido.setData(DateUtils.formatDate(DateUtils.getToday()));
+            pedido.setStatusByCodigo(StatusPedido.values()[status].getValue());
+            pedido.setItensPedido(new RealmList<ItemPedido>());
             JSONArray itensPedidoJson = pedidoJson.getJSONArray("itens");
             for(int j = 0; j < itensPedidoJson.length(); j++) {
                 JSONObject itemPedidoJson = itensPedidoJson.getJSONObject(j);
                 ItemPedido itemPedido = new ItemPedido();
-                itemPedido.mPratoId = itemPedidoJson.getInt("cd_prato");
-                itemPedido.mQuantidadePequena = itemPedidoJson.getInt("qtd_pequena");
-                itemPedido.mQuantidadeGrande = itemPedidoJson.getInt("qtd_grande");
-                pedido.mItensPedido.add(itemPedido);
+                itemPedido.setPratoId(itemPedidoJson.getInt("cd_prato"));
+                itemPedido.setQuantidadePequena(itemPedidoJson.getInt("qtd_pequena"));
+                itemPedido.setQuantidadeGrande(itemPedidoJson.getInt("qtd_grande"));
+                pedido.getItensPedido().add(itemPedido);
             }
             pedidos.add(pedido);
         }
     }
 
     public String createDataFromPedido(Pedido pedido) throws IOException, JSONException {
-        String data = "nome=" + URLEncoder.encode(pedido.mUsuario.mNome, "UTF-8");
-        data += "&endereco=" + URLEncoder.encode(pedido.mUsuario.mEndereco, "UTF-8");
-        data += "&telefone=" + URLEncoder.encode(pedido.mUsuario.mTelefone, "UTF-8");
+        String data = "nome=" + URLEncoder.encode(pedido.getUsuario().getNome(), "UTF-8");
+        data += "&endereco=" + URLEncoder.encode(pedido.getUsuario().getEndereco(), "UTF-8");
+        data += "&telefone=" + URLEncoder.encode(pedido.getUsuario().getTelefone(), "UTF-8");
         int i = 0;
-        for(ItemPedido itemPedido : pedido.mItensPedido) {
+        for(ItemPedido itemPedido : pedido.getItensPedido()) {
             JSONObject itemObject = new JSONObject();
-            itemObject.put("cd_prato", itemPedido.mPratoId);
-            itemObject.put("qtd_pequena", itemPedido.mQuantidadePequena);
-            itemObject.put("qtd_grande", itemPedido.mQuantidadeGrande);
+            itemObject.put("cd_prato", itemPedido.getPratoId());
+            itemObject.put("qtd_pequena", itemPedido.getQuantidadePequena());
+            itemObject.put("qtd_grande", itemPedido.getQuantidadeGrande());
             data += "&itens[" + i + "]=" + itemObject.toString();
             i++;
         }

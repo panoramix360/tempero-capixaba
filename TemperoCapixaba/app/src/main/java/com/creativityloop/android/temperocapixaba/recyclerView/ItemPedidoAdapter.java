@@ -33,6 +33,7 @@ public class ItemPedidoAdapter extends RecyclerView.Adapter<ItemPedidoHolder> {
     @Override
     public void onBindViewHolder(ItemPedidoHolder holder, int position) {
         ItemPedido itemPedido = mItensPedido.get(position);
+        itemPedido.preencherPrato(mContext);
         holder.bindItemPedido(itemPedido);
     }
 

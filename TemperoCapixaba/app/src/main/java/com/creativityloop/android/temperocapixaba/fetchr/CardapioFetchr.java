@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
+
 public class CardapioFetchr extends Fetchr {
 
     private static final String TAG = "CardapioFetchr";
@@ -43,11 +45,13 @@ public class CardapioFetchr extends Fetchr {
     public void parseCardapio(Cardapio cardapio, JSONObject reader) throws JSONException {
         JSONArray jsonArray = reader.getJSONArray("pratos");
 
-        List<Prato> pratos = new ArrayList<Prato>();
+        List<Prato> pratos = new ArrayList<>();
 
         for(int i = 0; i < jsonArray.length(); i++) {
             JSONObject pratoObj = jsonArray.getJSONObject(i);
-            Prato prato = new Prato(pratoObj.getInt("cd_prato"), pratoObj.getString("nome"));
+            Prato prato = new Prato();
+            prato.setId(pratoObj.getInt("cd_prato"));
+            prato.setNome(pratoObj.getString("nome"));
             pratos.add(prato);
         }
 

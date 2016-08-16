@@ -30,7 +30,7 @@
     <string name="endereco_valor">Largo da Carioca, ao lado do metrô na saída do Ed. Central</string>
     <string name="endereco_loja">Endereço da Loja:</string>
     <string name="endereco_loja_valor">Rua 20 de Abril, 37 - Loja 2</string>
-    <string name="nome_prato_text_view">Nome do prato</string>
+    <string name="nome_prato_text_view">Prato</string>
     <string name="tamanho_text_view">Tamanho</string>
     <string name="home_image_button">Home</string>
     <string name="phone_image_button">Telefone</string>

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 23
@@ -27,5 +28,4 @@ dependencies {
     compile 'org.apache:apache:17'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.android.support:design:23.3.0'
-    compile 'com.github.satyan:sugar:1.5'
 }

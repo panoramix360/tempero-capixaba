@@ -16,6 +16,10 @@ public class FinalizarPedidoActivity extends SingleFragmentActivity {
         return intent;
     }
 
+    public static long getPedidoId(Intent result) {
+        return result.getLongExtra(EXTRA_PEDIDO_ID, 0);
+    }
+
     @Override
     public Fragment createFragment() {
         long pedidoId = (long) getIntent().getSerializableExtra(EXTRA_PEDIDO_ID);

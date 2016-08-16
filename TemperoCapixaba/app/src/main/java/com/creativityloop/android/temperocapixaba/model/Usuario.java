@@ -1,22 +1,19 @@
 package com.creativityloop.android.temperocapixaba.model;
 
-import com.orm.SugarRecord;
-import com.orm.dsl.Ignore;
-
-import java.io.Serializable;
-import java.util.GregorianCalendar;
-import java.util.UUID;
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by LucasReis on 29/09/2015.
  */
-public class Usuario extends SugarRecord {
+public class Usuario extends RealmObject {
 
-    public enum TIPO_ENTREGA {
+    public enum TipoEntrega {
         ENTREGA_ENDERECO(1), BUSCAR_LOCAL(2);
 
         private final int value;
-        TIPO_ENTREGA(int value) {
+        TipoEntrega(int value) {
             this.value = value;
         }
 
@@ -25,24 +22,22 @@ public class Usuario extends SugarRecord {
         }
     }
 
-    public int mId;
-    public String mNome;
-    public String mEndereco;
-    public String mTelefone;
-    public String mEmail;
-    public String mEmpresa;
-    public TIPO_ENTREGA mTipoEntrega;
+    @PrimaryKey
+    private int mId;
+    private String mNome;
+    private String mEndereco;
+    private String mTelefone;
+    private String mEmail;
+    private String mEmpresa;
+    private int mTipoEntregaCodigo;
 
-    public Usuario() {}
+    @Ignore
+    private TipoEntrega mTipoEntrega;
 
-    public Usuario(int id, String nome, String endereco, String telefone, String email, String empresa, TIPO_ENTREGA tipoEntrega) {
-        this.mId = id;
-        this.mNome = nome;
-        this.mEndereco = endereco;
-        this.mTelefone = telefone;
-        this.mEmail = email;
-        this.mEmpresa = empresa;
-        this.mTipoEntrega = tipoEntrega;
+    public void setTipoEntregaByCodigo(int tipoEntrega) {
+        this.mTipoEntregaCodigo = tipoEntrega;
+        this.mTipoEntrega = TipoEntrega.values()[tipoEntrega];
+
     }
 
     @Override
@@ -61,6 +56,69 @@ public class Usuario extends SugarRecord {
                 && this.mEmail.equals(usuario.mEmail)
                 && this.mEmpresa.equals(usuario.mEmpresa)
                 && this.mTipoEntrega.getValue() == usuario.mTipoEntrega.getValue();
+    }
 
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
+
+    public String getNome() {
+        return mNome;
+    }
+
+    public void setNome(String nome) {
+        mNome = nome;
+    }
+
+    public String getEndereco() {
+        return mEndereco;
+    }
+
+    public void setEndereco(String endereco) {
+        mEndereco = endereco;
+    }
+
+    public String getTelefone() {
+        return mTelefone;
+    }
+
+    public void setTelefone(String telefone) {
+        mTelefone = telefone;
+    }
+
+    public String getEmail() {
+        return mEmail;
+    }
+
+    public void setEmail(String email) {
+        mEmail = email;
+    }
+
+    public String getEmpresa() {
+        return mEmpresa;
+    }
+
+    public void setEmpresa(String empresa) {
+        mEmpresa = empresa;
+    }
+
+    public int getTipoEntregaCodigo() {
+        return mTipoEntregaCodigo;
+    }
+
+    public void setTipoEntregaCodigo(int tipoEntregaCodigo) {
+        mTipoEntregaCodigo = tipoEntregaCodigo;
+    }
+
+    public TipoEntrega getTipoEntrega() {
+        return mTipoEntrega;
+    }
+
+    public void setTipoEntrega(TipoEntrega tipoEntrega) {
+        mTipoEntrega = tipoEntrega;
     }
 }

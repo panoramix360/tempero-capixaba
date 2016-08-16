@@ -24,7 +24,7 @@ public class UsuarioFetchr extends Fetchr {
         int usuarioId = 0;
 
         try {
-            String data = createDataFromUsuario(usuario, (usuarioAlreadyCreated != null) ? usuarioAlreadyCreated.mId: 0);
+            String data = createDataFromUsuario(usuario, (usuarioAlreadyCreated != null) ? usuarioAlreadyCreated.getId(): 0);
 
             String response;
 
@@ -33,7 +33,7 @@ public class UsuarioFetchr extends Fetchr {
             } else if(!usuario.equals(usuarioAlreadyCreated)) {
                 response = updateUsuario(data);
             } else {
-                return usuarioAlreadyCreated.mId;
+                return usuarioAlreadyCreated.getId();
             }
 
             JSONObject jsonResponse = new JSONObject(response);
@@ -68,27 +68,27 @@ public class UsuarioFetchr extends Fetchr {
     }
 
     public String createDataFromUsuario(Usuario usuario, int idUsuario) throws IOException {
-        String data = "nome=" + URLEncoder.encode(usuario.mNome, "UTF-8");
-        data += "&endereco=" + URLEncoder.encode(usuario.mEndereco, "UTF-8");
-        data += "&telefone=" + URLEncoder.encode(usuario.mTelefone, "UTF-8");
-        if(!usuario.mEmail.isEmpty()) {
-            data += "&email=" + URLEncoder.encode(usuario.mEmail, "UTF-8");
+        String data = "nome=" + URLEncoder.encode(usuario.getNome(), "UTF-8");
+        data += "&endereco=" + URLEncoder.encode(usuario.getEndereco(), "UTF-8");
+        data += "&telefone=" + URLEncoder.encode(usuario.getTelefone(), "UTF-8");
+        if(!usuario.getEmail().isEmpty()) {
+            data += "&email=" + URLEncoder.encode(usuario.getEmail(), "UTF-8");
         }
-        if(!usuario.mEmpresa.isEmpty()) {
-            data += "&empresa=" + URLEncoder.encode(usuario.mEmpresa, "UTF-8");
+        if(!usuario.getEmpresa().isEmpty()) {
+            data += "&empresa=" + URLEncoder.encode(usuario.getEmpresa(), "UTF-8");
         }
-        data += "&tipo_entrega=" + URLEncoder.encode(usuario.mTipoEntrega.getValue() + "", "UTF-8");
+        data += "&tipo_entrega=" + URLEncoder.encode(usuario.getTipoEntrega().getValue() + "", "UTF-8");
         data += "&cd_usuario=" + URLEncoder.encode(idUsuario + "", "UTF-8");
 
         return data;
     }
 
     public void parseUsuario(Usuario usuario, JSONObject reader) throws JSONException {
-        usuario.mNome = (String) reader.get("nome");
-        usuario.mEndereco = (String) reader.get("endereco");
-        usuario.mTelefone = (String) reader.get("telefone");
-        usuario.mEmail = (String) reader.get("email");
-        usuario.mEmpresa = (String) reader.get("empresa");
-        usuario.mTipoEntrega = Usuario.TIPO_ENTREGA.values()[((int) reader.get("tipo_entrega")) - 1];
+        usuario.setNome((String) reader.get("nome"));
+        usuario.setEndereco((String) reader.get("endereco"));
+        usuario.setTelefone((String) reader.get("telefone"));
+        usuario.setEmail((String) reader.get("email"));
+        usuario.setEmpresa((String) reader.get("empresa"));
+        usuario.setTipoEntrega(Usuario.TipoEntrega.values()[((int) reader.get("tipo_entrega")) - 1]);
     }
 }

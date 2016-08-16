@@ -3,63 +3,40 @@ package com.creativityloop.android.temperocapixaba.model;
 import android.content.Context;
 
 import com.creativityloop.android.temperocapixaba.database.PratoLab;
-import com.orm.SugarRecord;
-import com.orm.dsl.Ignore;
 
-public class ItemPedido extends SugarRecord {
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
 
-    public long mPedidoId;
-    public int mPratoId;
-    public int mQuantidadePequena;
-    public int mQuantidadeGrande;
+public class ItemPedido extends RealmObject {
+
+    @PrimaryKey
+    private int mId;
+    private int mPratoId;
+    private int mQuantidadePequena;
+    private int mQuantidadeGrande;
 
     @Ignore
-    public Prato mPrato;
-    @Ignore
-    private Pedido mPedido;
-
-    public ItemPedido() {}
-
-    public ItemPedido(int pedidoId, int pratoId, int quantidadePequena, int quantidadeGrande) {
-        this.mPedidoId = pedidoId;
-        this.mPratoId = pratoId;
-        this.mQuantidadePequena = quantidadePequena;
-        this.mQuantidadeGrande = quantidadeGrande;
-    }
-
-    public Prato getPrato() {
-        return mPrato;
-    }
-
-    public void setPrato(Prato prato) {
-        mPrato = prato;
-        mPratoId = prato.getId();
-    }
-
-    public Pedido getPedido() {
-        return mPedido;
-    }
-
-    public void setPedido(Pedido pedido) {
-        this.mPedido = pedido;
-    }
+    private Prato mPrato;
 
     public void preencherPrato(Context context) {
-        this.mPrato = PratoLab.get(context).getPrato(mPratoId);
+        this.mPrato = PratoLab.get(context).getPrato(this.getPratoId());
     }
 
     @Override
     public String toString() {
         String itemPedidoStr = "";
-        if(mQuantidadeGrande > 0) {
-            itemPedidoStr += mQuantidadeGrande + "x Grande ";
+        if(this.getQuantidadeGrande() > 0) {
+            itemPedidoStr += this.getQuantidadeGrande() + "x Grande ";
         }
 
-        if(mQuantidadePequena > 0) {
-            itemPedidoStr += mQuantidadePequena + "x Pequena ";
+        if(this.getQuantidadePequena() > 0) {
+            itemPedidoStr += this.getQuantidadePequena() + "x Pequena ";
         }
 
-        itemPedidoStr += "\n" + mPrato.getNome();
+        if(this.getPrato() != null) {
+            itemPedidoStr += "\n" + this.getPrato().getNome();
+        }
 
         return itemPedidoStr;
     }
@@ -71,6 +48,46 @@ public class ItemPedido extends SugarRecord {
 
         ItemPedido itemPedido = (ItemPedido) o;
 
-        return !(mPrato.mNome != null ? !mPrato.mNome.equals(itemPedido.mPrato.mNome) : itemPedido.mPrato.mNome != null);
+        return !(mPrato.getNome() != null ? !mPrato.getNome().equals(itemPedido.getPrato().getNome()) : itemPedido.getPrato().getNome() != null);
+    }
+
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
+
+    public int getPratoId() {
+        return mPratoId;
+    }
+
+    public void setPratoId(int pratoId) {
+        mPratoId = pratoId;
+    }
+
+    public int getQuantidadePequena() {
+        return mQuantidadePequena;
+    }
+
+    public void setQuantidadePequena(int quantidadePequena) {
+        mQuantidadePequena = quantidadePequena;
+    }
+
+    public int getQuantidadeGrande() {
+        return mQuantidadeGrande;
+    }
+
+    public void setQuantidadeGrande(int quantidadeGrande) {
+        mQuantidadeGrande = quantidadeGrande;
+    }
+
+    public Prato getPrato() {
+        return mPrato;
+    }
+
+    public void setPrato(Prato prato) {
+        mPrato = prato;
     }
 }

@@ -6,11 +6,7 @@ import com.creativityloop.android.temperocapixaba.model.Prato;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-/**
- * Created by LucasReis on 12/11/2015.
- */
 public class PratoLab {
     private static PratoLab sPratoLab;
 

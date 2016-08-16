@@ -73,7 +73,7 @@ public class MeusPedidosFragment extends Fragment {
         mUsuario = UsuarioLab.get(getActivity()).getLastUsuario();
         if(mUsuario != null) {
             // load pedidos
-            new FetchPedidoTask().execute(mUsuario.mId);
+            new FetchPedidoTask().execute(mUsuario.getId());
         } else {
             updateUI();
         }

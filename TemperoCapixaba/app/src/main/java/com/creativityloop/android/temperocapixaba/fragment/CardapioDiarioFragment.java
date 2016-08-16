@@ -170,15 +170,15 @@ public class CardapioDiarioFragment extends Fragment {
     private void fazerPedido() {
         if (isAnyItemPedidoChecked()) {
             if(mPedido == null) {
-                mPedido = new Pedido(0, null, "", DateUtils.formatDate(DateUtils.getToday()), StatusPedido.NAO_ATENDIDO.getValue());
+                mPedido = new Pedido();
+                mPedido.setData(DateUtils.formatDate(DateUtils.getToday()));
+                mPedido.setStatusByCodigo(StatusPedido.NAO_ATENDIDO.getValue());
             }
-            PedidoLab.get(getActivity()).savePedido(mPedido);
+            mPedido.setId(PedidoLab.get(getActivity()).savePedido(mPedido));
 
             for (ItemPedido itemPedido : mItensPedido) {
                 if (isItemPedidoValid(itemPedido)) {
-                    itemPedido.setPedido(mPedido);
-                    itemPedido.mPedidoId = mPedido.getId();
-                    ItemPedidoLab.get(getActivity()).saveItemPedido(itemPedido);
+                    ItemPedidoLab.get(getActivity()).saveItemPedidoByPedidoId(mPedido.getId(), itemPedido);
                 }
             }
             Intent intent = ResumoPedidoActivity.newIntent(getActivity(), mPedido.getId(), false);
@@ -194,7 +194,7 @@ public class CardapioDiarioFragment extends Fragment {
     }
 
     private boolean isItemPedidoValid(ItemPedido itemPedido) {
-        return (itemPedido.mQuantidadePequena > 0 || itemPedido.mQuantidadeGrande > 0);
+        return (itemPedido.getQuantidadePequena() > 0 || itemPedido.getQuantidadeGrande() > 0);
     }
 
     private class FetchCardapioTask extends AsyncTask<Integer, Void, Cardapio> {

@@ -39,12 +39,12 @@ public class PedidoHolder extends RecyclerView.ViewHolder implements View.OnClic
     public void bindPedido(Pedido pedido) {
         mPedido = pedido;
 
-        mPedidoTextView.setText("Pedido " + pedido.mId);
+        mPedidoTextView.setText("Pedido " + pedido.getId());
 
         int total = 0;
-        for(ItemPedido itemPedido : pedido.mItensPedido) {
-            total += itemPedido.mQuantidadePequena;
-            total += itemPedido.mQuantidadeGrande;
+        for(ItemPedido itemPedido : pedido.getItensPedido()) {
+            total += itemPedido.getQuantidadePequena();
+            total += itemPedido.getQuantidadeGrande();
         }
 
         mTotalTextView.setText(total + " comida(s)");
@@ -52,7 +52,7 @@ public class PedidoHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        Intent i = PedidoDetalhesActivity.newIntent(mContext, mPedido.mId);
+        Intent i = PedidoDetalhesActivity.newIntent(mContext, mPedido.getId());
         mContext.startActivity(i);
     }
 }

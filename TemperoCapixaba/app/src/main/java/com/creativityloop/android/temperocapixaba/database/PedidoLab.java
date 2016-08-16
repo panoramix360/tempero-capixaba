@@ -8,12 +8,18 @@ import com.creativityloop.android.temperocapixaba.model.Pedido;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
+
 public class PedidoLab {
     private static PedidoLab sPedidoLab;
 
     public final static String URL_GET_CARDAPIO = "getCardapioAPI/";
 
     private Context mContext;
+    private Realm realm;
 
     public static PedidoLab get(Context context) {
         if(sPedidoLab == null) {
@@ -25,33 +31,39 @@ public class PedidoLab {
 
     private PedidoLab(Context context) {
         mContext = context.getApplicationContext();
+        realm = Realm.getDefaultInstance();
     }
 
-    public List<Pedido> getPedidos() {
-        return Pedido.listAll(Pedido.class);
+    public RealmList<Pedido> getPedidos() {
+        RealmResults<Pedido> results = realm.where(Pedido.class).findAll();
+        RealmList<Pedido> pedidos =  new RealmList<>();
+        for(Pedido pedido : results) {
+            pedidos.add(pedido);
+        }
+        return pedidos;
     }
 
     public Pedido getPedido(long pedidoId) {
         Pedido pedido = null;
-        List<Pedido> pedidos = Pedido.find(Pedido.class, "m_id = ?", pedidoId + "");
-        if(pedidos.size() == 0) {
-            pedido = Pedido.findById(Pedido.class, pedidoId);
-        } else {
+        RealmQuery<Pedido> query = realm.where(Pedido.class).equalTo("mId", pedidoId);
+        List<Pedido> pedidos = query.findAll();
+
+        if(pedidos.size() > 0) {
             pedido = pedidos.get(0);
         }
 
         if(pedido != null) {
-            pedido.setItensPedido(ItemPedidoLab.get(mContext).getItemPedidos(pedidoId));
-            for(ItemPedido itemPedido : pedido.getItensPedido()) {
-                itemPedido.preencherPrato(mContext);
+            RealmList<ItemPedido> itens = ItemPedidoLab.get(mContext).getItemPedidos(pedidoId);
+            for(ItemPedido itemPedido : itens) {
+               itemPedido.preencherPrato(mContext);
             }
         }
         return pedido;
     }
 
     public Pedido getPedido(GregorianCalendar data) {
-        List<Pedido> pedidos = Pedido.find(Pedido.class, "m_data = ?", data + "");
-        if(pedidos == null || pedidos.isEmpty())
+        List<Pedido> pedidos = realm.where(Pedido.class).equalTo("mData", data + "").findAll();
+        if(pedidos.isEmpty())
         {
             return null;
         }
@@ -62,12 +74,26 @@ public class PedidoLab {
     }
 
 
-    public void savePedido(Pedido pedido) {
-        Pedido.save(pedido);
+    public int savePedido(final Pedido pedido) {
+        realm.beginTransaction();
+        int nextInt = realm.where(Pedido.class).findAll().size() + 1;
+        Pedido pedidoToInsert = realm.createObject(Pedido.class);
+        pedidoToInsert.setId(nextInt);
+        pedidoToInsert.setUsuario(pedido.getUsuario());
+        pedidoToInsert.setEndereco(pedido.getEndereco());
+        pedidoToInsert.setData(pedido.getData());
+        pedidoToInsert.setStatusByCodigo(pedido.getStatusCodigo());
+        realm.commitTransaction();
+        return nextInt;
     }
 
     public void deletePedido(long pedidoId) {
-        Pedido pedido = Pedido.findById(Pedido.class, pedidoId);
-        pedido.delete();
+        final List<Pedido> pedidoToDelete = realm.where(Pedido.class).equalTo("mId", pedidoId).findAll();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                pedidoToDelete.get(0).deleteFromRealm();
+            }
+        });
     }
 }

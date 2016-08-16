@@ -1,5 +1,6 @@
 package com.creativityloop.android.temperocapixaba.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,7 +16,9 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.creativityloop.android.temperocapixaba.R;
+import com.creativityloop.android.temperocapixaba.activity.FinalizarPedidoActivity;
 import com.creativityloop.android.temperocapixaba.activity.MeusPedidosActivity;
+import com.creativityloop.android.temperocapixaba.database.ItemPedidoLab;
 import com.creativityloop.android.temperocapixaba.database.PedidoLab;
 import com.creativityloop.android.temperocapixaba.database.UsuarioLab;
 import com.creativityloop.android.temperocapixaba.fetchr.PedidoFetchr;
@@ -25,9 +28,13 @@ import com.creativityloop.android.temperocapixaba.model.Pedido;
 import com.creativityloop.android.temperocapixaba.model.StatusPedido;
 import com.creativityloop.android.temperocapixaba.model.Usuario;
 
+import io.realm.Realm;
+
 public class FinalizarPedidoFragment extends Fragment {
 
     private static final String ARG_PEDIDO_ID = "pedido_id";
+
+    private Realm realm;
 
     private Pedido mPedido;
     private Usuario mUsuarioSalvo;
@@ -56,6 +63,8 @@ public class FinalizarPedidoFragment extends Fragment {
 
         long pedidoId = (long) getArguments().getSerializable(ARG_PEDIDO_ID);
         mPedido = PedidoLab.get(getActivity()).getPedido(pedidoId);
+
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -75,10 +84,12 @@ public class FinalizarPedidoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (validarCampos()) {
+                    realm.beginTransaction();
                     Usuario usuario = createUserFromView();
-                    mPedido.mUsuario = usuario;
-                    mPedido.mEndereco = usuario.mEndereco;
+                    mPedido.setUsuario(usuario);
+                    mPedido.setEndereco(usuario.getEndereco());
                     mPedido.mStatus = StatusPedido.NAO_ATENDIDO;
+                    realm.commitTransaction();
                     new PostPedidoTask().execute(mPedido);
                 }
             }
@@ -86,17 +97,19 @@ public class FinalizarPedidoFragment extends Fragment {
 
         updateUI();
 
+        setPositionResult();
+
         return v;
     }
 
     private Usuario createUserFromView() {
         Usuario usuario = new Usuario();
-        usuario.mNome = mNome.getText().toString();
-        usuario.mEndereco = mEndereco.getText().toString();
-        usuario.mTelefone = mTelefone.getText().toString();
-        usuario.mEmpresa = mEmpresa.getText().toString();
-        usuario.mEmail = mEmail.getText().toString();
-        usuario.mTipoEntrega = Usuario.TIPO_ENTREGA.values()[mTipoEntrega.indexOfChild(getActivity().findViewById(mTipoEntrega.getCheckedRadioButtonId()))];
+        usuario.setNome(mNome.getText().toString());
+        usuario.setEndereco(mEndereco.getText().toString());
+        usuario.setTelefone(mTelefone.getText().toString());
+        usuario.setEmpresa(mEmpresa.getText().toString());
+        usuario.setEmail(mEmail.getText().toString());
+        usuario.setTipoEntrega(Usuario.TipoEntrega.values()[mTipoEntrega.indexOfChild(getActivity().findViewById(mTipoEntrega.getCheckedRadioButtonId()))]);
         return usuario;
     }
 
@@ -104,15 +117,21 @@ public class FinalizarPedidoFragment extends Fragment {
         setUsuario();
     }
 
+    private void setPositionResult() {
+        Intent data = new Intent();
+        data.putExtra(FinalizarPedidoActivity.EXTRA_PEDIDO_ID, mPedido.getId());
+        getActivity().setResult(Activity.RESULT_OK, data);
+    }
+
     public void setUsuario() {
         mUsuarioSalvo = UsuarioLab.get(getActivity()).getLastUsuario();
         if(mUsuarioSalvo != null) {
-            mNome.setText(mUsuarioSalvo.mNome);
-            mEndereco.setText(mUsuarioSalvo.mEndereco);
-            mTelefone.setText(mUsuarioSalvo.mTelefone);
-            mEmpresa.setText(mUsuarioSalvo.mEmpresa);
-            mEmail.setText(mUsuarioSalvo.mEmail);
-            RadioButton radioButton = (RadioButton) mTipoEntrega.getChildAt(mUsuarioSalvo.mTipoEntrega.getValue() - 1);
+            mNome.setText(mUsuarioSalvo.getNome());
+            mEndereco.setText(mUsuarioSalvo.getEndereco());
+            mTelefone.setText(mUsuarioSalvo.getTelefone());
+            mEmpresa.setText(mUsuarioSalvo.getEmpresa());
+            mEmail.setText(mUsuarioSalvo.getEmail());
+            RadioButton radioButton = (RadioButton) mTipoEntrega.getChildAt(mUsuarioSalvo.getTipoEntrega().getValue() - 1);
             radioButton.setChecked(true);
         }
     }
@@ -143,19 +162,18 @@ public class FinalizarPedidoFragment extends Fragment {
             Pedido pedido = params[0];
 
             int pedidoId = 0;
-            int usuarioId = new UsuarioFetchr().saveUsuario(pedido.mUsuario, mUsuarioSalvo);
+            int usuarioId = new UsuarioFetchr().saveUsuario(pedido.getUsuario(), mUsuarioSalvo);
 
             if(usuarioId > 0) {
-                pedido.mUsuario.mId = usuarioId;
-                UsuarioLab.get(getActivity()).saveUsuario(pedido.mUsuario);
+                pedido.getUsuario().setId(usuarioId);
+                UsuarioLab.get(getActivity()).saveUsuario(pedido.getUsuario());
 
                 pedidoId = new PedidoFetchr().savePedido(pedido);
-                pedido.mId = pedidoId;
+                pedido.setId(pedidoId);
                 for(ItemPedido i : pedido.getItensPedido()) {
-                    i.mPedidoId = pedidoId;
-                    i.save();
+                    ItemPedidoLab.get(getActivity()).saveItemPedidoByPedidoId(pedidoId, i);
                 }
-                pedido.save();
+                PedidoLab.get(getActivity()).savePedido(pedido);
             }
 
             Intent intent = MeusPedidosActivity.newIntent(getActivity());

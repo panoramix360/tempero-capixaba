@@ -51,33 +51,33 @@ public class ItemPedidoHolder extends RecyclerView.ViewHolder {
 
     public void bindItemPedido(ItemPedido itemPedido) {
         mItemPedido = itemPedido;
-        mNomeTextView.setText(mItemPedido.mPrato.getNome());
+        mNomeTextView.setText(mItemPedido.getPrato().getNome());
 
         mMinusPequenaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItemPedido.mQuantidadePequena = sumPratoQuantidade(-1, mPratoQuantidadePequena);
+                mItemPedido.setQuantidadePequena(sumPratoQuantidade(-1, mPratoQuantidadePequena));
             }
         });
 
         mMaxPequenaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItemPedido.mQuantidadePequena = sumPratoQuantidade(1, mPratoQuantidadePequena);
+                mItemPedido.setQuantidadePequena(sumPratoQuantidade(1, mPratoQuantidadePequena));
             }
         });
 
         mMinusGrandeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItemPedido.mQuantidadeGrande = sumPratoQuantidade(-1, mPratoQuantidadeGrande);
+                mItemPedido.setQuantidadeGrande(sumPratoQuantidade(-1, mPratoQuantidadeGrande));
             }
         });
 
         mMaxGrandeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItemPedido.mQuantidadeGrande = sumPratoQuantidade(1, mPratoQuantidadeGrande);
+                mItemPedido.setQuantidadeGrande(sumPratoQuantidade(1, mPratoQuantidadeGrande));
             }
         });
     }
