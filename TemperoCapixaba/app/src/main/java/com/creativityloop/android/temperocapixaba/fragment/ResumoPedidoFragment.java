@@ -53,6 +53,9 @@ public class ResumoPedidoFragment extends Fragment {
 
         mPedidoId = (long) getArguments().getSerializable(ARG_PEDIDO_ID);
         mPedido = PedidoLab.get(getActivity()).getPedido(mPedidoId);
+        if(mPedido == null) {
+            mPedido = PedidoLab.get(getActivity()).getPedidoByIdExterno(mPedidoId);
+        }
         mItensPedido = new ArrayList<>();
 
         for(ItemPedido itemPedido : mPedido.getItensPedido()) {

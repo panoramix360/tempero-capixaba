@@ -10,11 +10,11 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
-import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 public class PedidoLab {
     private static PedidoLab sPedidoLab;
+    private static PedidoLab sPedidoLabAsync;
 
     public final static String URL_GET_CARDAPIO = "getCardapioAPI/";
 
@@ -29,9 +29,26 @@ public class PedidoLab {
         return sPedidoLab;
     }
 
+    public static PedidoLab get(Context context, Realm realm) {
+        if(sPedidoLabAsync == null) {
+            sPedidoLabAsync = new PedidoLab(context, realm);
+        }
+
+        return sPedidoLabAsync;
+    }
+
     private PedidoLab(Context context) {
         mContext = context.getApplicationContext();
         realm = Realm.getDefaultInstance();
+    }
+
+    private PedidoLab(Context context, Realm realm) {
+        mContext = context.getApplicationContext();
+        if(realm == null) {
+            this.realm = Realm.getDefaultInstance();
+        } else {
+            this.realm = realm;
+        }
     }
 
     public RealmList<Pedido> getPedidos() {
@@ -45,15 +62,14 @@ public class PedidoLab {
 
     public Pedido getPedido(long pedidoId) {
         Pedido pedido = null;
-        RealmQuery<Pedido> query = realm.where(Pedido.class).equalTo("mId", pedidoId);
-        List<Pedido> pedidos = query.findAll();
+        RealmResults<Pedido> pedidos = realm.where(Pedido.class).equalTo("mId", pedidoId).findAll();
 
         if(pedidos.size() > 0) {
             pedido = pedidos.get(0);
         }
 
         if(pedido != null) {
-            RealmList<ItemPedido> itens = ItemPedidoLab.get(mContext).getItemPedidos(pedidoId);
+            RealmList<ItemPedido> itens = ItemPedidoLab.get(mContext, realm).getItemPedidos(pedidoId);
             for(ItemPedido itemPedido : itens) {
                itemPedido.preencherPrato(mContext);
             }
@@ -73,6 +89,22 @@ public class PedidoLab {
         }
     }
 
+    public Pedido getPedidoByIdExterno(long pedidoIdExterno) {
+        Pedido pedido = null;
+        RealmResults<Pedido> pedidos = realm.where(Pedido.class).equalTo("mIdExterno", pedidoIdExterno).findAll();
+
+        if(pedidos.size() > 0) {
+            pedido = pedidos.get(0);
+        }
+
+        if(pedido != null) {
+            RealmList<ItemPedido> itens = ItemPedidoLab.get(mContext, realm).getItemPedidos(pedido.getId());
+            for(ItemPedido itemPedido : itens) {
+                itemPedido.preencherPrato(mContext);
+            }
+        }
+        return pedido;
+    }
 
     public int savePedido(final Pedido pedido) {
         realm.beginTransaction();
@@ -82,18 +114,26 @@ public class PedidoLab {
         pedidoToInsert.setUsuario(pedido.getUsuario());
         pedidoToInsert.setEndereco(pedido.getEndereco());
         pedidoToInsert.setData(pedido.getData());
-        pedidoToInsert.setStatusByCodigo(pedido.getStatusCodigo());
+        pedidoToInsert.setStatusCodigo(pedido.getStatusCodigo());
         realm.commitTransaction();
         return nextInt;
     }
 
+    public void savePedidoIdExterno(int pedidoId, int pedidoIdExterno) {
+        realm.beginTransaction();
+        Pedido pedidoToEdit = this.getPedido(pedidoId);
+        pedidoToEdit.setIdExterno(pedidoIdExterno);
+        realm.commitTransaction();
+    }
+
     public void deletePedido(long pedidoId) {
         final List<Pedido> pedidoToDelete = realm.where(Pedido.class).equalTo("mId", pedidoId).findAll();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                pedidoToDelete.get(0).deleteFromRealm();
-            }
-        });
+        realm.beginTransaction();
+        pedidoToDelete.get(0).deleteFromRealm();
+        realm.commitTransaction();
+    }
+
+    public void setRealmObj(Realm realm) {
+        this.realm = realm;
     }
 }

@@ -15,6 +15,7 @@ import io.realm.RealmList;
 
 public class ItemPedidoLab {
     private static ItemPedidoLab sItemPedidoLab;
+    private static ItemPedidoLab sItemPedidoLabAsync;
 
     private Context mContext;
     private Realm realm;
@@ -27,9 +28,28 @@ public class ItemPedidoLab {
         return sItemPedidoLab;
     }
 
+    public static ItemPedidoLab get(Context context, Realm realm) {
+        if(sItemPedidoLabAsync == null) {
+            sItemPedidoLabAsync = new ItemPedidoLab(context, realm);
+        } else {
+            sItemPedidoLabAsync.realm = realm;
+        }
+
+        return sItemPedidoLabAsync;
+    }
+
     private ItemPedidoLab(Context context) {
         mContext = context.getApplicationContext();
         realm = Realm.getDefaultInstance();
+    }
+
+    private ItemPedidoLab(Context context, Realm realm) {
+        mContext = context.getApplicationContext();
+        if(realm == null) {
+            this.realm = Realm.getDefaultInstance();
+        } else {
+            this.realm = realm;
+        }
     }
 
     public RealmList<ItemPedido> getItemPedidos(long pedidoId) {

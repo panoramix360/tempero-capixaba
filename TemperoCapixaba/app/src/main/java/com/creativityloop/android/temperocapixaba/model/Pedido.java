@@ -12,6 +12,7 @@ public class Pedido extends RealmObject {
 
     @PrimaryKey
     private int mId;
+    private int mIdExterno;
     private Usuario mUsuario;
     private String mEndereco;
     private String mData;
@@ -19,12 +20,7 @@ public class Pedido extends RealmObject {
     private RealmList<ItemPedido> mItensPedido;
 
     @Ignore
-    public StatusPedido mStatus;
-
-    public void setStatusByCodigo(int statusCodigo) {
-        this.mStatusCodigo = statusCodigo;
-        this.mStatus = StatusPedido.values()[statusCodigo];
-    }
+    private StatusPedido mStatus;
 
     public int getId() {
         return mId;
@@ -32,6 +28,14 @@ public class Pedido extends RealmObject {
 
     public void setId(int id) {
         mId = id;
+    }
+
+    public int getIdExterno() {
+        return mIdExterno;
+    }
+
+    public void setIdExterno(int idExterno) {
+        mIdExterno = idExterno;
     }
 
     public Usuario getUsuario() {

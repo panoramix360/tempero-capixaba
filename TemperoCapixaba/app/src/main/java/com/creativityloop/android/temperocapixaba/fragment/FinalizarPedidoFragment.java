@@ -84,13 +84,16 @@ public class FinalizarPedidoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (validarCampos()) {
+                    Usuario usuario = mUsuarioSalvo;
+                    if(usuario == null) {
+                        usuario = UsuarioLab.get(getActivity()).saveUsuario(createUserFromView());
+                    }
                     realm.beginTransaction();
-                    Usuario usuario = createUserFromView();
                     mPedido.setUsuario(usuario);
                     mPedido.setEndereco(usuario.getEndereco());
-                    mPedido.mStatus = StatusPedido.NAO_ATENDIDO;
                     realm.commitTransaction();
-                    new PostPedidoTask().execute(mPedido);
+
+                    new PostPedidoTask().execute(mPedido.getId());
                 }
             }
         });
@@ -109,7 +112,13 @@ public class FinalizarPedidoFragment extends Fragment {
         usuario.setTelefone(mTelefone.getText().toString());
         usuario.setEmpresa(mEmpresa.getText().toString());
         usuario.setEmail(mEmail.getText().toString());
-        usuario.setTipoEntrega(Usuario.TipoEntrega.values()[mTipoEntrega.indexOfChild(getActivity().findViewById(mTipoEntrega.getCheckedRadioButtonId()))]);
+        int selectedId = mTipoEntrega.getCheckedRadioButtonId();
+        RadioButton tipoEntrega = (RadioButton) getActivity().findViewById(selectedId);
+        if(tipoEntrega.getText() == getResources().getString(R.string.entrega_radio_button)) {
+            usuario.setTipoEntregaCodigo(Usuario.TipoEntrega.ENTREGA_ENDERECO.getValue());
+        } else if(tipoEntrega.getText() == getResources().getString(R.string.buscar_radio_button)) {
+            usuario.setTipoEntregaCodigo(Usuario.TipoEntrega.BUSCAR_LOCAL.getValue());
+        }
         return usuario;
     }
 
@@ -126,13 +135,16 @@ public class FinalizarPedidoFragment extends Fragment {
     public void setUsuario() {
         mUsuarioSalvo = UsuarioLab.get(getActivity()).getLastUsuario();
         if(mUsuarioSalvo != null) {
+            mUsuarioSalvo = mUsuarioSalvo.convertFromRealm();
             mNome.setText(mUsuarioSalvo.getNome());
             mEndereco.setText(mUsuarioSalvo.getEndereco());
             mTelefone.setText(mUsuarioSalvo.getTelefone());
             mEmpresa.setText(mUsuarioSalvo.getEmpresa());
             mEmail.setText(mUsuarioSalvo.getEmail());
-            RadioButton radioButton = (RadioButton) mTipoEntrega.getChildAt(mUsuarioSalvo.getTipoEntrega().getValue() - 1);
-            radioButton.setChecked(true);
+            if(mUsuarioSalvo.getTipoEntregaCodigo() > 0) {
+                RadioButton radioButton = (RadioButton) mTipoEntrega.getChildAt(mUsuarioSalvo.getTipoEntregaCodigo() - 1);
+                radioButton.setChecked(true);
+            }
         }
     }
 
@@ -156,35 +168,37 @@ public class FinalizarPedidoFragment extends Fragment {
         return validado;
     }
 
-    private class PostPedidoTask extends AsyncTask<Pedido, Void, Boolean> {
+    private class PostPedidoTask extends AsyncTask<Integer, Void, Boolean> {
         @Override
-        protected Boolean doInBackground(Pedido... params) {
-            Pedido pedido = params[0];
+        protected Boolean doInBackground(Integer... params) {
+            Realm realmThread = Realm.getDefaultInstance();
 
-            int pedidoId = 0;
-            int usuarioId = new UsuarioFetchr().saveUsuario(pedido.getUsuario(), mUsuarioSalvo);
+            int pedidoId = params[0];
 
-            if(usuarioId > 0) {
-                pedido.getUsuario().setId(usuarioId);
-                UsuarioLab.get(getActivity()).saveUsuario(pedido.getUsuario());
+            Pedido pedido = PedidoLab.get(getActivity(), realmThread).getPedido(pedidoId);
+            Usuario usuario = UsuarioLab.get(getActivity(), realmThread).getLastUsuario();
 
-                pedidoId = new PedidoFetchr().savePedido(pedido);
-                pedido.setId(pedidoId);
-                for(ItemPedido i : pedido.getItensPedido()) {
-                    ItemPedidoLab.get(getActivity()).saveItemPedidoByPedidoId(pedidoId, i);
-                }
-                PedidoLab.get(getActivity()).savePedido(pedido);
+            int pedidoIdExterno = 0;
+            int usuarioIdExterno = new UsuarioFetchr().saveUsuario(usuario, mUsuarioSalvo);
+
+            if(usuarioIdExterno > 0) {
+                pedidoIdExterno = new PedidoFetchr().savePedido(pedido);
+
+                realmThread.beginTransaction();
+                usuario.setIdExterno(usuarioIdExterno);
+                realmThread.commitTransaction();
+
+                PedidoLab.get(getActivity(), realmThread).savePedidoIdExterno(pedidoId, pedidoIdExterno);
             }
 
             Intent intent = MeusPedidosActivity.newIntent(getActivity());
             startActivity(intent);
 
-            return usuarioId > 0 && pedidoId > 0;
+            return usuarioIdExterno > 0 && pedidoId > 0;
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
-
         }
     }
 }

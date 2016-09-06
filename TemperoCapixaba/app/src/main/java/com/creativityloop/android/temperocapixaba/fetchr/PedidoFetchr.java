@@ -86,15 +86,18 @@ public class PedidoFetchr extends Fetchr {
         for(int i = 0; i < pedidosJson.length(); i++) {
             JSONObject pedidoJson = pedidosJson.getJSONObject(i);
             Usuario usuario = new Usuario();
-            usuario.setId(userId);
+            usuario.setIdExterno(userId);
+
             int status = Integer.parseInt(pedidoJson.getString("status"));
+
             Pedido pedido = new Pedido();
-            pedido.setId(pedidoJson.getInt("cd_pedido"));
+            pedido.setIdExterno(pedidoJson.getInt("cd_pedido"));
             pedido.setUsuario(usuario);
             pedido.setEndereco(pedidoJson.getString("endereco"));
             pedido.setData(DateUtils.formatDate(DateUtils.getToday()));
-            pedido.setStatusByCodigo(StatusPedido.values()[status].getValue());
+            pedido.setStatusCodigo(status);
             pedido.setItensPedido(new RealmList<ItemPedido>());
+
             JSONArray itensPedidoJson = pedidoJson.getJSONArray("itens");
             for(int j = 0; j < itensPedidoJson.length(); j++) {
                 JSONObject itemPedidoJson = itensPedidoJson.getJSONObject(j);

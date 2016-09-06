@@ -172,7 +172,7 @@ public class CardapioDiarioFragment extends Fragment {
             if(mPedido == null) {
                 mPedido = new Pedido();
                 mPedido.setData(DateUtils.formatDate(DateUtils.getToday()));
-                mPedido.setStatusByCodigo(StatusPedido.NAO_ATENDIDO.getValue());
+                mPedido.setStatusCodigo(StatusPedido.NAO_ATENDIDO.getValue());
             }
             mPedido.setId(PedidoLab.get(getActivity()).savePedido(mPedido));
 

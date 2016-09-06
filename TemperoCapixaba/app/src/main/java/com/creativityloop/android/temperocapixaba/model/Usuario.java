@@ -24,6 +24,7 @@ public class Usuario extends RealmObject {
 
     @PrimaryKey
     private int mId;
+    private int mIdExterno;
     private String mNome;
     private String mEndereco;
     private String mTelefone;
@@ -33,12 +34,6 @@ public class Usuario extends RealmObject {
 
     @Ignore
     private TipoEntrega mTipoEntrega;
-
-    public void setTipoEntregaByCodigo(int tipoEntrega) {
-        this.mTipoEntregaCodigo = tipoEntrega;
-        this.mTipoEntrega = TipoEntrega.values()[tipoEntrega];
-
-    }
 
     @Override
     public boolean equals(Object obj) {
@@ -55,7 +50,7 @@ public class Usuario extends RealmObject {
                 && this.mTelefone.equals(usuario.mTelefone)
                 && this.mEmail.equals(usuario.mEmail)
                 && this.mEmpresa.equals(usuario.mEmpresa)
-                && this.mTipoEntrega.getValue() == usuario.mTipoEntrega.getValue();
+                && this.mTipoEntregaCodigo == usuario.mTipoEntregaCodigo;
     }
 
     public int getId() {
@@ -64,6 +59,14 @@ public class Usuario extends RealmObject {
 
     public void setId(int id) {
         mId = id;
+    }
+
+    public int getIdExterno() {
+        return mIdExterno;
+    }
+
+    public void setIdExterno(int idExterno) {
+        mIdExterno = idExterno;
     }
 
     public String getNome() {
@@ -120,5 +123,17 @@ public class Usuario extends RealmObject {
 
     public void setTipoEntrega(TipoEntrega tipoEntrega) {
         mTipoEntrega = tipoEntrega;
+    }
+
+    public Usuario convertFromRealm() {
+        Usuario usuario = new Usuario();
+        usuario.setId(this.getId());
+        usuario.setNome(this.getNome());
+        usuario.setEndereco(this.getEndereco());
+        usuario.setTelefone(this.getTelefone());
+        usuario.setEmail(this.getEmail());
+        usuario.setEmpresa(this.getEmpresa());
+        usuario.setTipoEntregaCodigo(this.getTipoEntregaCodigo());
+        return usuario;
     }
 }

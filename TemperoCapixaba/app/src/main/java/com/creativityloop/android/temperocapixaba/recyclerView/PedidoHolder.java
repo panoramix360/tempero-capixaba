@@ -39,7 +39,7 @@ public class PedidoHolder extends RecyclerView.ViewHolder implements View.OnClic
     public void bindPedido(Pedido pedido) {
         mPedido = pedido;
 
-        mPedidoTextView.setText("Pedido " + pedido.getId());
+        mPedidoTextView.setText("Pedido " + pedido.getIdExterno());
 
         int total = 0;
         for(ItemPedido itemPedido : pedido.getItensPedido()) {
@@ -52,7 +52,7 @@ public class PedidoHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        Intent i = PedidoDetalhesActivity.newIntent(mContext, mPedido.getId());
+        Intent i = PedidoDetalhesActivity.newIntent(mContext, mPedido.getIdExterno());
         mContext.startActivity(i);
     }
 }

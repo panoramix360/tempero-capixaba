@@ -54,6 +54,8 @@ public class MeusPedidosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_meus_pedidos, container, false);
 
+        List<Pedido> mPedidosTeste = PedidoLab.get(getActivity()).getPedidos();
+
         mNaoTemPedidos = (TextView) v.findViewById(R.id.nao_tem_pedidos_text_view);
 
         mPedidosRecyclerView = (RecyclerView) v.findViewById(R.id.meus_pedidos_recycler_view);
@@ -73,7 +75,7 @@ public class MeusPedidosFragment extends Fragment {
         mUsuario = UsuarioLab.get(getActivity()).getLastUsuario();
         if(mUsuario != null) {
             // load pedidos
-            new FetchPedidoTask().execute(mUsuario.getId());
+            new FetchPedidoTask().execute(mUsuario.getIdExterno());
         } else {
             updateUI();
         }

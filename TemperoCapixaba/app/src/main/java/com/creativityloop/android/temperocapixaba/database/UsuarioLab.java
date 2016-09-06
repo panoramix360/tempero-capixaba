@@ -10,6 +10,7 @@ import io.realm.Sort;
 
 public class UsuarioLab {
     private static UsuarioLab sUsuarioLab;
+    private static UsuarioLab sUsuarioLabAsync;
 
     private Context mContext;
     private Realm realm;
@@ -22,12 +23,31 @@ public class UsuarioLab {
         return sUsuarioLab;
     }
 
+    public static UsuarioLab get(Context context, Realm realm) {
+        if(sUsuarioLabAsync == null) {
+            sUsuarioLabAsync = new UsuarioLab(context, realm);
+        } else {
+            sUsuarioLabAsync.realm = realm;
+        }
+
+        return sUsuarioLabAsync;
+    }
+
     private UsuarioLab(Context context) {
         mContext = context.getApplicationContext();
         realm = Realm.getDefaultInstance();
     }
 
-    public void saveUsuario(final Usuario usuario) {
+    private UsuarioLab(Context context, Realm realm) {
+        mContext = context.getApplicationContext();
+        if(realm == null) {
+            realm = Realm.getDefaultInstance();
+        } else {
+            this.realm = realm;
+        }
+    }
+
+    public Usuario saveUsuario(final Usuario usuario) {
         realm.beginTransaction();
         realm.where(Usuario.class).findAll().deleteAllFromRealm();
         int nextInt = realm.where(Usuario.class).findAll().size() + 1;
@@ -38,8 +58,10 @@ public class UsuarioLab {
         usuarioToInsert.setTelefone(usuario.getTelefone());
         usuarioToInsert.setEmail(usuario.getEmail());
         usuarioToInsert.setEmpresa(usuario.getEmpresa());
-        usuarioToInsert.setTipoEntregaByCodigo(usuario.getTipoEntregaCodigo());
+        usuarioToInsert.setTipoEntregaCodigo(usuario.getTipoEntregaCodigo());
         realm.commitTransaction();
+
+        return usuarioToInsert;
     }
 
     public Usuario getLastUsuario() {

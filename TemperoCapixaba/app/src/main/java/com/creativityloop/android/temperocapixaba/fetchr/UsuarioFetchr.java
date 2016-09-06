@@ -24,7 +24,7 @@ public class UsuarioFetchr extends Fetchr {
         int usuarioId = 0;
 
         try {
-            String data = createDataFromUsuario(usuario, (usuarioAlreadyCreated != null) ? usuarioAlreadyCreated.getId(): 0);
+            String data = createDataFromUsuario(usuario, (usuarioAlreadyCreated != null) ? usuarioAlreadyCreated.getIdExterno(): 0);
 
             String response;
 
@@ -33,7 +33,7 @@ public class UsuarioFetchr extends Fetchr {
             } else if(!usuario.equals(usuarioAlreadyCreated)) {
                 response = updateUsuario(data);
             } else {
-                return usuarioAlreadyCreated.getId();
+                return usuarioAlreadyCreated.getIdExterno();
             }
 
             JSONObject jsonResponse = new JSONObject(response);
@@ -77,7 +77,7 @@ public class UsuarioFetchr extends Fetchr {
         if(!usuario.getEmpresa().isEmpty()) {
             data += "&empresa=" + URLEncoder.encode(usuario.getEmpresa(), "UTF-8");
         }
-        data += "&tipo_entrega=" + URLEncoder.encode(usuario.getTipoEntrega().getValue() + "", "UTF-8");
+        data += "&tipo_entrega=" + URLEncoder.encode(usuario.getTipoEntregaCodigo() + "", "UTF-8");
         data += "&cd_usuario=" + URLEncoder.encode(idUsuario + "", "UTF-8");
 
         return data;
